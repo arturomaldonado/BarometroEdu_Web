@@ -8,6 +8,8 @@ navbar:
       menu:
       - text: "Instalando R y RStudio"
         href: instalando.html
+      - text: "Procedimientos básicos"
+        href: basica.html
       - text: "Importación de bases de datos"
         href: bases.html
     - text: "Aspectos iniciales"

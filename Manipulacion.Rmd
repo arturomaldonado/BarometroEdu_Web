@@ -110,7 +110,7 @@ De acuerdo a la codificación de la variable "pais", Uruguay tiene el código 14
 ![](pais.png){width="552"}
 
 La selección de casos en R se puede hacer de múltiples maneras.
-Una forma es usar los corchetes \[ \].
+Una forma es usar los corchetes $$  $$.
 Otra forma es usando el comando `subset`.
 Con este comando seleccionamos las observaciones de este país y guardamos esta selección en un nuevo dataframe "lapop2" usando este último comando.
 Se tiene 3009 observaciones en Uruguay.
@@ -123,7 +123,7 @@ table(lapop1$pais)
 Con esta selección de datos, se puede calcular el porcentaje (frecuencias relativas) usando el comando `prop.table`.
 Este comando nos brinda las frecuencias relativas (en valores entre 0 y 1) de una tabla de frecuencias calculada con `table`.
 Estas frecuencias relativas se multiplican por 100 para reproducir el porcentaje en cada país.
-En este caso se usan los \[ \] para hacer la selección de casos de cada país.
+En este caso se usan los $$  $$ para hacer la selección de casos de cada país.
 
 ```{r porcentaje Uru}
 prop.table(table(lapop1$ing4rec[lapop1$pais==14]))*100
@@ -210,7 +210,7 @@ El capítulo sobre legitimidad democrática del reporte brinda ejemplos de este 
 Para calcular este índice de apoyo al sistema se trabaja con un conjunto de cinco variables:
 
 B1.
-*¿Hasta qué punto cree usted que los tribunales de justicia de (país) garantizan un juicio justo? \[Sondee: Si usted cree que los tribunales no garantizan para nada la justicia escoja el número 1; si cree que los tribunales garantizan mucho la justicia, escoja el número 7 o escoja un puntaje intermedio\].*
+*¿Hasta qué punto cree usted que los tribunales de justicia de (país) garantizan un juicio justo?* $$Sondee: Si usted cree que los tribunales no garantizan para nada la justicia escoja el número 1; si cree que los tribunales garantizan mucho la justicia, escoja el número 7 o escoja un puntaje intermedio$$.
 
 B2.
 *¿Hasta qué punto tiene usted respeto por las instituciones políticas de (país)?*

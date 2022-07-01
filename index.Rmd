@@ -30,7 +30,9 @@ En esta web encontrará secciones donde se usan los datos del Barómetro de las 
 
 1.  [Instalando R y RStudio](https://arturomaldonado.github.io/BarometroEdu_Web/instalando.html)
 
-2.  [Bases de datos](https://arturomaldonado.github.io/BarometroEdu_Web/bases.html)
+2.  [Procedimientos básicos](https://arturomaldonado.github.io/BarometroEdu_Web/basica.html)
+
+3.  [Bases de datos](https://arturomaldonado.github.io/BarometroEdu_Web/bases.html)
 
 ## Aspectos iniciales
 
