@@ -305,3 +305,18 @@ ggplot(al_datos) +
        fill = "% que tolera golpes ejecutivos")+
   theme_bw()
 ```
+
+Este código por defecto calcula los quiebres de los colores de 10 en 10.
+Si se quiere cambiar estos quiebres, se puede usar la especificación `break=c(…)` dentro de `scale_fill_gradient`.
+
+```{r}
+ggplot(al_datos) +
+  geom_sf(aes(fill = media_golpe))+
+  scale_fill_gradient(low = "yellow", high = "red", breaks=c(20, 30))+
+  geom_sf_text(aes(label=pais), size=2)+
+  labs(title = "Tolerancia a golpes ejecutivos en América Latina",
+       caption = "Fuente: Barómetro de las Américas 2021",
+       x="Longitud",
+       fill = "% que tolera golpes ejecutivos")+
+  theme_bw()
+```

@@ -58,7 +58,7 @@ lapop18 <- subset(lapop18, pais<=35)
 Como vimos en la sección sobre [manejo de datos](https://arturomaldonado.github.io/BarometroEdu_Web/Manipulacion.html#Calcular_una_variable), para calcular este índice de apoyo al sistema se trabaja con un conjunto de cinco variables:
 
 **B1.** ¿Hasta qué punto cree usted que los tribunales de justicia de (país) garantizan un juicio justo?
-\[Sondee: Si usted cree que los tribunales no garantizan para nada la justicia escoja el número 1; si cree que los tribunales garantizan mucho la justicia, escoja el número 7 o escoja un puntaje intermedio\].
+$$Sondee: Si usted cree que los tribunales no garantizan para nada la justicia escoja el número 1; si cree que los tribunales garantizan mucho la justicia, escoja el número 7 o escoja un puntaje intermedio$$.
 
 **B2.** ¿Hasta qué punto tiene usted respeto por las instituciones políticas de (país)?
 
