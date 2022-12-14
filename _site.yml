@@ -52,4 +52,6 @@ navbar:
         href: mapas.html
     - text: "Contacto"
       href: Links.html
+    - text: "English"
+      href: https://www.vanderbilt.edu/lapop/
 output_dir: "docs"

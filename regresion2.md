@@ -152,11 +152,11 @@ library(stargazer)
 ```
 
 ```
-##  Hlavac, Marek (2018). stargazer: Well-Formatted Regression and Summary Statistics Tables.
+##  Hlavac, Marek (2022). stargazer: Well-Formatted Regression and Summary Statistics Tables.
 ```
 
 ```
-##  R package version 5.2.2. https://CRAN.R-project.org/package=stargazer
+##  R package version 5.2.3. https://CRAN.R-project.org/package=stargazer
 ```
 
 ```r
@@ -737,299 +737,60 @@ modelo8 <- svyglm(psar ~ eff1r + ejec + tolr + it1r + b32r + factor(pais) +
 summ(modelo8)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Observations </td>
-   <td style="text-align:right;"> 24084 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Dependent variable </td>
-   <td style="text-align:right;"> psar </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Type </td>
-   <td style="text-align:right;"> Survey-weighted linear regression </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> R² </td>
-   <td style="text-align:right;"> 0.44 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Adj. R² </td>
-   <td style="text-align:right;"> -9.83 </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> Est. </th>
-   <th style="text-align:right;"> S.E. </th>
-   <th style="text-align:right;"> t val. </th>
-   <th style="text-align:right;"> p </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> (Intercept) </td>
-   <td style="text-align:right;"> 25.35 </td>
-   <td style="text-align:right;"> 1.27 </td>
-   <td style="text-align:right;"> 19.98 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> eff1r </td>
-   <td style="text-align:right;"> 0.12 </td>
-   <td style="text-align:right;"> 0.00 </td>
-   <td style="text-align:right;"> 27.03 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> ejec </td>
-   <td style="text-align:right;"> 0.25 </td>
-   <td style="text-align:right;"> 0.00 </td>
-   <td style="text-align:right;"> 56.82 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> tolr </td>
-   <td style="text-align:right;"> 0.06 </td>
-   <td style="text-align:right;"> 0.01 </td>
-   <td style="text-align:right;"> 11.45 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> it1r </td>
-   <td style="text-align:right;"> 0.03 </td>
-   <td style="text-align:right;"> 0.00 </td>
-   <td style="text-align:right;"> 7.09 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> b32r </td>
-   <td style="text-align:right;"> 0.19 </td>
-   <td style="text-align:right;"> 0.00 </td>
-   <td style="text-align:right;"> 41.47 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)2 </td>
-   <td style="text-align:right;"> 4.90 </td>
-   <td style="text-align:right;"> 0.78 </td>
-   <td style="text-align:right;"> 6.29 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)3 </td>
-   <td style="text-align:right;"> 1.56 </td>
-   <td style="text-align:right;"> 0.69 </td>
-   <td style="text-align:right;"> 2.27 </td>
-   <td style="text-align:right;"> 0.02 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)4 </td>
-   <td style="text-align:right;"> -3.78 </td>
-   <td style="text-align:right;"> 0.77 </td>
-   <td style="text-align:right;"> -4.89 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)5 </td>
-   <td style="text-align:right;"> 2.44 </td>
-   <td style="text-align:right;"> 0.77 </td>
-   <td style="text-align:right;"> 3.16 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)6 </td>
-   <td style="text-align:right;"> 9.25 </td>
-   <td style="text-align:right;"> 0.66 </td>
-   <td style="text-align:right;"> 13.94 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)7 </td>
-   <td style="text-align:right;"> 4.88 </td>
-   <td style="text-align:right;"> 0.72 </td>
-   <td style="text-align:right;"> 6.74 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)8 </td>
-   <td style="text-align:right;"> 0.93 </td>
-   <td style="text-align:right;"> 0.72 </td>
-   <td style="text-align:right;"> 1.28 </td>
-   <td style="text-align:right;"> 0.20 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)9 </td>
-   <td style="text-align:right;"> 4.39 </td>
-   <td style="text-align:right;"> 0.78 </td>
-   <td style="text-align:right;"> 5.59 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)10 </td>
-   <td style="text-align:right;"> -0.08 </td>
-   <td style="text-align:right;"> 0.69 </td>
-   <td style="text-align:right;"> -0.11 </td>
-   <td style="text-align:right;"> 0.91 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)11 </td>
-   <td style="text-align:right;"> -4.35 </td>
-   <td style="text-align:right;"> 0.72 </td>
-   <td style="text-align:right;"> -6.04 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)12 </td>
-   <td style="text-align:right;"> -4.29 </td>
-   <td style="text-align:right;"> 0.68 </td>
-   <td style="text-align:right;"> -6.32 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)13 </td>
-   <td style="text-align:right;"> -1.89 </td>
-   <td style="text-align:right;"> 0.68 </td>
-   <td style="text-align:right;"> -2.78 </td>
-   <td style="text-align:right;"> 0.01 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)14 </td>
-   <td style="text-align:right;"> 5.47 </td>
-   <td style="text-align:right;"> 0.78 </td>
-   <td style="text-align:right;"> 7.04 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)15 </td>
-   <td style="text-align:right;"> -7.21 </td>
-   <td style="text-align:right;"> 0.74 </td>
-   <td style="text-align:right;"> -9.71 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)17 </td>
-   <td style="text-align:right;"> 2.91 </td>
-   <td style="text-align:right;"> 0.81 </td>
-   <td style="text-align:right;"> 3.58 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)23 </td>
-   <td style="text-align:right;"> -0.19 </td>
-   <td style="text-align:right;"> 0.79 </td>
-   <td style="text-align:right;"> -0.24 </td>
-   <td style="text-align:right;"> 0.81 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(edr)1 </td>
-   <td style="text-align:right;"> -1.92 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> -1.92 </td>
-   <td style="text-align:right;"> 0.05 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(edr)2 </td>
-   <td style="text-align:right;"> -2.55 </td>
-   <td style="text-align:right;"> 1.02 </td>
-   <td style="text-align:right;"> -2.50 </td>
-   <td style="text-align:right;"> 0.01 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(edr)3 </td>
-   <td style="text-align:right;"> -2.87 </td>
-   <td style="text-align:right;"> 1.05 </td>
-   <td style="text-align:right;"> -2.72 </td>
-   <td style="text-align:right;"> 0.01 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(quintall)2 </td>
-   <td style="text-align:right;"> -0.74 </td>
-   <td style="text-align:right;"> 0.38 </td>
-   <td style="text-align:right;"> -1.98 </td>
-   <td style="text-align:right;"> 0.05 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(quintall)3 </td>
-   <td style="text-align:right;"> -0.60 </td>
-   <td style="text-align:right;"> 0.37 </td>
-   <td style="text-align:right;"> -1.63 </td>
-   <td style="text-align:right;"> 0.10 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(quintall)4 </td>
-   <td style="text-align:right;"> -1.47 </td>
-   <td style="text-align:right;"> 0.37 </td>
-   <td style="text-align:right;"> -3.93 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(quintall)5 </td>
-   <td style="text-align:right;"> -1.68 </td>
-   <td style="text-align:right;"> 0.37 </td>
-   <td style="text-align:right;"> -4.50 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(urban)1 </td>
-   <td style="text-align:right;"> -2.61 </td>
-   <td style="text-align:right;"> 0.29 </td>
-   <td style="text-align:right;"> -9.08 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(mujer)1 </td>
-   <td style="text-align:right;"> 1.41 </td>
-   <td style="text-align:right;"> 0.24 </td>
-   <td style="text-align:right;"> 5.86 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(edad)2 </td>
-   <td style="text-align:right;"> -3.26 </td>
-   <td style="text-align:right;"> 0.32 </td>
-   <td style="text-align:right;"> -10.29 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(edad)3 </td>
-   <td style="text-align:right;"> -4.21 </td>
-   <td style="text-align:right;"> 0.35 </td>
-   <td style="text-align:right;"> -11.87 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(edad)4 </td>
-   <td style="text-align:right;"> -3.47 </td>
-   <td style="text-align:right;"> 0.40 </td>
-   <td style="text-align:right;"> -8.68 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(edad)5 </td>
-   <td style="text-align:right;"> -2.46 </td>
-   <td style="text-align:right;"> 0.46 </td>
-   <td style="text-align:right;"> -5.38 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(edad)6 </td>
-   <td style="text-align:right;"> -1.69 </td>
-   <td style="text-align:right;"> 0.51 </td>
-   <td style="text-align:right;"> -3.35 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-</tbody>
-<tfoot><tr><td style="padding: 0; " colspan="100%">
-<sup></sup> Standard errors: Robust</td></tr></tfoot>
-</table>
+```
+## MODEL INFO:
+## Observations: 24084
+## Dependent Variable: psar
+## Type: Survey-weighted linear regression 
+## 
+## MODEL FIT:
+## R² = 0.44
+## Adj. R² = 0.43 
+## 
+## Standard errors: Robust
+## ------------------------------------------------------
+##                            Est.   S.E.   t val.      p
+## ----------------------- ------- ------ -------- ------
+## (Intercept)               25.35   1.27    19.98   0.00
+## eff1r                      0.12   0.00    27.03   0.00
+## ejec                       0.25   0.00    56.82   0.00
+## tolr                       0.06   0.01    11.45   0.00
+## it1r                       0.03   0.00     7.09   0.00
+## b32r                       0.19   0.00    41.47   0.00
+## factor(pais)2              4.90   0.78     6.29   0.00
+## factor(pais)3              1.56   0.69     2.27   0.02
+## factor(pais)4             -3.78   0.77    -4.89   0.00
+## factor(pais)5              2.44   0.77     3.16   0.00
+## factor(pais)6              9.25   0.66    13.94   0.00
+## factor(pais)7              4.88   0.72     6.74   0.00
+## factor(pais)8              0.93   0.72     1.28   0.20
+## factor(pais)9              4.39   0.78     5.59   0.00
+## factor(pais)10            -0.08   0.69    -0.11   0.91
+## factor(pais)11            -4.35   0.72    -6.04   0.00
+## factor(pais)12            -4.29   0.68    -6.32   0.00
+## factor(pais)13            -1.89   0.68    -2.78   0.01
+## factor(pais)14             5.47   0.78     7.04   0.00
+## factor(pais)15            -7.21   0.74    -9.71   0.00
+## factor(pais)17             2.91   0.81     3.58   0.00
+## factor(pais)23            -0.19   0.79    -0.24   0.81
+## factor(edr)1              -1.92   1.00    -1.92   0.05
+## factor(edr)2              -2.55   1.02    -2.50   0.01
+## factor(edr)3              -2.87   1.05    -2.72   0.01
+## factor(quintall)2         -0.74   0.38    -1.98   0.05
+## factor(quintall)3         -0.60   0.37    -1.63   0.10
+## factor(quintall)4         -1.47   0.37    -3.93   0.00
+## factor(quintall)5         -1.68   0.37    -4.50   0.00
+## factor(urban)1            -2.61   0.29    -9.08   0.00
+## factor(mujer)1             1.41   0.24     5.86   0.00
+## factor(edad)2             -3.26   0.32   -10.29   0.00
+## factor(edad)3             -4.21   0.35   -11.87   0.00
+## factor(edad)4             -3.47   0.40    -8.68   0.00
+## factor(edad)5             -2.46   0.46    -5.38   0.00
+## factor(edad)6             -1.69   0.51    -3.35   0.00
+## ------------------------------------------------------
+## 
+## Estimated dispersion parameter = 300.32
+```
 
 De la misma manera que con el modelo 7, estos resultados también se pueden graficar usando el comando `plot_summs`, seleccionando las variables que se quieren mostrar.
 

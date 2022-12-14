@@ -257,7 +257,7 @@ library(sf)
 ```
 
 ```
-## Linking to GEOS 3.9.1, GDAL 3.2.3, PROJ 7.2.1; sf_use_s2() is TRUE
+## Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE
 ```
 
 ```r
@@ -398,3 +398,31 @@ ggplot(al_datos) +
 ```
 
 ![](mapas_files/figure-html/mapa completo-1.png)<!-- -->
+
+Este código por defecto calcula los quiebres de los colores de 10 en 10.
+Si se quiere cambiar estos quiebres, se puede usar la especificación `break=c(…)` dentro de `scale_fill_gradient`.
+
+
+```r
+ggplot(al_datos) +
+  geom_sf(aes(fill = media_golpe))+
+  scale_fill_gradient(low = "yellow", high = "red", breaks=c(20, 30))+
+  geom_sf_text(aes(label=pais), size=2)+
+  labs(title = "Tolerancia a golpes ejecutivos en América Latina",
+       caption = "Fuente: Barómetro de las Américas 2021",
+       x="Longitud",
+       fill = "% que tolera golpes ejecutivos")+
+  theme_bw()
+```
+
+```
+## Warning in st_is_longlat(x): bounding box has potentially an invalid value range
+## for longlat data
+```
+
+```
+## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
+## give correct results for longitude/latitude data
+```
+
+![](mapas_files/figure-html/unnamed-chunk-3-1.png)<!-- -->

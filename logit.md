@@ -252,228 +252,49 @@ library(jtools)
 summ(modelo1)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Observations </td>
-   <td style="text-align:right;"> 26275 (1767 missing obs. deleted) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Dependent variable </td>
-   <td style="text-align:right;"> user </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Type </td>
-   <td style="text-align:right;"> Generalized linear model </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Family </td>
-   <td style="text-align:right;"> binomial </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Link </td>
-   <td style="text-align:right;"> logit </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> 𝛘²(22) </td>
-   <td style="text-align:right;"> 11696.30 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Pseudo-R² (Cragg-Uhler) </td>
-   <td style="text-align:right;"> 0.51 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Pseudo-R² (McFadden) </td>
-   <td style="text-align:right;"> 0.37 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> AIC </td>
-   <td style="text-align:right;"> 20201.95 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> BIC </td>
-   <td style="text-align:right;"> 20390.01 </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> Est. </th>
-   <th style="text-align:right;"> S.E. </th>
-   <th style="text-align:right;"> z val. </th>
-   <th style="text-align:right;"> p </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> (Intercept) </td>
-   <td style="text-align:right;"> -0.76 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> -8.07 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> riqueza </td>
-   <td style="text-align:right;"> 2.04 </td>
-   <td style="text-align:right;"> 0.06 </td>
-   <td style="text-align:right;"> 35.71 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> educ </td>
-   <td style="text-align:right;"> 2.87 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> 31.27 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> edad </td>
-   <td style="text-align:right;"> -5.69 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> -54.45 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> mujer </td>
-   <td style="text-align:right;"> 0.15 </td>
-   <td style="text-align:right;"> 0.04 </td>
-   <td style="text-align:right;"> 4.16 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> urban </td>
-   <td style="text-align:right;"> 0.75 </td>
-   <td style="text-align:right;"> 0.04 </td>
-   <td style="text-align:right;"> 18.35 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)2 </td>
-   <td style="text-align:right;"> -0.21 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> -2.16 </td>
-   <td style="text-align:right;"> 0.03 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)3 </td>
-   <td style="text-align:right;"> 15.88 </td>
-   <td style="text-align:right;"> 85.89 </td>
-   <td style="text-align:right;"> 0.18 </td>
-   <td style="text-align:right;"> 0.85 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)4 </td>
-   <td style="text-align:right;"> -0.26 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> -2.71 </td>
-   <td style="text-align:right;"> 0.01 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)5 </td>
-   <td style="text-align:right;"> -0.54 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> -5.70 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)6 </td>
-   <td style="text-align:right;"> 1.92 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> 17.14 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)7 </td>
-   <td style="text-align:right;"> -0.45 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> -4.70 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)8 </td>
-   <td style="text-align:right;"> 0.51 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> 5.24 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)9 </td>
-   <td style="text-align:right;"> 0.35 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> 3.43 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)10 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.34 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)11 </td>
-   <td style="text-align:right;"> -0.06 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> -0.66 </td>
-   <td style="text-align:right;"> 0.51 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)12 </td>
-   <td style="text-align:right;"> 0.89 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> 8.70 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)13 </td>
-   <td style="text-align:right;"> 1.01 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> 9.70 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)14 </td>
-   <td style="text-align:right;"> 1.90 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> 17.60 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)15 </td>
-   <td style="text-align:right;"> 1.11 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> 10.56 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)17 </td>
-   <td style="text-align:right;"> 1.42 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> 12.90 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)21 </td>
-   <td style="text-align:right;"> 0.80 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> 7.74 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)23 </td>
-   <td style="text-align:right;"> 0.55 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> 5.35 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-</tbody>
-<tfoot><tr><td style="padding: 0; " colspan="100%">
-<sup></sup> Standard errors: MLE</td></tr></tfoot>
-</table>
+```
+## MODEL INFO:
+## Observations: 26275 (1767 missing obs. deleted)
+## Dependent Variable: user
+## Type: Generalized linear model
+##   Family: binomial 
+##   Link function: logit 
+## 
+## MODEL FIT:
+## χ²(22) = 11696.30, p = 0.00
+## Pseudo-R² (Cragg-Uhler) = 0.51
+## Pseudo-R² (McFadden) = 0.37
+## AIC = 20201.95, BIC = 20390.01 
+## 
+## Standard errors: MLE
+## ----------------------------------------------------
+##                         Est.    S.E.   z val.      p
+## -------------------- ------- ------- -------- ------
+## (Intercept)            -0.76    0.09    -8.07   0.00
+## riqueza                 2.04    0.06    35.71   0.00
+## educ                    2.87    0.09    31.27   0.00
+## edad                   -5.69    0.10   -54.45   0.00
+## mujer                   0.15    0.04     4.16   0.00
+## urban                   0.75    0.04    18.35   0.00
+## factor(pais)2          -0.21    0.10    -2.16   0.03
+## factor(pais)3          15.88   85.89     0.18   0.85
+## factor(pais)4          -0.26    0.10    -2.71   0.01
+## factor(pais)5          -0.54    0.10    -5.70   0.00
+## factor(pais)6           1.92    0.11    17.14   0.00
+## factor(pais)7          -0.45    0.10    -4.70   0.00
+## factor(pais)8           0.51    0.10     5.24   0.00
+## factor(pais)9           0.35    0.10     3.43   0.00
+## factor(pais)10          0.09    0.10     0.95   0.34
+## factor(pais)11         -0.06    0.10    -0.66   0.51
+## factor(pais)12          0.89    0.10     8.70   0.00
+## factor(pais)13          1.01    0.10     9.70   0.00
+## factor(pais)14          1.90    0.11    17.60   0.00
+## factor(pais)15          1.11    0.11    10.56   0.00
+## factor(pais)17          1.42    0.11    12.90   0.00
+## factor(pais)21          0.80    0.10     7.74   0.00
+## factor(pais)23          0.55    0.10     5.35   0.00
+## ----------------------------------------------------
+```
 
 El Gráfico 3.4 muestra los coeficientes de cada variable y el intervalo de confianza al 95% de este estimado.
 Se incluye una línea vertical en el punto 0.
@@ -499,6 +320,160 @@ plot_summs(modelo1, coefs=c("Nivel de riqueza"="riqueza", "Años de educación"=
 
 ```
 ## Loading required namespace: broom.mixed
+```
+
+```
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 ```
 
 ![](logit_files/figure-html/grafico-1.png)<!-- -->
@@ -543,220 +518,49 @@ modelo2 <- svyglm(user ~ riqueza + educ + edad + mujer + urban + factor(pais), f
 summ(modelo2)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Observations </td>
-   <td style="text-align:right;"> 26275 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Dependent variable </td>
-   <td style="text-align:right;"> user </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Type </td>
-   <td style="text-align:right;"> Survey-weighted generalized linear model </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Family </td>
-   <td style="text-align:right;"> quasibinomial </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Link </td>
-   <td style="text-align:right;"> logit </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Pseudo-R² (Cragg-Uhler) </td>
-   <td style="text-align:right;"> 0.51 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Pseudo-R² (McFadden) </td>
-   <td style="text-align:right;"> 0.37 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> AIC </td>
-   <td style="text-align:right;"> NA </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> Est. </th>
-   <th style="text-align:right;"> S.E. </th>
-   <th style="text-align:right;"> t val. </th>
-   <th style="text-align:right;"> p </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> (Intercept) </td>
-   <td style="text-align:right;"> -0.76 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> -7.37 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> riqueza </td>
-   <td style="text-align:right;"> 2.03 </td>
-   <td style="text-align:right;"> 0.06 </td>
-   <td style="text-align:right;"> 33.27 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> educ </td>
-   <td style="text-align:right;"> 2.86 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> 30.20 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> edad </td>
-   <td style="text-align:right;"> -5.69 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> -53.54 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> mujer </td>
-   <td style="text-align:right;"> 0.15 </td>
-   <td style="text-align:right;"> 0.04 </td>
-   <td style="text-align:right;"> 4.33 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> urban </td>
-   <td style="text-align:right;"> 0.75 </td>
-   <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 15.81 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)2 </td>
-   <td style="text-align:right;"> -0.21 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> -1.80 </td>
-   <td style="text-align:right;"> 0.07 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)3 </td>
-   <td style="text-align:right;"> 15.89 </td>
-   <td style="text-align:right;"> 0.15 </td>
-   <td style="text-align:right;"> 103.41 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)4 </td>
-   <td style="text-align:right;"> -0.26 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> -2.75 </td>
-   <td style="text-align:right;"> 0.01 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)5 </td>
-   <td style="text-align:right;"> -0.54 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> -5.03 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)6 </td>
-   <td style="text-align:right;"> 1.92 </td>
-   <td style="text-align:right;"> 0.14 </td>
-   <td style="text-align:right;"> 13.65 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)7 </td>
-   <td style="text-align:right;"> -0.45 </td>
-   <td style="text-align:right;"> 0.13 </td>
-   <td style="text-align:right;"> -3.56 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)8 </td>
-   <td style="text-align:right;"> 0.51 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> 4.78 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)9 </td>
-   <td style="text-align:right;"> 0.35 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> 3.27 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)10 </td>
-   <td style="text-align:right;"> 0.09 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> 0.88 </td>
-   <td style="text-align:right;"> 0.38 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)11 </td>
-   <td style="text-align:right;"> -0.06 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> -0.59 </td>
-   <td style="text-align:right;"> 0.55 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)12 </td>
-   <td style="text-align:right;"> 0.89 </td>
-   <td style="text-align:right;"> 0.10 </td>
-   <td style="text-align:right;"> 8.56 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)13 </td>
-   <td style="text-align:right;"> 1.01 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> 8.81 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)14 </td>
-   <td style="text-align:right;"> 1.90 </td>
-   <td style="text-align:right;"> 0.12 </td>
-   <td style="text-align:right;"> 16.04 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)15 </td>
-   <td style="text-align:right;"> 1.16 </td>
-   <td style="text-align:right;"> 0.13 </td>
-   <td style="text-align:right;"> 9.27 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)17 </td>
-   <td style="text-align:right;"> 1.42 </td>
-   <td style="text-align:right;"> 0.12 </td>
-   <td style="text-align:right;"> 11.55 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)21 </td>
-   <td style="text-align:right;"> 0.80 </td>
-   <td style="text-align:right;"> 0.12 </td>
-   <td style="text-align:right;"> 6.93 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> factor(pais)23 </td>
-   <td style="text-align:right;"> 0.55 </td>
-   <td style="text-align:right;"> 0.11 </td>
-   <td style="text-align:right;"> 4.82 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-</tbody>
-<tfoot><tr><td style="padding: 0; " colspan="100%">
-<sup></sup> Standard errors: Robust</td></tr></tfoot>
-</table>
+```
+## MODEL INFO:
+## Observations: 26275
+## Dependent Variable: user
+## Type: Analysis of complex survey design 
+##  Family: quasibinomial 
+##  Link function: logit 
+## 
+## MODEL FIT:
+## Pseudo-R² (Cragg-Uhler) = 0.51
+## Pseudo-R² (McFadden) = 0.37
+## AIC =  NA 
+## 
+## ---------------------------------------------------
+##                         Est.   S.E.   t val.      p
+## -------------------- ------- ------ -------- ------
+## (Intercept)            -0.76   0.10    -7.37   0.00
+## riqueza                 2.03   0.06    33.27   0.00
+## educ                    2.86   0.09    30.20   0.00
+## edad                   -5.69   0.11   -53.54   0.00
+## mujer                   0.15   0.04     4.33   0.00
+## urban                   0.75   0.05    15.81   0.00
+## factor(pais)2          -0.21   0.11    -1.80   0.07
+## factor(pais)3          15.89   0.15   103.41   0.00
+## factor(pais)4          -0.26   0.09    -2.75   0.01
+## factor(pais)5          -0.54   0.11    -5.03   0.00
+## factor(pais)6           1.92   0.14    13.65   0.00
+## factor(pais)7          -0.45   0.13    -3.56   0.00
+## factor(pais)8           0.51   0.11     4.78   0.00
+## factor(pais)9           0.35   0.11     3.27   0.00
+## factor(pais)10          0.09   0.11     0.88   0.38
+## factor(pais)11         -0.06   0.11    -0.59   0.55
+## factor(pais)12          0.89   0.10     8.56   0.00
+## factor(pais)13          1.01   0.11     8.81   0.00
+## factor(pais)14          1.90   0.12    16.04   0.00
+## factor(pais)15          1.16   0.13     9.27   0.00
+## factor(pais)17          1.42   0.12    11.55   0.00
+## factor(pais)21          0.80   0.12     6.93   0.00
+## factor(pais)23          0.55   0.11     4.82   0.00
+## ---------------------------------------------------
+## 
+## Estimated dispersion parameter = 1.01
+```
 
 De la misma manera que con el modelo 1, estos resultados también se pueden graficar usando el comando `plot_summs`, seleccionando las variables que se quieren mostrar.
 

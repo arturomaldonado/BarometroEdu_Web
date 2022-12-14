@@ -57,7 +57,7 @@ lapop18 <- subset(lapop18, pais<=35)
 Como vimos en la sección sobre [manejo de datos](https://arturomaldonado.github.io/BarometroEdu_Web/Manipulacion.html#Calcular_una_variable), para calcular este índice de apoyo al sistema se trabaja con un conjunto de cinco variables:
 
 **B1.** ¿Hasta qué punto cree usted que los tribunales de justicia de (país) garantizan un juicio justo?
-\[Sondee: Si usted cree que los tribunales no garantizan para nada la justicia escoja el número 1; si cree que los tribunales garantizan mucho la justicia, escoja el número 7 o escoja un puntaje intermedio\].
+$$Sondee: Si usted cree que los tribunales no garantizan para nada la justicia escoja el número 1; si cree que los tribunales garantizan mucho la justicia, escoja el número 7 o escoja un puntaje intermedio$$.
 
 **B2.** ¿Hasta qué punto tiene usted respeto por las instituciones políticas de (país)?
 
@@ -200,65 +200,25 @@ library(jtools)
 summ(modelo1)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Observations </td>
-   <td style="text-align:right;"> 26143 (1899 missing obs. deleted) </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Dependent variable </td>
-   <td style="text-align:right;"> apoyo </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Type </td>
-   <td style="text-align:right;"> OLS linear regression </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> F(1,26141) </td>
-   <td style="text-align:right;"> 10503.71 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> R² </td>
-   <td style="text-align:right;"> 0.29 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Adj. R² </td>
-   <td style="text-align:right;"> 0.29 </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> Est. </th>
-   <th style="text-align:right;"> S.E. </th>
-   <th style="text-align:right;"> t val. </th>
-   <th style="text-align:right;"> p </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> (Intercept) </td>
-   <td style="text-align:right;"> 33.78 </td>
-   <td style="text-align:right;"> 0.19 </td>
-   <td style="text-align:right;"> 177.55 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> ejec </td>
-   <td style="text-align:right;"> 0.35 </td>
-   <td style="text-align:right;"> 0.00 </td>
-   <td style="text-align:right;"> 102.49 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-</tbody>
-<tfoot><tr><td style="padding: 0; " colspan="100%">
-<sup></sup> Standard errors: OLS</td></tr></tfoot>
-</table>
+```
+## MODEL INFO:
+## Observations: 26143 (1899 missing obs. deleted)
+## Dependent Variable: apoyo
+## Type: OLS linear regression 
+## 
+## MODEL FIT:
+## F(1,26141) = 10503.71, p = 0.00
+## R² = 0.29
+## Adj. R² = 0.29 
+## 
+## Standard errors: OLS
+## ------------------------------------------------
+##                      Est.   S.E.   t val.      p
+## ----------------- ------- ------ -------- ------
+## (Intercept)         33.78   0.19   177.55   0.00
+## ejec                 0.35   0.00   102.49   0.00
+## ------------------------------------------------
+```
 
 En la información básica del modelo se encuentra que se ha calculado este modelo bivariado sobre 26,143 observaciones.
 Es decir, del total de observaciones de la base de datos 1,899 se han perdido debido a valores perdidos en alguna de las variables, por lo que esas observaciones no se incluyen en el modelo.
@@ -398,58 +358,23 @@ Con el comando `summ` de la librería `jtools` se puede presentar el modelo, inc
 summ(modelo2)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Observations </td>
-   <td style="text-align:right;"> 26143 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Dependent variable </td>
-   <td style="text-align:right;"> apoyo </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Type </td>
-   <td style="text-align:right;"> Survey-weighted linear regression </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> R² </td>
-   <td style="text-align:right;"> 0.29 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> Adj. R² </td>
-   <td style="text-align:right;"> -13.05 </td>
-  </tr>
-</tbody>
-</table> <table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
- <thead>
-  <tr>
-   <th style="text-align:left;">   </th>
-   <th style="text-align:right;"> Est. </th>
-   <th style="text-align:right;"> S.E. </th>
-   <th style="text-align:right;"> t val. </th>
-   <th style="text-align:right;"> p </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> (Intercept) </td>
-   <td style="text-align:right;"> 33.78 </td>
-   <td style="text-align:right;"> 0.22 </td>
-   <td style="text-align:right;"> 152.05 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;font-weight: bold;"> ejec </td>
-   <td style="text-align:right;"> 0.35 </td>
-   <td style="text-align:right;"> 0.00 </td>
-   <td style="text-align:right;"> 94.15 </td>
-   <td style="text-align:right;"> 0.00 </td>
-  </tr>
-</tbody>
-<tfoot><tr><td style="padding: 0; " colspan="100%">
-<sup></sup> Standard errors: Robust</td></tr></tfoot>
-</table>
+```
+## MODEL INFO:
+## Observations: 26143
+## Dependent Variable: apoyo
+## Type: Survey-weighted linear regression 
+## 
+## MODEL FIT:
+## R² = 0.29
+## Adj. R² = 0.29 
+## 
+## Standard errors: Robust
+## ------------------------------------------------
+##                      Est.   S.E.   t val.      p
+## ----------------- ------- ------ -------- ------
+## (Intercept)         33.78   0.22   152.05   0.00
+## ejec                 0.35   0.00    94.15   0.00
+## ------------------------------------------------
+## 
+## Estimated dispersion parameter = 389.46
+```
