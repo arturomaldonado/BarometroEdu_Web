@@ -53,5 +53,5 @@ navbar:
     - text: "Contacto"
       href: Links.html
     - text: "English"
-      href: https://www.vanderbilt.edu/lapop/
+      href: https://arturomaldonado.github.io/BarometroEdu_Web_Eng/
 output_dir: "docs"
