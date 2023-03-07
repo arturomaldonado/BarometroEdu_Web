@@ -56,12 +56,6 @@ lapop21 = import("lapop21.RData")
 lapop21 <- subset(lapop21, pais<=35)
 ```
 
-# Confianza en las elecciones y evaluaciones de expertos
-
-El reporte *El Pulso de la Democracia* de la ronda 2021 presenta el gráfico 2.4 que relaciona el porcentaje de confianza en las elecciones por país con
-
-![](Figure2.4.png){width="519"}
-
 # Apoyo a la democracia y nivel de democracia
 
 En esta sección seguiremos usando el reporte "El pulso de la democracia", disponible [aquí](https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdf).

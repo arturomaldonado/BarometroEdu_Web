@@ -40,7 +40,7 @@ Esta base de datos tiene extensión .RData y cuando se importa, carga las variab
 
 ```{r base21, message=FALSE, warning=FALSE}
 library(rio)
-lapop21 = import("lapop21.RData")
+lapop21 = import("https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData")
 ```
 
 En este repositorio también se encuentra la base de datos de la ronda anterior, la que también podemos cargar y llamarla "lapop18".
@@ -110,7 +110,7 @@ De acuerdo a la codificación de la variable "pais", Uruguay tiene el código 14
 ![](pais.png){width="552"}
 
 La selección de casos en R se puede hacer de múltiples maneras.
-Una forma es usar los corchetes $$  $$.
+Una forma es usar los corchetes $$        $$.
 Otra forma es usando el comando `subset`.
 Con este comando seleccionamos las observaciones de este país y guardamos esta selección en un nuevo dataframe "lapop2" usando este último comando.
 Se tiene 3009 observaciones en Uruguay.
@@ -123,7 +123,7 @@ table(lapop1$pais)
 Con esta selección de datos, se puede calcular el porcentaje (frecuencias relativas) usando el comando `prop.table`.
 Este comando nos brinda las frecuencias relativas (en valores entre 0 y 1) de una tabla de frecuencias calculada con `table`.
 Estas frecuencias relativas se multiplican por 100 para reproducir el porcentaje en cada país.
-En este caso se usan los $$  $$ para hacer la selección de casos de cada país.
+En este caso se usan los $$        $$ para hacer la selección de casos de cada país.
 
 ```{r porcentaje Uru}
 prop.table(table(lapop1$ing4rec[lapop1$pais==14]))*100
@@ -301,7 +301,7 @@ Estos resultados son los que se muestran en el Gráfico 2.1 para la ronda 2018/1
 
 En algunas ocasiones el cálculo de una variable no requiere solamente la transformación numérica de la variable original, sino que los valores de la nueva variable dependen de valores de otras variables.
 Por ejemplo, el capítulo "Redes sociales y actitudes políticas" del reporte "El Pulso de la Democracia" presenta los resultados para las variables "usuario de Whatsapp", "usuario de Twitter" y "usuario de Facebook".
-Para calcular estas variables, el pie de página 7 de este capítulo indica: "Para cada plataforma, se identifican los usuarios con una combinación de dos conjuntos de preguntas. Primero, se identifican como usuarios a quienes responden positivamente a las preguntas, SMEDIA1/SMEDIA4/SMEDIA7. ¿Tiene usted cuenta de Facebook/Twitter/Whatsapp? Luego, se recodifica como no usuario a quienes responden "nunca" a las preguntas siguientes, SMEDIA2/SMEDIA5/SMEDIA8. ¿Con qué frecuencia ve contenido en Facebook/Twitter/Whatsapp?" (p. 64).
+Para calcular estas variables, el pie de página 7 de este capítulo indica: "Para cada plataforma, se identifican los usuarios con una combinación de dos conjuntos de preguntas. Primero, se identifican como usuarios a quienes responden positivamente a las preguntas, SMEDIA1/SMEDIA4/SMEDIA7. ¿Tiene usted cuenta de Facebook/Twitter/Whatsapp? Luego, se recodifica como no usuario a quienes responden"nunca" a las preguntas siguientes, SMEDIA2/SMEDIA5/SMEDIA8. ¿Con qué frecuencia ve contenido en Facebook/Twitter/Whatsapp?" (p. 64).
 
 ![](smedia.png){width="466"}
 
