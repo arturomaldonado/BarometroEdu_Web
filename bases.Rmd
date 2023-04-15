@@ -24,7 +24,7 @@ h1 {color: #3366CC;}
 
 Los datos que vamos a usar a lo largo de todos estos temas son los del proyecto del Barómetro de las Américas de [LAPOP Lab](https://www.vanderbilt.edu/lapop/). Como centro de excelencia en investigación por encuestas, LAPOP Lab usa enfoques y métodos innovadores con los "estándares más altos" para llevar a cabo encuestas nacionales; conducir estudios de evaluación de impacto, y producir reportes acerca de las actitudes, evaluaciones y experiencias de los individuos. El Barómetro de las Américas es la única encuesta comparativa y científicamente rigurosa que cubre 34 naciones incluyendo Norte, Centro y Sudamérica, así como también, un significativo número de países en el Caribe. Cada año publica docenas de estudios académicos de alta calidad y artículos de relevancia para la elaboración de políticas públicas. Los reportes producidos por el proyecto se pueden ver y descargar es este [link](https://www.vanderbilt.edu/lapop/publications.php).
 
-El Barómetro de las Américas del 2018/19 es la octava ronda de este proyecto. El cuestionario contiene un módulo común que permite evaluar hasta qué punto los ciudadanos apoyan los valores democráticos, perciben que hay suficiente provisión de libertades básicas, cómo experimentan el Estado de Derecho, cómo participan en la vida política, si apoyan su sistema de gobierno, si usan las redes sociales, entre otros temas. Los cuestionarios generales y los específicos para cada país pueden encontrarse en este [link](https://www.vanderbilt.edu/lapop/core-surveys.php).
+El Barómetro de las Américas del 2021 es la novena ronda de este proyecto. El cuestionario contiene un módulo común que permite evaluar hasta qué punto los ciudadanos apoyan los valores democráticos, perciben que hay suficiente provisión de libertades básicas, cómo experimentan el Estado de Derecho, cómo participan en la vida política, si apoyan su sistema de gobierno, entre otros temas. Los cuestionarios generales y los específicos para cada país pueden encontrarse en este [link](https://www.vanderbilt.edu/lapop/core-surveys.php).
 
 La base de datos y los reportes del proyecto son públicos y se encuentran disponibles de forma gratuita en la página web del proyecto.
 
@@ -36,9 +36,9 @@ Los datos se puede descargar de manera libre [aquí](http://datasets.americasbar
 
 ![](datos.png){width="372"}
 
-También se puede acceder a las bases de datos de cada país. Por ejemplo, si en el buscador se ingresa el texto "Mexico", se puede acceder a las bases de datos de México para cada una de las rondas del Barómetro de las Américas en ese país. Los datos de la última ronda se pueden descargar como un archivo llamado "Mexico LAPOP AmericasBarometer 2019 v1.0_W.dta", en formato STATA. Este archivo también se descarga directamente como un archivo .dta. Además de la base de datos, también se tiene acceso al cuestionario y al libro de códigos.
+También se puede acceder a las bases de datos de cada país. Por ejemplo, si en el buscador se ingresa el texto "Mexico", se puede acceder a las bases de datos de México para cada una de las rondas del Barómetro de las Américas en ese país. Los datos de la última ronda se pueden descargar como un archivo llamado "MEX_2021_LAPOP_AmericasBarometer_v1.2_w.dta", en formato STATA. Además de la base de datos, también se tiene acceso al cuestionario y a un documento técnico.
 
-![](mexico.png){width="376"}
+![](Mex2021.png){width="343"}
 
 # Importar las bases de datos del Barómetro de las Américas
 
@@ -66,7 +66,7 @@ En este caso, para importar una base de datos en Stata se llama a la librería `
 
 Luego
 
-`mex18 <- read_stata("Mexico LAPOP AmericasBarometer 2019 v1.0_W.dta")`.
+`mex18 <- read_stata("MEX_2021_LAPOP_AmericasBarometer_v1.2_w.dta")`.
 
 Tenga en cuenta que siempre se debe cargar la librería, con el comando `library`, antes de usar comandos pertenecientes a esas librerías. Si no se carga la librería antes, el código resultará en un error.
 
@@ -78,13 +78,13 @@ En la sección sobre [correlación](https://arturomaldonado.github.io/BarometroE
 
 Luego la base de datos
 
-`vdem <- read_excel("vdem.xlsx")`.
+`vdem = read_excel("vdem.xlsx")`.
 
 Una opción general para cargar bases de datos en RStudio es instalar y usar la librería `rio`. Esta librería permite importar, exportar y convertir diferentes tipos de archivos de datos, como Stata, SPSS, Excel, csv, SAS, RData, Minitab, dbf, entre muchos otros. Para esta web, esta librería es útil dado que incluso permite importar bases de datos almacenadas en repositorios virtuales, como de GitHub.
 
 # Leyendo los datos del Barómetro en RStudio
 
-A lo largo de estas secciones, se usarán bases de datos recortadas de la ronda 2018/19 por temas de espacio y también se usarán bases de datos en formato RData, un tipo de archivo de datos nativo de R, que es eficiente en términos de almacenamiento y que permite cargar la base de datos de la ronda 2018/19 con todas las variables.
+A lo largo de estas secciones, usaremos bases de datos recortadas de la ronda 2018/19 por temas de espacio y también usaremos bases de datos en formato RData, un tipo de archivo de datos nativo de R, que es eficiente en términos de almacenamiento y que permite cargar la base de datos de la ronda 2018/19 con todas las variables.
 
 Estas base de datos se encuentran alojadas en el repositorio "materials_edu" de la cuenta de LAPOP en [GitHub](https://github.com/lapop-central/materials_edu). A partir de aquí usaremos código que se puede replicar.
 
@@ -93,7 +93,7 @@ Por ejemplo, para cargar una versión recortada de la base de datos de la ronda 
 ```{r importar GitHub}
 #install.packages("rio") Este código se usaría en caso no tengan instalado este paquete
 library(rio) 
-lapop18 <- import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
+lapop18 = import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
 ```
 
 Una vez corrido este código, vemos que aparece la base de datos en el Environment. Esta base consta de 31,050 observaciones y 84 variables.
@@ -101,7 +101,7 @@ Una vez corrido este código, vemos que aparece la base de datos en el Environme
 De la misma manera, se puede usar la librería `rio` para llamar a la base de datos completa, en formato RData, con el mismo comando. Se guarda esta nueva base de datos en un dataframe "lapop18v2".
 
 ```{r importar RData}
-lapop18v2 <- import("https://raw.github.com/lapop-central/materials_edu/main/lapop18.RData")
+lapop18v2 = import("https://raw.github.com/lapop-central/materials_edu/main/lapop18.RData")
 ```
 
 Esta otra base de datos tiene 28,042 observaciones (pues no incluye a Estados Unidos y Canadá) e incluye 1,369 variables.

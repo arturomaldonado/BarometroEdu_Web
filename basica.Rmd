@@ -32,10 +32,10 @@ En este documento se verán aspectos básicos del uso de R y RStudio.
 
 En la sección anterior se mencionó que el Environment muestra los objetos creados.
 En R se puede crear objetos y luego manipularlos.
-Por ejemplo, el gráfico muestra el porcentaje de personas que apoyan a la democracia en cada país.
+Por ejemplo, el gráfico 1.1 muestra el porcentaje de personas que apoyan a la democracia en cada país.
 Si queremos guardar el resultados de Uruguay (UY), podemos crear un objeto.
 
-![](Figure1.1.png){width="539"}
+![](Grafico1.1.png)
 
 La siguiente línea de código crea un objeto llamado "UY" que almacena el número 80.
 Esto objeto se muestra en el Environment, tanto el nombre, como el valor que almacena.
@@ -46,14 +46,15 @@ UY = 80
 
 Si quisiéramos calcular la diferencia en porcentaje entre Uruguay, el país que muestra el mayor apoyo a la democracia, y Haití, el que muestra el menor porcentaje, se puede calcular haciendo la resta del objeto menos el valor del porcentaje en Haití.
 Cuando se corre este código, RStudio nos muestra el resultado.
+Otra opción es crear un objeto HT que almacene el valor de 46.
 
 ```{r resta}
 UY - 46
 ```
 
-Los objetos en R no solo almacenan números, sino que también pueden guardar letras (o cadenas de caracteres).
+Los objetos en R no solo almacenan números, sino que también pueden guardar cadenas de caracteres.
 
-El Barómetro de las Américas recoje información de casi todos los países de las Américas.
+El Barómetro de las Américas recoge información de casi todos los países de las Américas.
 La tabla siguiente muestra los países en los que se ha recogido información en alguna ronda.
 
 ![](pais.png){width="552"}
@@ -64,7 +65,7 @@ Si queremos guardar el nombre de un país en un objeto, se puede nombrar al obje
 pais1 = "México"
 ```
 
-Como se observa, el nombre del objeto no lleva tilde.
+Como se observa, el nombre del objeto no lleva tilde en la palabra "país".
 Es posible crear un objeto con tildes, pero se recomienda no hacerlo pues puede crear problemas posteriores.
 La cadena de caracteres "México" sí incluye la tilde.
 Esto no representa ningún problema.
@@ -72,13 +73,16 @@ Esto no representa ningún problema.
 # Vectores
 
 Un vector es un objeto que contiene un conjunto de elementos, sean números o cadenas de caracteres, entre otros.
+Estos datos tienen que ser concatenados.
+Por este motivo, la función `c(...)` antecede a la serie de números.
+
 Por ejemplo, podemos crear un vector que almacene todos los porcentajes del Gráfico 1.1.
 
 ```{r vector porcentajes}
 apoyo = c(80, 73, 71, 69, 68, 67, 66, 63, 63, 63, 62, 61, 61, 57, 53, 52, 50, 50, 49, 46)
 ```
 
-De manera similar, podemos crear un vector con los nombres (o siglas) de los países.
+De manera similar, podemos crear un vector con los nombres (o siglas) de los países, entre comillas e incluidos en la función `c(…)`.
 
 ```{r vector pais}
 pais = c("UY", "SV", "CR", "AR", "CL", "BR", "GY", "MX", "EC", "NI", "DO", "PN", "BO", "JA", "CO", "GT", "PY", "PE", "HN", "HT")
@@ -107,7 +111,7 @@ log(20)
 ```
 
 También se puede aplicar una función a un conjunto de datos, como los almacenados en un vector.
-Por ejemplo, si quisiéramos calcular la tasa de personas que apoya a la democracia por cada 1000 habitantes en todos los países, tendríamos que multiplicar el vector "pais" entre 10.
+Por ejemplo, si quisiéramos calcular la tasa de personas que apoya a la democracia por cada 1000 habitantes en todos los países, tendríamos que multiplicar el vector "apoyo" por 10.
 En este caso, la función de multiplicación se aplica a cada elemento del vector.
 
 ```{r apoyo2}
@@ -137,7 +141,7 @@ sum(apoyo)
 El Gráfico 1.1 muestra los resultados para los países donde se tiene información.
 Sin embargo, en algunos casos un vector puede incluir un valor perdido.
 Por ejemplo, el gráfico no muestra información para Venezuela, país donde no se realizó trabajo de campo por motivos de seguridad.
-Si quisiéramos crear un vector que incluya este valor faltante, se podría hacer así:
+Si quisiéramos crear un vector que incluya este valor faltante (NA en el lenguaje R), se podría hacer así:
 
 ```{r apoyo con NA}
 apoyo2 = c(apoyo, NA)
@@ -167,18 +171,17 @@ R es un proyecto colaborativo.
 Muchos desarrolladores producen nuevos paquetes que son administrados por el mismo proyecto de R.
 Estos paquetes pueden incluir muchas funciones que ayudan a manejar datos.
 
-Por ejemplo, R tiene funciones nativas para importar bases de datos de diferentes formatos, como Excel, SPSS o Stata.
+R tiene funciones nativas para importar bases de datos de diferentes formatos, como Excel, SPSS o Stata.
 Cada formato tiene una función específica, como `read_csv` o `read_dta`.
 Sin embargo, unos desarrolladores han producido un paquete llamado "rio" que incluye una función `import` que permite importar cualquier tipo de base de datos.
 Este paquete no viene instalado en la descarga básica de R, por lo que se tiene que instalar el paquete para poder usarlo.
 
 Para instalar un paquete se usa el comando `install.packages` con el nombre del paquete que se quiere instalar entre comillas.
 En este caso hemos usado un \# antes del código debido a que ya se tiene instalado el paquete.
-Esto sirve para mostrar que los comentarios o líneas de código que queremos mostrar, pero que no se corran, se pueden hacer con un \# antes del comentario o código.
+Para mostrar los comentarios o líneas de código que queremos mostrar, pero que no se corran, se pueden hacer con un \# antes del comentario o código.
 
 ```{r instalar paquetes}
 # install.packages("rio")
-
 ```
 
 Una vez instalado, se tiene que activar el paquete para poder usar sus funciones.
@@ -195,7 +198,7 @@ library(rio)
 # Dataframes
 
 Los dataframes son estructuras de datos rectangulares.
-Como convención, los dataframes tienen en sus columnas a los vectores y en las filas a las observaciones.
+Como convención, los dataframes tienen en sus columnas a los vectores (o variables) y en las filas a las observaciones.
 Para crear un dataframe se usa el comando `data.frame(...)`.
 
 Por ejemplo, podemos crear un dataframe que junte los datos del vector "pais" con los del vector "apoyo".
@@ -208,7 +211,7 @@ apoyoAL = data.frame(pais, apoyo)
 apoyoAL
 ```
 
-Vemos que el objeto "apoyoAL" se ha guardado en una sección aparte del Envorinment que se llama "Data".
+Vemos que el objeto "apoyoAL" se ha guardado en una sección aparte del Environment que se llama "Data".
 Este objeto tiene 20 observaciones (es decir, 20 filas o países) y dos variables (es decir, dos vectores o dos columnas).
 Se puede hacer click en este objeto y se puede ver la plancha de datos en una pestaña aparte.
 
@@ -216,7 +219,7 @@ Si se quisiera hacer un dataframe con los vectores "pais" y "apoyo2", R nos dar�
 
 Ahora, el vector "apoyo" forma parte de la base de datos "apoyoAL".
 Para poder usar las funciones en un dataframe se debe especificar la columna de la que se quiere calcular la función.
-Por ejemplo, si ahora se quisiera calcular el promedio de apoyo a la democracia desde la base de datos "apoyoAL" se tiene que especificar la columna con "\$".
+Por ejemplo, si ahora se quisiera calcular el promedio de apoyo a la democracia desde la base de datos "apoyoAL" se tiene que especificar la variable (o vector) con "\$".
 
 ```{r apoyo data}
 mean(apoyoAL$apoyo)
@@ -224,10 +227,10 @@ mean(apoyoAL$apoyo)
 
 En general, cualquier base de datos es una estructura rectangular donde en las filas tenemos las observaciones y en las columnas, las variables, lo que cambia es el número de filas y de columnas.
 
-Por ejemplo, una base de datos del Barómetro de las Américas de un país puede tener 1,500 observaciones (1,500 filas) y más de 100 variables (más de 100 columnas).
+Por ejemplo, una base de datos del Barómetro de las Américas de un país puede tener 1,500 observaciones (1,500 filas) y más de 100 variables (más de 100 columnas o vectores).
 En ese caso, cada observación corresponde a una persona que respondió la encuesta y una columna (o vector de datos) representa las respuestas de todos los entrevistados a una pregunta del cuestionario.
 
-Es más, la base de datos conjunta (el merge de datos) es la base de datos de todos los países.
+Es más, la base de datos conjunta (el merge de datos) es la base de datos de todos los países en una ronda.
 Esta base de datos puede tener más de 30 mil observaciones (es decir, todos los entrevistados en todos los países en una ronda determinada) y más de 100 columnas.
 
 Más allá del tamaño de la base de datos, las columnas son vectores a los que se les puede aplicar funciones.

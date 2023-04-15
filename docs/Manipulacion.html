@@ -473,9 +473,9 @@ h1 {color: #3366CC;}
 </style>
 <div id="introducción" class="section level1">
 <h1>Introducción</h1>
-<p>En este documento se verán aspectos básicos del manejo de datos, como
+<p>En este documento veremos aspectos básicos del manejo de datos, como
 la recodificación de una variable, la selección de datos y el cálculo de
-una nueva variable. Al final se incluye una nota acerca de los cálculos
+una nueva variable. Al final incluímos una nota acerca de los cálculos
 estadísticos considerando el efecto de diseño.</p>
 </div>
 <div id="sobre-la-base-de-datos" class="section level1">
@@ -483,22 +483,23 @@ estadísticos considerando el efecto de diseño.</p>
 <p>Los datos que vamos a usar deben citarse de la siguiente manera:
 Fuente: Barómetro de las Américas por el Proyecto de Opinión Pública de
 América Latina (LAPOP), wwww.LapopSurveys.org.</p>
-<p>En este documento se carga una base que se encuentra alojada en el
+<p>En este documento cargamos una base que se encuentra alojada en el
 repositorio “materials_edu” de la cuenta de LAPOP en GitHub. Mediante la
 librería <code>rio</code> y el comando <code>import</code> se puede
 importar esta base de datos desde este repositorio, usando el siguiente
-código. Se importa la base de datos en un objeto “lapop21”. Esta base de
+código. Importamos la base de datos en un objeto “lapop21”. Esta base de
 datos tiene extensión .RData y cuando se importa, carga las variables
 como del tipo double (“dbl”), que es un tipo de variable numérica que
 acepta decimales, a diferencia del tipo integer, “int”, que solo acepta
 enteros.</p>
 <pre class="r"><code>library(rio)
-lapop21 = import(&quot;lapop21.RData&quot;)</code></pre>
+lapop21 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData&quot;)</code></pre>
 <p>En este repositorio también se encuentra la base de datos de la ronda
 anterior, la que también podemos cargar y llamarla “lapop18”. Es
 necesario aclarar que esta base de datos, importada desde un archivo
-SPSS, carga las variables como del tipo numéricas (“num”).</p>
-<pre class="r"><code>lapop18 &lt;- import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)</code></pre>
+SPSS, carga las variables como del tipo numéricas (“num”) que para fines
+prácticos es igual al formato doble (“dbl”).</p>
+<pre class="r"><code>lapop18 = import(&quot;https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav&quot;)</code></pre>
 </div>
 <div id="recodificación-de-una-variable" class="section level1">
 <h1>Recodificación de una variable</h1>
@@ -516,18 +517,17 @@ frase?</em></p>
 <p>Esta variable está medida en una escala del 1 a 7, donde 1 significa
 “muy en desacuerdo” y 7 significa “muy de acuerdo”. Luego, los valores
 entre 5 a 7 son recodificados como apoyo a la democracia. Para ver la
-distribución de respuestas a esta variable, se puede usar el comando
+distribución de respuestas a esta variable, podemos usar el comando
 <code>table</code>.</p>
 <pre class="r"><code>table(lapop21$ing4)</code></pre>
 <pre><code>## 
 ##     1     2     3     4     5     6     7 
 ##  5704  2567  4980  8177 13886  8390 16759</code></pre>
-<p>De esta manera se calculan las observaciones (frecuencias absolutas)
+<p>De esta manera calculamos las observaciones (frecuencias absolutas)
 por cada valor de la variable. Para calcular el porcentaje de personas
-que apoya a la democracia se tiene que recodificar esta variable y crear
-una nueva. Es decir, la variable original ING4, en una escala de 1-7, se
-tiene que recodificar en una nueva variable, siguiendo la siguiente
-regla:</p>
+que apoya a la democracia tenemos que recodificar esta variable y crear
+una nueva. Es decir, la variable original ING4, en una escala de 1-7, la
+recodificamos en una nueva variable, siguiendo la siguiente regla:</p>
 <ol style="list-style-type: decimal">
 <li>Valores entre 1-4 de ING4 se transforman en 0 en una nueva variable
 ing4r</li>
@@ -541,7 +541,7 @@ porcentaje de entrevistados que respondieron entre 5 y 7 a la pregunta
 ING4 en cada país. De acuerdo a la recodificación planteada, este
 gráfico representaría el porcentaje de entrevistados que registra un 1
 en la variable recodificada.</p>
-<p><img src="Figure1.1.png" width="539" /></p>
+<p><img src="Grafico1.1.png" /></p>
 <p>En el informe El Pulso de la Democracia de la ronda 2018/19,
 disponible <a
 href="https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdf">aquí</a>,
@@ -555,19 +555,20 @@ formas más eficientes de hacerlo es usando el comando
 confundir a R. Para evitar confusiones usaremos la sintaxis
 <code>car::recode</code> para la recodificación, es decir para
 especificar que se use el comando <code>recode</code>del paquete
-<code>car</code> y no de otro. Se guarda la variable recodificada como
-“lapop21$ing4rec”. Luego, se usa el comando <code>table</code> para
-describir esta nueva variable.</p>
+<code>car</code> y no de otro. Guardamos la variable recodificada como
+“lapop21$ing4rec (es decir, creamos una nueva variable o vector en el
+dataframe). Luego, usamos el comando <code>table</code> para describir
+esta nueva variable.</p>
 <pre class="r"><code>library(car)
-lapop21$ing4rec &lt;- car::recode(lapop21$ing4, &quot;1:4=0; 5:7=1&quot;)
+lapop21$ing4rec = car::recode(lapop21$ing4, &quot;1:4=0; 5:7=1&quot;)
 table(lapop21$ing4rec)</code></pre>
 <pre><code>## 
 ##     0     1 
 ## 21428 39035</code></pre>
-<p>Si se suman las observaciones entre 1 y 4 de la variable original
-(5704+2567+4980+8177), vemos que es el resultado que se tiene en el
-valor 0 de la nueva variable (21428), tal como se escribió en la
-recodificación. También se debe notar que la base de datos en el
+<p>Si sumamos las observaciones entre 1 y 4 de la variable original
+(5704+2567+4980+8177), vemos que es el resultado que tenemos en el valor
+0 de la nueva variable (21428), tal como planteamos en la
+recodificación. También debemos notar que la base de datos en el
 Environment ahora tiene una variable más, totalizando 1826
 variables.</p>
 </div>
@@ -575,37 +576,36 @@ variables.</p>
 <h1>Selección de casos</h1>
 <p>El gráfico 1.1 muestra que el apoyo a la democracia va de un máximo
 de 80% en Uruguay a un mínimo de 46% en Haití. Para replicar el
-resultado correspondiente a Uruguay se puede seleccionar las
+resultado correspondiente a Uruguay podemos seleccionar las
 observaciones de ese país. De acuerdo a la codificación de la variable
 “pais”, Uruguay tiene el código 14.</p>
 <p><img src="pais.png" width="552" /></p>
 <p>La selección de casos en R se puede hacer de múltiples maneras. Una
-forma es usar los corchetes <span class="math display">\[  \]</span>.
-Otra forma es usando el comando <code>subset</code>. Con este comando
-seleccionamos las observaciones de este país y guardamos esta selección
-en un nuevo dataframe “lapop2” usando este último comando. Se tiene 3009
+forma es usar los corchetes <code>[…]</code>. Otra forma es usando el
+comando <code>subset</code>. Con este comando seleccionamos las
+observaciones de este país y guardamos esta selección en un nuevo
+dataframe “lapop2” usando este último comando. Se tiene 3009
 observaciones en Uruguay.</p>
-<pre class="r"><code>lapop1 &lt;- subset(lapop21, pais==14)
+<pre class="r"><code>lapop1 = subset(lapop21, pais==14)
 table(lapop1$pais)</code></pre>
 <pre><code>## 
 ##   14 
 ## 3009</code></pre>
-<p>Con esta selección de datos, se puede calcular el porcentaje
+<p>Con esta selección de datos, podemos calcular el porcentaje
 (frecuencias relativas) usando el comando <code>prop.table</code>. Este
 comando nos brinda las frecuencias relativas (en valores entre 0 y 1) de
 una tabla de frecuencias calculada con <code>table</code>. Estas
 frecuencias relativas se multiplican por 100 para reproducir el
-porcentaje en cada país. En este caso se usan los <span
-class="math display">\[  \]</span> para hacer la selección de casos de
-cada país.</p>
+porcentaje en cada país. En este caso se usan los <code>[…]</code> para
+hacer la selección de casos de cada país.</p>
 <pre class="r"><code>prop.table(table(lapop1$ing4rec[lapop1$pais==14]))*100</code></pre>
 <pre><code>## 
 ##        0        1 
 ## 15.47499 84.52501</code></pre>
 <p>Estos resultados son porcentajes (entre 0 y 100), pero incluyen
 muchos decimales. Para redondear a un decimal, como se muestra en el
-Gráfico 1.2, se puede usar el comando <code>round</code>, donde se anida
-toda la sintaxis anterior. En este comando, además, se tiene que
+Gráfico 1.2, podemos usar el comando <code>round</code>, donde anidamos
+toda la sintaxis anterior. En este comando, además, tenemos que
 especificar el número de decimales que se quiere, que en este caso es
 1.</p>
 <pre class="r"><code>round(prop.table(table(lapop1$ing4rec[lapop1$pais==14]))*100, 1)</code></pre>
@@ -615,15 +615,15 @@ especificar el número de decimales que se quiere, que en este caso es
 <p>Según este resultado 84.5% de uruguayos apoya a la democracia. Este
 resultado es distinto al que se reporta en el gráfico 1.1, donde el
 valor reportado es 80%. Esta diferencia es debido a que estos primeros
-procedimientos no incluyen el efecto de diseño. Más abajo se verá el
+procedimientos no incluyen el efecto de diseño. Más abajo veremos el
 procedimiento para reproducir el resultado exacto reportado.</p>
 <p>En el reporte de la ronda 2018/19 el reporte indica que “El Gráfico
 1.2 muestra el porcentaje de personas en cada país que expresa apoyar la
 democracia en 2018/19. El apoyo a la democracia va de un mínimo de 45%
 en Honduras a un máximo de 76.2% en Uruguay” (p.11).</p>
-<p>Para replicar estos resultados acerca de Honduras y acerca de Uruguay
-para 2018/19, se podría seleccionar los datos de estos dos países. De
-acuerdo al cuestionario, que se puede ver <a
+<p>Para replicar estos resultados acerca de Honduras y de Uruguay para
+2018/19, podemos seleccionar los datos de estos dos países. De acuerdo
+al cuestionario, que se puede ver <a
 href="https://www.vanderbilt.edu/lapop/ab2018/AB2018-v12.0-Spa-190131_W.pdf">aquí</a>,
 Honduras es el país 4 y Uruguay es el país 14 de la variable “pais”, que
 también se ha importando como una variable numérica.</p>
@@ -633,16 +633,17 @@ Uruguay (<code>pais==4 | pais==14</code>). La descripción de la variable
 “pais” muestra que solo incluye los casos de Honduras (2) y Uruguay
 (14).</p>
 <pre class="r"><code># lapop2 &lt;- lapop18[lapop18$pais == 4 | lapop18$pais==14, ]
-lapop2 &lt;- subset(lapop18, pais==4 | pais==14)
+lapop2 = subset(lapop18, pais==4 | pais==14)
 table(lapop2$pais)</code></pre>
 <pre><code>## 
 ##    4   14 
 ## 1560 1581</code></pre>
 <p>El nuevo dataframe “lapop2” tiene 3141 observaciones y 84 variables
-debido a que no se ha creado la variable recodificada.</p>
-<pre class="r"><code>lapop2$ing4rec &lt;- car::recode(lapop2$ing4, &quot;1:4=0; 5:7=1&quot;)</code></pre>
-<p>Con esta variable se pueden seguir los mismos procedimientos
-anteriormente descritos: producir la tabla de frecuencias relativas.</p>
+debido a que no hemos creado la variable recodificada.</p>
+<pre class="r"><code>lapop2$ing4rec = car::recode(lapop2$ing4, &quot;1:4=0; 5:7=1&quot;)</code></pre>
+<p>Con esta variable podemos seguir los mismos procedimientos
+anteriormente descritos para producir la tabla de frecuencias
+relativas.</p>
 <pre class="r"><code>prop.table(table(lapop2$ing4rec[lapop2$pais==4]))*100</code></pre>
 <pre><code>## 
 ##        0        1 
@@ -660,30 +661,30 @@ anteriormente descritos: producir la tabla de frecuencias relativas.</p>
 <pre><code>## 
 ##    0    1 
 ## 23.8 76.2</code></pre>
-<p>Con este código se ha reproducido los resultados de los países en los
+<p>Con este código hemos reproducido los resultados de los países en los
 extremos del Gráfico 1.2 del reporte. En este caso, los resultados sí
 son similares a los reportados en el gráfico.</p>
 <p>Ambos reportes también indican que se excluye de los cálculos a
 Estados Unidos y Canadá. La base de datos cargada como “lapop18” incluye
-a todos los países de la ronda. Para excluir a estos dos países, se
-tiene que seleccionar los países que NO son EE.UU. y Canadá. Esta nueva
-selección se puede guardar en un nuevo dataframe o se puede
-sobreescribir en el dataframe original, como se hace en este caso debido
-a que la exclusión de estos países es para todos los cálculos que
-siguen. De acuerdo al cuestionario, EE.UU. tiene el código 40 y Canadá,
-el código 41 en la variable “pais”. Para excluirlos se tiene que incluir
-a los países que tengan un código menor a 40 (o de 35 o menos). Para
-esto nuevamente podemos usar el comando <code>subset</code>.</p>
-<pre class="r"><code>lapop18 &lt;- subset(lapop18, pais&lt;=35)</code></pre>
-<p>Se puede observar en el Environment que se reducen las observaciones
-del dataframe “lapop18” luego de correr este código, pues se han
+a todos los países de la ronda. Para excluir a estos dos países, tenemos
+que seleccionar los países que NO son EE.UU. y Canadá. Esta nueva
+selección la guardamos en un nuevo dataframe o se puede sobreescribir en
+el dataframe original, como se hace en este caso debido a que la
+exclusión de estos países es para todos los cálculos que siguen. De
+acuerdo al cuestionario, EE.UU. tiene el código 40 y Canadá, el código
+41 en la variable “pais”. Para excluirlos tenemos que incluir a los
+países que tengan un código menor a 40 (o de 35 o menos). Para esto
+nuevamente podemos usar el comando <code>subset</code>.</p>
+<pre class="r"><code>lapop18 = subset(lapop18, pais&lt;=35)</code></pre>
+<p>Podemos observar en el Environment que se reducen las observaciones
+del dataframe “lapop18” luego de correr este código, pues hemos
 eliminado las observaciones de entrevistados en estos dos países. El
 número de observaciones pasa de 31,050 a 28,042, número que coincide con
-el de la base de datos en formato .RData que usamos en el módulo
-anterior y que indicamos que no incluía a estos países.</p>
-<p>De la misma manera se puede proceder en la base de datos de la ronda
+el de la base de datos en formato .RData que no incluía a estos
+países.</p>
+<p>De la misma manera podemos proceder en la base de datos de la ronda
 2021, con lo que disminuyen las observaciones a 60661.</p>
-<pre class="r"><code>lapop21 &lt;- subset(lapop21, pais&lt;=35)</code></pre>
+<pre class="r"><code>lapop21 = subset(lapop21, pais&lt;=35)</code></pre>
 </div>
 <div id="calcular-una-variable" class="section level1">
 <h1>Calcular una variable</h1>
@@ -694,11 +695,7 @@ re-escalamiento con variables relacionadas al apoyo al sistema. Para
 calcular este índice de apoyo al sistema se trabaja con un conjunto de
 cinco variables:</p>
 <p>B1. <em>¿Hasta qué punto cree usted que los tribunales de justicia de
-(país) garantizan un juicio justo?</em> <span
-class="math display">\[Sondee: Si usted cree que los tribunales no
-garantizan para nada la justicia escoja el número 1; si cree que los
-tribunales garantizan mucho la justicia, escoja el número 7 o escoja un
-puntaje intermedio\]</span>.</p>
+(país) garantizan un juicio justo?</em></p>
 <p>B2. <em>¿Hasta qué punto tiene usted respeto por las instituciones
 políticas de (país)?</em></p>
 <p>B3. <em>¿Hasta qué punto cree usted que los derechos básicos del
@@ -737,25 +734,25 @@ variables, se puede describir estas variables usando el comando
 <pre><code>## 
 ##    1    2    3    4    5    6    7 
 ## 3713 2325 2971 4277 4616 3868 5572</code></pre>
-<p>Se observa que efectivamente todas las variables corren en una escala
+<p>Observamos que efectivamente todas las variables están en una escala
 de 1 a 7. Para reescalar una variable en una escala original de 1 a 7 a
-otra de 0 a 100, lo primero que se tiene que hacer es restar 1 unidad,
+otra de 0 a 100, lo primero que tenemos que hacer es restar 1 unidad,
 con lo que la variable tendría una escala de 0 a 6, luego dividirla
 entre 6, con lo que variaría entre 0 y 1 y, finalmente, multiplicarla
 por 100. Esto es:</p>
 <p>Variable reescalada = ((variable original -1)/6)*100</p>
-<pre class="r"><code>lapop18$b1rec &lt;- ((lapop18$b1-1)/6)*100
-lapop18$b2rec &lt;- ((lapop18$b2-1)/6)*100
-lapop18$b3rec &lt;- ((lapop18$b3-1)/6)*100
-lapop18$b4rec &lt;- ((lapop18$b4-1)/6)*100
-lapop18$b6rec &lt;- ((lapop18$b6-1)/6)*100
+<pre class="r"><code>lapop18$b1rec = ((lapop18$b1-1)/6)*100
+lapop18$b2rec = ((lapop18$b2-1)/6)*100
+lapop18$b3rec = ((lapop18$b3-1)/6)*100
+lapop18$b4rec = ((lapop18$b4-1)/6)*100
+lapop18$b6rec = ((lapop18$b6-1)/6)*100
 table(lapop18$b1rec)</code></pre>
 <pre><code>## 
 ##                0 16.6666666666667 33.3333333333333               50 
 ##             4089             4067             5881             6137 
 ## 66.6666666666667 83.3333333333333              100 
 ##             4215             1631             1371</code></pre>
-<p>Con esta transformación se observa que los 4,089 entrevistados que
+<p>Con esta transformación observamos que los 4,089 entrevistados que
 marcaron 1 en la pregunta B1, ahora tienen un puntaje de 0. Los 4,067
 que marcaron 2, ahora tienen un puntaje de 16.67, es decir
 2-1=1/6=0.1667*100=16.67. Esta misma operación se pudo hacer con el
@@ -781,19 +778,20 @@ variable</li>
 simple usar la fórmula para calcular la recodificación.</p>
 <p>Para calcular el índice de apoyo al sistema, el reporte indica que
 “El índice de apoyo al sistema es el promedio de cinco preguntas: B1,
-B2, B3, B4 y B6” (p.46). Es decir, con las variables reescaladas se
-tiene que calcular el promedio de estas cinco variables para cada
-individuo (es decir, en cada fila de la base de datos). Esta operación
-se podría realizar calculando el promedio de forma manual.</p>
+B2, B3, B4 y B6” (p.46). Es decir, con las variables reescaladas tenemos
+que calcular el promedio de estas cinco variables para cada individuo
+(es decir, en cada fila de la base de datos). Podríamos calcular esta
+operación del promedio de forma manual.</p>
 <p>Apoyo al sistema = (b1rec + b2rec + b3rec + b4rec + b6rec)/5</p>
 <p>En R tenemos el comando <code>rowMeans</code> que sirva para calcular
 promedios de ciertas columnas por cada fila. La sintaxis
-<code>[, 86:90]</code> indica que se realizará el cálculo del promedio
+<code>[, 86:90]</code> indica que realizaremos el cálculo del promedio
 por filas para todas las filas y usando las columnas 86 a 90 del
-dataframe “lapop18” (se podría hacer el cálculo para algunas filas en
+dataframe “lapop18” (podríamos hacer el cálculo para algunas filas en
 particular definiendo <code>[fila_n:fila_m, 86:90]</code>). Este
-promedio se guarda en una nueva variable “apoyo”, que se describe.</p>
-<pre class="r"><code>lapop18$apoyo &lt;- rowMeans(lapop18[,86:90])
+promedio lo guardamos en una nueva variable “apoyo”, que
+describimos.</p>
+<pre class="r"><code>lapop18$apoyo = rowMeans(lapop18[,85:89])
 table(lapop18$apoyo)</code></pre>
 <pre><code>## 
 ##                0 3.33333333333333 6.66666666666667               10 
@@ -812,13 +810,13 @@ table(lapop18$apoyo)</code></pre>
 ##              820              572              445              369 
 ## 93.3333333333333 96.6666666666667              100 
 ##              245              131              210</code></pre>
-<p>Con este índice se puede calcular el apoyo al sistema promedio para
-la última ronda del Barómetro de las Américas, así como los promedios de
-cada una de las variables que componen el índice. Se usa el comando
+<p>Con este índice podemos calcular el apoyo al sistema promedio para la
+última ronda del Barómetro de las Américas, así como los promedios de
+cada una de las variables que componen el índice. Usamos el comando
 <code>mean</code> para el promedio y la especificación
 <code>na.rm=T</code> para indicarle al comando que no tome en cuenta los
-valores perdidos de estas variables. Estos estadísticos se verán en más
-detalle en otros documentos.</p>
+valores perdidos de estas variables. Veremos estos estadísticos en más
+detalle en otras secciones.</p>
 <pre class="r"><code>mean(lapop18$apoyo, na.rm=T)</code></pre>
 <pre><code>## [1] 48.79419</code></pre>
 <pre class="r"><code>mean(lapop18$b1rec, na.rm=T) #Cortes garantizan juicio justo</code></pre>
@@ -842,13 +840,13 @@ class="section level1">
 la transformación numérica de la variable original, sino que los valores
 de la nueva variable dependen de valores de otras variables. Por
 ejemplo, el capítulo “Redes sociales y actitudes políticas” del reporte
-“El Pulso de la Democracia” presenta los resultados para las variables
-“usuario de Whatsapp”, “usuario de Twitter” y “usuario de Facebook”.
-Para calcular estas variables, el pie de página 7 de este capítulo
-indica: “Para cada plataforma, se identifican los usuarios con una
-combinación de dos conjuntos de preguntas. Primero, se identifican como
-usuarios a quienes responden positivamente a las preguntas,
-SMEDIA1/SMEDIA4/SMEDIA7. ¿Tiene usted cuenta de
+“El Pulso de la Democracia” de la ronda 2018/19 presenta los resultados
+para las variables “usuario de Whatsapp”, “usuario de Twitter” y
+“usuario de Facebook”. Para calcular estas variables, el pie de página 7
+de este capítulo indica: “Para cada plataforma, se identifican los
+usuarios con una combinación de dos conjuntos de preguntas. Primero, se
+identifican como usuarios a quienes responden positivamente a las
+preguntas, SMEDIA1/SMEDIA4/SMEDIA7. ¿Tiene usted cuenta de
 Facebook/Twitter/Whatsapp? Luego, se recodifica como no usuario a
 quienes responden”nunca” a las preguntas siguientes,
 SMEDIA2/SMEDIA5/SMEDIA8. ¿Con qué frecuencia ve contenido en
@@ -865,17 +863,17 @@ cuenta) y SMEDIA2 &lt;= 4 (la usa con alguna frecuencia)</p></li>
 <li><p>Usuario de Facebook = 0 (no es usuario) si SMEDIA2 = 2 (no tiene
 cuenta) o SMEDIA2 = 5 (tiene cuenta pero nunca la usa)</p></li>
 </ul>
-<p>Esta regla se transforma en la siguiente sintaxis de R, que usa el
-comando <code>ìfelse</code>. Esta sintaxis incluye la condición para
-asignar valores de 1 a una nueva variable y asigna a todas las demás
-observaciones el valor de 0. Se describen estas nuevas variables usando
-los comandos <code>table</code> para generar las frecuencias absolutas,
-<code>prop.table</code> para las frecuencias relativas y
-<code>round</code> para redondear los decimales. Estos comandos se verán
-en más detalle en los siguientes documentos.</p>
-<pre class="r"><code>lapop18$fb_user &lt;- ifelse(lapop18$smedia1==1 &amp; lapop18$smedia2&lt;=4, 1, 0)
-lapop18$tw_user &lt;- ifelse(lapop18$smedia4==1 &amp; lapop18$smedia5&lt;=4, 1, 0)
-lapop18$wa_user &lt;- ifelse(lapop18$smedia7==1 &amp; lapop18$smedia8&lt;=4, 1, 0)
+<p>Producimos esta regla de codificación con la siguiente sintaxis de R,
+que usa el comando <code>ìfelse</code>. Esta sintaxis incluye la
+condición para asignar valores de 1 a una nueva variable y asigna a
+todas las demás observaciones el valor de 0. Describimos estas nuevas
+variables usando los comandos <code>table</code> para generar las
+frecuencias absolutas, <code>prop.table</code> para las frecuencias
+relativas y <code>round</code> para redondear los decimales. Estos
+comandos los veremos en más detalle en las siguientes secciones.</p>
+<pre class="r"><code>lapop18$fb_user = ifelse(lapop18$smedia1==1 &amp; lapop18$smedia2&lt;=4, 1, 0)
+lapop18$tw_user = ifelse(lapop18$smedia4==1 &amp; lapop18$smedia5&lt;=4, 1, 0)
+lapop18$wa_user = ifelse(lapop18$smedia7==1 &amp; lapop18$smedia8&lt;=4, 1, 0)
 round(prop.table(table(lapop18$fb_user))*100, 1)</code></pre>
 <pre><code>## 
 ##    0    1 
@@ -889,8 +887,8 @@ round(prop.table(table(lapop18$fb_user))*100, 1)</code></pre>
 ##    0    1 
 ## 35.8 64.2</code></pre>
 <p>Estos resultados son los que se presentan en el Gráfico 3.1 del
-reporte en forma de gráficos circulares. Este tipo de gráficos se verán
-en la sección siguiente.</p>
+reporte en forma de gráficos circulares. Veremos este tipo de gráficos
+en la siguiente sección.</p>
 <p><img src="Graf3.1.png" width="323" /></p>
 </div>
 <div id="observación-del-efecto-de-diseño" class="section level1">
@@ -905,21 +903,21 @@ Dominicana, Ecuador, El Salvador, Guatemala, Honduras, Jamaica, México,
 Nicaragua, Panamá, Paraguay, Perú, Uruguay” (p.46). El código solo
 filtra la última ronda, que incluye países que no están en esa lista,
 como Estados Unidos o Canadá. De otro lado, los cálculos reportados en
-la publicación incluyen el uso de factores de expansión, que no se han
-incluido en estos cálculos, pero que en otros documentos se incorporarán
+la publicación incluyen el uso de factores de ponderación, que no hemos
+incluido en estos cálculos, pero que en otros documentos incorporaremos
 (ver <a href="https://rpubs.com/arturo_maldonado/728626">aquí</a>).</p>
 </div>
 <div id="resumen" class="section level1">
 <h1>Resumen</h1>
-<p>En este documento se han visto los elementos básicos de la
+<p>En este documento hemos visto los elementos básicos de la
 manipulación y transformación de datos usando el Barómetro de las
-Américas. Se ha recodificado una variable usando el comando
-<code>recode</code>, se ha seleccionado casos usando <code>subset</code>
-y se ha calculado una nueva variable algebraicamente y con el comando
-<code>ìfelse</code>.</p>
+Américas. Hemos recodificado una variable usando el comando
+<code>recode</code>, hemos seleccionado casos usando <code>subset</code>
+y hemos calculado una nueva variable algebraicamente y con el comando
+<code>ifelse</code>.</p>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiTWFuZWpvIGRlIGRhdG9zIHVzYW5kbyBlbCBCYXLDs21ldHJvIGRlIGxhcyBBbcOpcmljYXMiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGZsYXRseQogICAgI2NvZGVfZm9sZGluZzogaGlkZQplZGl0b3Jfb3B0aW9uczogCiAgbWFya2Rvd246IAogICAgd3JhcDogc2VudGVuY2UKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KG1lc3NhZ2U9RkFMU0Usd2FybmluZz1GQUxTRSwgY2FjaGU9VFJVRSkKYGBgCgpgYGB7Y3NzIGNvbG9yLCBlY2hvPUZBTFNFfQouY29sdW1ucyB7ZGlzcGxheTogZmxleDt9CmgxIHtjb2xvcjogIzMzNjZDQzt9CmBgYAoKIyBJbnRyb2R1Y2Npw7NuCgpFbiBlc3RlIGRvY3VtZW50byBzZSB2ZXLDoW4gYXNwZWN0b3MgYsOhc2ljb3MgZGVsIG1hbmVqbyBkZSBkYXRvcywgY29tbyBsYSByZWNvZGlmaWNhY2nDs24gZGUgdW5hIHZhcmlhYmxlLCBsYSBzZWxlY2Npw7NuIGRlIGRhdG9zIHkgZWwgY8OhbGN1bG8gZGUgdW5hIG51ZXZhIHZhcmlhYmxlLgpBbCBmaW5hbCBzZSBpbmNsdXllIHVuYSBub3RhIGFjZXJjYSBkZSBsb3MgY8OhbGN1bG9zIGVzdGFkw61zdGljb3MgY29uc2lkZXJhbmRvIGVsIGVmZWN0byBkZSBkaXNlw7FvLgoKIyBTb2JyZSBsYSBiYXNlIGRlIGRhdG9zCgpMb3MgZGF0b3MgcXVlIHZhbW9zIGEgdXNhciBkZWJlbiBjaXRhcnNlIGRlIGxhIHNpZ3VpZW50ZSBtYW5lcmE6IEZ1ZW50ZTogQmFyw7NtZXRybyBkZSBsYXMgQW3DqXJpY2FzIHBvciBlbCBQcm95ZWN0byBkZSBPcGluacOzbiBQw7pibGljYSBkZSBBbcOpcmljYSBMYXRpbmEgKExBUE9QKSwgd3d3dy5MYXBvcFN1cnZleXMub3JnLgoKRW4gZXN0ZSBkb2N1bWVudG8gc2UgY2FyZ2EgdW5hIGJhc2UgcXVlIHNlIGVuY3VlbnRyYSBhbG9qYWRhIGVuIGVsIHJlcG9zaXRvcmlvICJtYXRlcmlhbHNfZWR1IiBkZSBsYSBjdWVudGEgZGUgTEFQT1AgZW4gR2l0SHViLgpNZWRpYW50ZSBsYSBsaWJyZXLDrWEgYHJpb2AgeSBlbCBjb21hbmRvIGBpbXBvcnRgIHNlIHB1ZWRlIGltcG9ydGFyIGVzdGEgYmFzZSBkZSBkYXRvcyBkZXNkZSBlc3RlIHJlcG9zaXRvcmlvLCB1c2FuZG8gZWwgc2lndWllbnRlIGPDs2RpZ28uClNlIGltcG9ydGEgbGEgYmFzZSBkZSBkYXRvcyBlbiB1biBvYmpldG8gImxhcG9wMjEiLgpFc3RhIGJhc2UgZGUgZGF0b3MgdGllbmUgZXh0ZW5zacOzbiAuUkRhdGEgeSBjdWFuZG8gc2UgaW1wb3J0YSwgY2FyZ2EgbGFzIHZhcmlhYmxlcyBjb21vIGRlbCB0aXBvIGRvdWJsZSAoImRibCIpLCBxdWUgZXMgdW4gdGlwbyBkZSB2YXJpYWJsZSBudW3DqXJpY2EgcXVlIGFjZXB0YSBkZWNpbWFsZXMsIGEgZGlmZXJlbmNpYSBkZWwgdGlwbyBpbnRlZ2VyLCAiaW50IiwgcXVlIHNvbG8gYWNlcHRhIGVudGVyb3MuCgpgYGB7ciBiYXNlMjEsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkocmlvKQpsYXBvcDIxID0gaW1wb3J0KCJsYXBvcDIxLlJEYXRhIikKYGBgCgpFbiBlc3RlIHJlcG9zaXRvcmlvIHRhbWJpw6luIHNlIGVuY3VlbnRyYSBsYSBiYXNlIGRlIGRhdG9zIGRlIGxhIHJvbmRhIGFudGVyaW9yLCBsYSBxdWUgdGFtYmnDqW4gcG9kZW1vcyBjYXJnYXIgeSBsbGFtYXJsYSAibGFwb3AxOCIuCkVzIG5lY2VzYXJpbyBhY2xhcmFyIHF1ZSBlc3RhIGJhc2UgZGUgZGF0b3MsIGltcG9ydGFkYSBkZXNkZSB1biBhcmNoaXZvIFNQU1MsIGNhcmdhIGxhcyB2YXJpYWJsZXMgY29tbyBkZWwgdGlwbyBudW3DqXJpY2FzICgibnVtIikuCgpgYGB7ciBiYXNlMTh9CmxhcG9wMTggPC0gaW1wb3J0KCJodHRwczovL3Jhdy5naXRodWIuY29tL2xhcG9wLWNlbnRyYWwvbWF0ZXJpYWxzX2VkdS9tYWluL0xBUE9QX0FCX01lcmdlXzIwMThfdjEuMC5zYXYiKQpgYGAKCiMgUmVjb2RpZmljYWNpw7NuIGRlIHVuYSB2YXJpYWJsZQoKRW4gZXN0YSBzZWNjacOzbiB1c2FyZW1vcyBlbCByZXBvcnRlICJFbCBQdWxzbyBkZSBsYSBEZW1vY3JhY2lhIiwgY29uIGxvcyByZXN1bHRhZG9zIGRlIGxhIMO6bHRpbWEgcm9uZGEgMjAyMSBkZWwgQmFyw7NtZXRybyBkZSBsYXMgQW3DqXJpY2FzLCBkaXNwb25pYmxlIFthcXXDrV0oaHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvYWIyMDIxLzIwMjFfTEFQT1BfQW1lcmljYXNCYXJvbWV0ZXJfUHVsc2Vfb2ZfRGVtb2NyYWN5LnBkZikuCkVzdGUgcmVwb3J0ZSBwcmVzZW50YSBsb3MgcmVzdWx0YWRvcyBhY2VyY2EgZGVsIGFwb3lvIGEgbGEgZGVtb2NyYWNpYSBlbiBsYXMgQW3DqXJpY2FzLgpFc3RvcyByZXN1bHRhZG9zIHNlIGJhc2FuIGVuIGxhIHZhcmlhYmxlIElORzQgZGUgbGEgYmFzZSBkZSBkYXRvcy4KRXN0YSB2YXJpYWJsZSBlc3TDoSBmcmFzZWFkYSBkZSBsYSBzaWd1aWVudGUgbWFuZXJhOgoKKipJTkc0LioqICpDYW1iaWFuZG8gZGUgbnVldm8gZGUgdGVtYSwgcHVlZGUgcXVlIGxhIGRlbW9jcmFjaWEgdGVuZ2EgcHJvYmxlbWFzLCBwZXJvIGVzIG1lam9yIHF1ZSBjdWFscXVpZXIgb3RyYSBmb3JtYSBkZSBnb2JpZXJuby4gwr9IYXN0YSBxdcOpIHB1bnRvIGVzdMOhIGRlIGFjdWVyZG8gbyBlbiBkZXNhY3VlcmRvIGNvbiBlc3RhIGZyYXNlPyoKCkVzdGEgdmFyaWFibGUgZXN0w6EgbWVkaWRhIGVuIHVuYSBlc2NhbGEgZGVsIDEgYSA3LCBkb25kZSAxIHNpZ25pZmljYSAibXV5IGVuIGRlc2FjdWVyZG8iIHkgNyBzaWduaWZpY2EgIm11eSBkZSBhY3VlcmRvIi4KTHVlZ28sIGxvcyB2YWxvcmVzIGVudHJlIDUgYSA3IHNvbiByZWNvZGlmaWNhZG9zIGNvbW8gYXBveW8gYSBsYSBkZW1vY3JhY2lhLgpQYXJhIHZlciBsYSBkaXN0cmlidWNpw7NuIGRlIHJlc3B1ZXN0YXMgYSBlc3RhIHZhcmlhYmxlLCBzZSBwdWVkZSB1c2FyIGVsIGNvbWFuZG8gYHRhYmxlYC4KCmBgYHtyIGRlc2NyaWJpciBpbmc0fQp0YWJsZShsYXBvcDIxJGluZzQpCmBgYAoKRGUgZXN0YSBtYW5lcmEgc2UgY2FsY3VsYW4gbGFzIG9ic2VydmFjaW9uZXMgKGZyZWN1ZW5jaWFzIGFic29sdXRhcykgcG9yIGNhZGEgdmFsb3IgZGUgbGEgdmFyaWFibGUuClBhcmEgY2FsY3VsYXIgZWwgcG9yY2VudGFqZSBkZSBwZXJzb25hcyBxdWUgYXBveWEgYSBsYSBkZW1vY3JhY2lhIHNlIHRpZW5lIHF1ZSByZWNvZGlmaWNhciBlc3RhIHZhcmlhYmxlIHkgY3JlYXIgdW5hIG51ZXZhLgpFcyBkZWNpciwgbGEgdmFyaWFibGUgb3JpZ2luYWwgSU5HNCwgZW4gdW5hIGVzY2FsYSBkZSAxLTcsIHNlIHRpZW5lIHF1ZSByZWNvZGlmaWNhciBlbiB1bmEgbnVldmEgdmFyaWFibGUsIHNpZ3VpZW5kbyBsYSBzaWd1aWVudGUgcmVnbGE6CgoxLiAgVmFsb3JlcyBlbnRyZSAxLTQgZGUgSU5HNCBzZSB0cmFuc2Zvcm1hbiBlbiAwIGVuIHVuYSBudWV2YSB2YXJpYWJsZSBpbmc0cgoyLiAgVmFsb3JlcyBlbnRyZSA1LTcgZGUgSU5HNCBzZSB0cmFuc2Zvcm1lbiBlbiAxIGVuIHVuYSBudWV2YSB2YXJpYWJsZSBpbmc0cgoKVW4gZWplbXBsbyBkZSBjw7NtbyBzZSBwcmVzZW50YW4gZXN0b3MgZGF0b3MgcmVjb2RpZmljYWRvcyBlbiBlbCByZXBvcnRlIHNlIHB1ZWRlIHZlciBlbiBlbCBHcsOhZmljbyAxLjEuCkVzdGUgbXVlc3RyYSBlbCBwb3JjZW50YWplIGRlIGNpdWRhZGFub3MgcXVlIGFwb3lhIGEgbGEgZGVtb2NyYWNpYSBwb3IgcGHDrXMuCkVzIGRlY2lyLCBzZSBtdWVzdHJhIGVsIHBvcmNlbnRhamUgZGUgZW50cmV2aXN0YWRvcyBxdWUgcmVzcG9uZGllcm9uIGVudHJlIDUgeSA3IGEgbGEgcHJlZ3VudGEgSU5HNCBlbiBjYWRhIHBhw61zLgpEZSBhY3VlcmRvIGEgbGEgcmVjb2RpZmljYWNpw7NuIHBsYW50ZWFkYSwgZXN0ZSBncsOhZmljbyByZXByZXNlbnRhcsOtYSBlbCBwb3JjZW50YWplIGRlIGVudHJldmlzdGFkb3MgcXVlIHJlZ2lzdHJhIHVuIDEgZW4gbGEgdmFyaWFibGUgcmVjb2RpZmljYWRhLgoKIVtdKEZpZ3VyZTEuMS5wbmcpe3dpZHRoPSI1MzkifQoKRW4gZWwgaW5mb3JtZSBFbCBQdWxzbyBkZSBsYSBEZW1vY3JhY2lhIGRlIGxhIHJvbmRhIDIwMTgvMTksIGRpc3BvbmlibGUgW2FxdcOtXShodHRwczovL3d3dy52YW5kZXJiaWx0LmVkdS9sYXBvcC9hYjIwMTgvMjAxOC0xOV9BbWVyaWNhc0Jhcm9tZXRlcl9SZWdpb25hbF9SZXBvcnRfU3BhbmlzaF9XXzAzLjI3LjIwLnBkZiksIHRhbWJpw6luIHNlIHByZXNlbnRhIHVuIGdyw6FmaWNvIHNpbWlsYXIsIHVzYW5kbyBsYSBtaXNtYSB2YXJpYWJsZSB5IGxhIG1pc21hIHJlZ2xhIGRlIHJlY29kaWZpY2Fjw61vbi4KCiFbXShHcmFmMS4yLnBuZyl7d2lkdGg9IjM1MCJ9CgpQYXJhIHJlY29kaWZpY2FyIHVuYSB2YXJpYWJsZSBlbiBSIGhheSB2YXJpYXMgZm9ybWFzLgpVbmEgZGUgbGFzIGZvcm1hcyBtw6FzIGVmaWNpZW50ZXMgZGUgaGFjZXJsbyBlcyB1c2FuZG8gZWwgY29tYW5kbyBgcmVjb2RlYCBkZWwgcGFxdWV0ZSBgY2FyYC4KRWwgcGFxdWV0ZSBgZHBseXJgIHRpZW5lIHVuIGNvbWFuZG8gYHJlY29kZWAgcXVlIHB1ZWRlIGNvbmZ1bmRpciBhIFIuClBhcmEgZXZpdGFyIGNvbmZ1c2lvbmVzIHVzYXJlbW9zIGxhIHNpbnRheGlzIGBjYXI6OnJlY29kZWAgcGFyYSBsYSByZWNvZGlmaWNhY2nDs24sIGVzIGRlY2lyIHBhcmEgZXNwZWNpZmljYXIgcXVlIHNlIHVzZSBlbCBjb21hbmRvIGByZWNvZGVgZGVsIHBhcXVldGUgYGNhcmAgeSBubyBkZSBvdHJvLgpTZSBndWFyZGEgbGEgdmFyaWFibGUgcmVjb2RpZmljYWRhIGNvbW8gImxhcG9wMjFcJGluZzRyZWMiLgpMdWVnbywgc2UgdXNhIGVsIGNvbWFuZG8gYHRhYmxlYCBwYXJhIGRlc2NyaWJpciBlc3RhIG51ZXZhIHZhcmlhYmxlLgoKYGBge3IgcmVjb2RpZmljYWNpb24sIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoY2FyKQpsYXBvcDIxJGluZzRyZWMgPC0gY2FyOjpyZWNvZGUobGFwb3AyMSRpbmc0LCAiMTo0PTA7IDU6Nz0xIikKdGFibGUobGFwb3AyMSRpbmc0cmVjKQpgYGAKClNpIHNlIHN1bWFuIGxhcyBvYnNlcnZhY2lvbmVzIGVudHJlIDEgeSA0IGRlIGxhIHZhcmlhYmxlIG9yaWdpbmFsICg1NzA0KzI1NjcrNDk4MCs4MTc3KSwgdmVtb3MgcXVlIGVzIGVsIHJlc3VsdGFkbyBxdWUgc2UgdGllbmUgZW4gZWwgdmFsb3IgMCBkZSBsYSBudWV2YSB2YXJpYWJsZSAoMjE0MjgpLCB0YWwgY29tbyBzZSBlc2NyaWJpw7MgZW4gbGEgcmVjb2RpZmljYWNpw7NuLgpUYW1iacOpbiBzZSBkZWJlIG5vdGFyIHF1ZSBsYSBiYXNlIGRlIGRhdG9zIGVuIGVsIEVudmlyb25tZW50IGFob3JhIHRpZW5lIHVuYSB2YXJpYWJsZSBtw6FzLCB0b3RhbGl6YW5kbyAxODI2IHZhcmlhYmxlcy4KCiMgU2VsZWNjacOzbiBkZSBjYXNvcwoKRWwgZ3LDoWZpY28gMS4xIG11ZXN0cmEgcXVlIGVsIGFwb3lvIGEgbGEgZGVtb2NyYWNpYSB2YSBkZSB1biBtw6F4aW1vIGRlIDgwJSBlbiBVcnVndWF5IGEgdW4gbcOtbmltbyBkZSA0NiUgZW4gSGFpdMOtLgpQYXJhIHJlcGxpY2FyIGVsIHJlc3VsdGFkbyBjb3JyZXNwb25kaWVudGUgYSBVcnVndWF5IHNlIHB1ZWRlIHNlbGVjY2lvbmFyIGxhcyBvYnNlcnZhY2lvbmVzIGRlIGVzZSBwYcOtcy4KRGUgYWN1ZXJkbyBhIGxhIGNvZGlmaWNhY2nDs24gZGUgbGEgdmFyaWFibGUgInBhaXMiLCBVcnVndWF5IHRpZW5lIGVsIGPDs2RpZ28gMTQuCgohW10ocGFpcy5wbmcpe3dpZHRoPSI1NTIifQoKTGEgc2VsZWNjacOzbiBkZSBjYXNvcyBlbiBSIHNlIHB1ZWRlIGhhY2VyIGRlIG3Dumx0aXBsZXMgbWFuZXJhcy4KVW5hIGZvcm1hIGVzIHVzYXIgbG9zIGNvcmNoZXRlcyAkJCAgJCQuCk90cmEgZm9ybWEgZXMgdXNhbmRvIGVsIGNvbWFuZG8gYHN1YnNldGAuCkNvbiBlc3RlIGNvbWFuZG8gc2VsZWNjaW9uYW1vcyBsYXMgb2JzZXJ2YWNpb25lcyBkZSBlc3RlIHBhw61zIHkgZ3VhcmRhbW9zIGVzdGEgc2VsZWNjacOzbiBlbiB1biBudWV2byBkYXRhZnJhbWUgImxhcG9wMiIgdXNhbmRvIGVzdGUgw7psdGltbyBjb21hbmRvLgpTZSB0aWVuZSAzMDA5IG9ic2VydmFjaW9uZXMgZW4gVXJ1Z3VheS4KCmBgYHtyIHNlbGVjY2lvbmFyIFVydX0KbGFwb3AxIDwtIHN1YnNldChsYXBvcDIxLCBwYWlzPT0xNCkKdGFibGUobGFwb3AxJHBhaXMpCmBgYAoKQ29uIGVzdGEgc2VsZWNjacOzbiBkZSBkYXRvcywgc2UgcHVlZGUgY2FsY3VsYXIgZWwgcG9yY2VudGFqZSAoZnJlY3VlbmNpYXMgcmVsYXRpdmFzKSB1c2FuZG8gZWwgY29tYW5kbyBgcHJvcC50YWJsZWAuCkVzdGUgY29tYW5kbyBub3MgYnJpbmRhIGxhcyBmcmVjdWVuY2lhcyByZWxhdGl2YXMgKGVuIHZhbG9yZXMgZW50cmUgMCB5IDEpIGRlIHVuYSB0YWJsYSBkZSBmcmVjdWVuY2lhcyBjYWxjdWxhZGEgY29uIGB0YWJsZWAuCkVzdGFzIGZyZWN1ZW5jaWFzIHJlbGF0aXZhcyBzZSBtdWx0aXBsaWNhbiBwb3IgMTAwIHBhcmEgcmVwcm9kdWNpciBlbCBwb3JjZW50YWplIGVuIGNhZGEgcGHDrXMuCkVuIGVzdGUgY2FzbyBzZSB1c2FuIGxvcyAkJCAgJCQgcGFyYSBoYWNlciBsYSBzZWxlY2Npw7NuIGRlIGNhc29zIGRlIGNhZGEgcGHDrXMuCgpgYGB7ciBwb3JjZW50YWplIFVydX0KcHJvcC50YWJsZSh0YWJsZShsYXBvcDEkaW5nNHJlY1tsYXBvcDEkcGFpcz09MTRdKSkqMTAwCmBgYAoKRXN0b3MgcmVzdWx0YWRvcyBzb24gcG9yY2VudGFqZXMgKGVudHJlIDAgeSAxMDApLCBwZXJvIGluY2x1eWVuIG11Y2hvcyBkZWNpbWFsZXMuClBhcmEgcmVkb25kZWFyIGEgdW4gZGVjaW1hbCwgY29tbyBzZSBtdWVzdHJhIGVuIGVsIEdyw6FmaWNvIDEuMiwgc2UgcHVlZGUgdXNhciBlbCBjb21hbmRvIGByb3VuZGAsIGRvbmRlIHNlIGFuaWRhIHRvZGEgbGEgc2ludGF4aXMgYW50ZXJpb3IuCkVuIGVzdGUgY29tYW5kbywgYWRlbcOhcywgc2UgdGllbmUgcXVlIGVzcGVjaWZpY2FyIGVsIG7Dum1lcm8gZGUgZGVjaW1hbGVzIHF1ZSBzZSBxdWllcmUsIHF1ZSBlbiBlc3RlIGNhc28gZXMgMS4KCmBgYHtyIHJlZG9uZGVhciBVcnV9CnJvdW5kKHByb3AudGFibGUodGFibGUobGFwb3AxJGluZzRyZWNbbGFwb3AxJHBhaXM9PTE0XSkpKjEwMCwgMSkKYGBgCgpTZWfDum4gZXN0ZSByZXN1bHRhZG8gODQuNSUgZGUgdXJ1Z3VheW9zIGFwb3lhIGEgbGEgZGVtb2NyYWNpYS4KRXN0ZSByZXN1bHRhZG8gZXMgZGlzdGludG8gYWwgcXVlIHNlIHJlcG9ydGEgZW4gZWwgZ3LDoWZpY28gMS4xLCBkb25kZSBlbCB2YWxvciByZXBvcnRhZG8gZXMgODAlLgpFc3RhIGRpZmVyZW5jaWEgZXMgZGViaWRvIGEgcXVlIGVzdG9zIHByaW1lcm9zIHByb2NlZGltaWVudG9zIG5vIGluY2x1eWVuIGVsIGVmZWN0byBkZSBkaXNlw7FvLgpNw6FzIGFiYWpvIHNlIHZlcsOhIGVsIHByb2NlZGltaWVudG8gcGFyYSByZXByb2R1Y2lyIGVsIHJlc3VsdGFkbyBleGFjdG8gcmVwb3J0YWRvLgoKRW4gZWwgcmVwb3J0ZSBkZSBsYSByb25kYSAyMDE4LzE5IGVsIHJlcG9ydGUgaW5kaWNhIHF1ZSAiRWwgR3LDoWZpY28gMS4yIG11ZXN0cmEgZWwgcG9yY2VudGFqZSBkZSBwZXJzb25hcyBlbiBjYWRhIHBhw61zIHF1ZSBleHByZXNhIGFwb3lhciBsYSBkZW1vY3JhY2lhIGVuIDIwMTgvMTkuIEVsIGFwb3lvIGEgbGEgZGVtb2NyYWNpYSB2YSBkZSB1biBtw61uaW1vIGRlIDQ1JSBlbiBIb25kdXJhcyBhIHVuIG3DoXhpbW8gZGUgNzYuMiUgZW4gVXJ1Z3VheSIgKHAuMTEpLgoKUGFyYSByZXBsaWNhciBlc3RvcyByZXN1bHRhZG9zIGFjZXJjYSBkZSBIb25kdXJhcyB5IGFjZXJjYSBkZSBVcnVndWF5IHBhcmEgMjAxOC8xOSwgc2UgcG9kcsOtYSBzZWxlY2Npb25hciBsb3MgZGF0b3MgZGUgZXN0b3MgZG9zIHBhw61zZXMuCkRlIGFjdWVyZG8gYWwgY3Vlc3Rpb25hcmlvLCBxdWUgc2UgcHVlZGUgdmVyIFthcXXDrV0oaHR0cHM6Ly93d3cudmFuZGVyYmlsdC5lZHUvbGFwb3AvYWIyMDE4L0FCMjAxOC12MTIuMC1TcGEtMTkwMTMxX1cucGRmKSwgSG9uZHVyYXMgZXMgZWwgcGHDrXMgNCB5IFVydWd1YXkgZXMgZWwgcGHDrXMgMTQgZGUgbGEgdmFyaWFibGUgInBhaXMiLCBxdWUgdGFtYmnDqW4gc2UgaGEgaW1wb3J0YW5kbyBjb21vIHVuYSB2YXJpYWJsZSBudW3DqXJpY2EuCgpTZSBpbmNsdXllIGVsIG9wZXJhZG9yICJvIiwgcXVlIGVuIFIgc2UgZGVub3RhIGNvbiAiXHwiLgpEZSBlc3RhIG1hbmVyYSBzZSBpbmRpY2EgcXVlIHNlIHNlbGVjY2lvbmVzIGxhcyBvYnNlcnZhY2lvbmVzIGRlIEhvbmR1cmFzIG8gZGUgVXJ1Z3VheSAoYHBhaXM9PTQgfCBwYWlzPT0xNGApLgpMYSBkZXNjcmlwY2nDs24gZGUgbGEgdmFyaWFibGUgInBhaXMiIG11ZXN0cmEgcXVlIHNvbG8gaW5jbHV5ZSBsb3MgY2Fzb3MgZGUgSG9uZHVyYXMgKDIpIHkgVXJ1Z3VheSAoMTQpLgoKYGBge3Igc2VsZWNjaW9uYXIgSG9uIHkgVXJ1fQojIGxhcG9wMiA8LSBsYXBvcDE4W2xhcG9wMTgkcGFpcyA9PSA0IHwgbGFwb3AxOCRwYWlzPT0xNCwgXQpsYXBvcDIgPC0gc3Vic2V0KGxhcG9wMTgsIHBhaXM9PTQgfCBwYWlzPT0xNCkKdGFibGUobGFwb3AyJHBhaXMpCmBgYAoKRWwgbnVldm8gZGF0YWZyYW1lICJsYXBvcDIiIHRpZW5lIDMxNDEgb2JzZXJ2YWNpb25lcyB5IDg0IHZhcmlhYmxlcyBkZWJpZG8gYSBxdWUgbm8gc2UgaGEgY3JlYWRvIGxhIHZhcmlhYmxlIHJlY29kaWZpY2FkYS4KCmBgYHtyIGFwb3lvIEhvbiB5IFVydX0KbGFwb3AyJGluZzRyZWMgPC0gY2FyOjpyZWNvZGUobGFwb3AyJGluZzQsICIxOjQ9MDsgNTo3PTEiKQpgYGAKCkNvbiBlc3RhIHZhcmlhYmxlIHNlIHB1ZWRlbiBzZWd1aXIgbG9zIG1pc21vcyBwcm9jZWRpbWllbnRvcyBhbnRlcmlvcm1lbnRlIGRlc2NyaXRvczogcHJvZHVjaXIgbGEgdGFibGEgZGUgZnJlY3VlbmNpYXMgcmVsYXRpdmFzLgoKYGBge3IgcG9yY2VudGFqZXMgSG9uIHkgVXJ1fQpwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMiRpbmc0cmVjW2xhcG9wMiRwYWlzPT00XSkpKjEwMApwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMiRpbmc0cmVjW2xhcG9wMiRwYWlzPT0xNF0pKSoxMDAKYGBgCgpZIGx1ZWdvIGluY2x1aXIgZWwgcmVkb25kZW8uCgpgYGB7ciByZWRvbmRlYXIgSG9uIHkgVXJ1fQpyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMiRpbmc0cmVjW2xhcG9wMiRwYWlzPT00XSkpKjEwMCwgMSkKcm91bmQocHJvcC50YWJsZSh0YWJsZShsYXBvcDIkaW5nNHJlY1tsYXBvcDIkcGFpcz09MTRdKSkqMTAwLCAxKQpgYGAKCkNvbiBlc3RlIGPDs2RpZ28gc2UgaGEgcmVwcm9kdWNpZG8gbG9zIHJlc3VsdGFkb3MgZGUgbG9zIHBhw61zZXMgZW4gbG9zIGV4dHJlbW9zIGRlbCBHcsOhZmljbyAxLjIgZGVsIHJlcG9ydGUuCkVuIGVzdGUgY2FzbywgbG9zIHJlc3VsdGFkb3Mgc8OtIHNvbiBzaW1pbGFyZXMgYSBsb3MgcmVwb3J0YWRvcyBlbiBlbCBncsOhZmljby4KCkFtYm9zIHJlcG9ydGVzIHRhbWJpw6luIGluZGljYW4gcXVlIHNlIGV4Y2x1eWUgZGUgbG9zIGPDoWxjdWxvcyBhIEVzdGFkb3MgVW5pZG9zIHkgQ2FuYWTDoS4KTGEgYmFzZSBkZSBkYXRvcyBjYXJnYWRhIGNvbW8gImxhcG9wMTgiIGluY2x1eWUgYSB0b2RvcyBsb3MgcGHDrXNlcyBkZSBsYSByb25kYS4KUGFyYSBleGNsdWlyIGEgZXN0b3MgZG9zIHBhw61zZXMsIHNlIHRpZW5lIHF1ZSBzZWxlY2Npb25hciBsb3MgcGHDrXNlcyBxdWUgTk8gc29uIEVFLlVVLgp5IENhbmFkw6EuCkVzdGEgbnVldmEgc2VsZWNjacOzbiBzZSBwdWVkZSBndWFyZGFyIGVuIHVuIG51ZXZvIGRhdGFmcmFtZSBvIHNlIHB1ZWRlIHNvYnJlZXNjcmliaXIgZW4gZWwgZGF0YWZyYW1lIG9yaWdpbmFsLCBjb21vIHNlIGhhY2UgZW4gZXN0ZSBjYXNvIGRlYmlkbyBhIHF1ZSBsYSBleGNsdXNpw7NuIGRlIGVzdG9zIHBhw61zZXMgZXMgcGFyYSB0b2RvcyBsb3MgY8OhbGN1bG9zIHF1ZSBzaWd1ZW4uCkRlIGFjdWVyZG8gYWwgY3Vlc3Rpb25hcmlvLCBFRS5VVS4KdGllbmUgZWwgY8OzZGlnbyA0MCB5IENhbmFkw6EsIGVsIGPDs2RpZ28gNDEgZW4gbGEgdmFyaWFibGUgInBhaXMiLgpQYXJhIGV4Y2x1aXJsb3Mgc2UgdGllbmUgcXVlIGluY2x1aXIgYSBsb3MgcGHDrXNlcyBxdWUgdGVuZ2FuIHVuIGPDs2RpZ28gbWVub3IgYSA0MCAobyBkZSAzNSBvIG1lbm9zKS4KUGFyYSBlc3RvIG51ZXZhbWVudGUgcG9kZW1vcyB1c2FyIGVsIGNvbWFuZG8gYHN1YnNldGAuCgpgYGB7ciBlbGltaW5hciBVU0EgeSBDYW5hZGEgMTh9CmxhcG9wMTggPC0gc3Vic2V0KGxhcG9wMTgsIHBhaXM8PTM1KQpgYGAKClNlIHB1ZWRlIG9ic2VydmFyIGVuIGVsIEVudmlyb25tZW50IHF1ZSBzZSByZWR1Y2VuIGxhcyBvYnNlcnZhY2lvbmVzIGRlbCBkYXRhZnJhbWUgImxhcG9wMTgiIGx1ZWdvIGRlIGNvcnJlciBlc3RlIGPDs2RpZ28sIHB1ZXMgc2UgaGFuIGVsaW1pbmFkbyBsYXMgb2JzZXJ2YWNpb25lcyBkZSBlbnRyZXZpc3RhZG9zIGVuIGVzdG9zIGRvcyBwYcOtc2VzLgpFbCBuw7ptZXJvIGRlIG9ic2VydmFjaW9uZXMgcGFzYSBkZSAzMSwwNTAgYSAyOCwwNDIsIG7Dum1lcm8gcXVlIGNvaW5jaWRlIGNvbiBlbCBkZSBsYSBiYXNlIGRlIGRhdG9zIGVuIGZvcm1hdG8gLlJEYXRhIHF1ZSB1c2Ftb3MgZW4gZWwgbcOzZHVsbyBhbnRlcmlvciB5IHF1ZSBpbmRpY2Ftb3MgcXVlIG5vIGluY2x1w61hIGEgZXN0b3MgcGHDrXNlcy4KCkRlIGxhIG1pc21hIG1hbmVyYSBzZSBwdWVkZSBwcm9jZWRlciBlbiBsYSBiYXNlIGRlIGRhdG9zIGRlIGxhIHJvbmRhIDIwMjEsIGNvbiBsbyBxdWUgZGlzbWludXllbiBsYXMgb2JzZXJ2YWNpb25lcyBhIDYwNjYxLgoKYGBge3IgZWxpbWluYXIgVVNBIHkgQ2FuYWRhIDIxfQpsYXBvcDIxIDwtIHN1YnNldChsYXBvcDIxLCBwYWlzPD0zNSkKYGBgCgojIENhbGN1bGFyIHVuYSB2YXJpYWJsZQoKVW5hIHByw6FjdGljYSBmcmVjdWVudGUgZGUgTEFQT1AgY29uIGxvcyBkYXRvcyBkZWwgQmFyw7NtZXRybyBkZSBsYXMgQW3DqXJpY2FzIGVzIGVsIHJlLWVzY2FsYW1pZW50byBkZSB2YXJpYWJsZXMuCkVsIGNhcMOtdHVsbyBzb2JyZSBsZWdpdGltaWRhZCBkZW1vY3LDoXRpY2EgZGVsIHJlcG9ydGUgYnJpbmRhIGVqZW1wbG9zIGRlIGVzdGUgcmUtZXNjYWxhbWllbnRvIGNvbiB2YXJpYWJsZXMgcmVsYWNpb25hZGFzIGFsIGFwb3lvIGFsIHNpc3RlbWEuClBhcmEgY2FsY3VsYXIgZXN0ZSDDrW5kaWNlIGRlIGFwb3lvIGFsIHNpc3RlbWEgc2UgdHJhYmFqYSBjb24gdW4gY29uanVudG8gZGUgY2luY28gdmFyaWFibGVzOgoKQjEuCirCv0hhc3RhIHF1w6kgcHVudG8gY3JlZSB1c3RlZCBxdWUgbG9zIHRyaWJ1bmFsZXMgZGUganVzdGljaWEgZGUgKHBhw61zKSBnYXJhbnRpemFuIHVuIGp1aWNpbyBqdXN0bz8qICQkU29uZGVlOiBTaSB1c3RlZCBjcmVlIHF1ZSBsb3MgdHJpYnVuYWxlcyBubyBnYXJhbnRpemFuIHBhcmEgbmFkYSBsYSBqdXN0aWNpYSBlc2NvamEgZWwgbsO6bWVybyAxOyBzaSBjcmVlIHF1ZSBsb3MgdHJpYnVuYWxlcyBnYXJhbnRpemFuIG11Y2hvIGxhIGp1c3RpY2lhLCBlc2NvamEgZWwgbsO6bWVybyA3IG8gZXNjb2phIHVuIHB1bnRhamUgaW50ZXJtZWRpbyQkLgoKQjIuCirCv0hhc3RhIHF1w6kgcHVudG8gdGllbmUgdXN0ZWQgcmVzcGV0byBwb3IgbGFzIGluc3RpdHVjaW9uZXMgcG9sw610aWNhcyBkZSAocGHDrXMpPyoKCkIzLgoqwr9IYXN0YSBxdcOpIHB1bnRvIGNyZWUgdXN0ZWQgcXVlIGxvcyBkZXJlY2hvcyBiw6FzaWNvcyBkZWwgY2l1ZGFkYW5vIGVzdMOhbiBiaWVuIHByb3RlZ2lkb3MgcG9yIGVsIHNpc3RlbWEgcG9sw610aWNvIGRlIChwYcOtcyk/KgoKQjQuCirCv0hhc3RhIHF1w6kgcHVudG8gc2Ugc2llbnRlIG9yZ3VsbG9zbyBkZSB2aXZpciBiYWpvIGVsIHNpc3RlbWEgcG9sw610aWNvIGRlIChwYcOtcyk/KgoKQjYuCirCv0hhc3RhIHF1w6kgcHVudG8gcGllbnNhIHVzdGVkIHF1ZSBzZSBkZWJlIGFwb3lhciBhbCBzaXN0ZW1hIHBvbMOtdGljbyBkZSAocGHDrXMpPyoKCkNvbW8gaW5kaWNhIGVsIHJlcG9ydGUgIlBhcmEgY2FkYSBwcmVndW50YSwgbGEgZXNjYWxhIG9yaWdpbmFsIGRlIDEgKCJOYWRhIikgYSA3ICgiTXVjaG8iKSBzZSByZWNvZGlmaWNhIGVuIHVuYSBlc2NhbGEgZGUgMCBhIDEwMCwgZGUgdGFsIGZvcm1hIHF1ZSAwIGluZGljYSBlbCBtZW5vciBuaXZlbCBkZSBhcG95byBhbCBzaXN0ZW1hIHBvbMOtdGljbyB5IDEwMCBlcyBlbCBuaXZlbCBtw6F4aW1vIGRlIGFwb3lvIGFsIHNpc3RlbWEgcG9sw610aWNvLiBFc3RhIG51ZXZhIGVzY2FsYSBzaWd1ZSBsYSByZWNvZGlmaWNhY2nDs24gdMOtcGljYSBkZSBMQVBPUCB5IHB1ZWRlIHNlciBpbnRlcnByZXRhZGEgY29tbyB1bmEgbWVkaWNpw7NuIGRlbCBhcG95byBlbiB1bmlkYWRlcywgbyBncmFkb3MsIGVuIHVuYSBlc2NhbGEgY29udGludWEgcXVlIHZhIGRlIDAgYSAxMDAiIChwLjM0KS4KUGFyYSBjb21wcm9iYXIgbGEgZXNjYWxhIG9yaWdpbmFsIGRlIGVzdGFzIHZhcmlhYmxlcywgc2UgcHVlZGUgZGVzY3JpYmlyIGVzdGFzIHZhcmlhYmxlcyB1c2FuZG8gZWwgY29tYW5kbyBgdGFibGVgLgoKYGBge3IgZGVzY3JpYmlyfQp0YWJsZShsYXBvcDE4JGIxKQp0YWJsZShsYXBvcDE4JGIyKQp0YWJsZShsYXBvcDE4JGIzKQp0YWJsZShsYXBvcDE4JGI0KQp0YWJsZShsYXBvcDE4JGI2KQpgYGAKClNlIG9ic2VydmEgcXVlIGVmZWN0aXZhbWVudGUgdG9kYXMgbGFzIHZhcmlhYmxlcyBjb3JyZW4gZW4gdW5hIGVzY2FsYSBkZSAxIGEgNy4KUGFyYSByZWVzY2FsYXIgdW5hIHZhcmlhYmxlIGVuIHVuYSBlc2NhbGEgb3JpZ2luYWwgZGUgMSBhIDcgYSBvdHJhIGRlIDAgYSAxMDAsIGxvIHByaW1lcm8gcXVlIHNlIHRpZW5lIHF1ZSBoYWNlciBlcyByZXN0YXIgMSB1bmlkYWQsIGNvbiBsbyBxdWUgbGEgdmFyaWFibGUgdGVuZHLDrWEgdW5hIGVzY2FsYSBkZSAwIGEgNiwgbHVlZ28gZGl2aWRpcmxhIGVudHJlIDYsIGNvbiBsbyBxdWUgdmFyaWFyw61hIGVudHJlIDAgeSAxIHksIGZpbmFsbWVudGUsIG11bHRpcGxpY2FybGEgcG9yIDEwMC4KRXN0byBlczoKClZhcmlhYmxlIHJlZXNjYWxhZGEgPSAoKHZhcmlhYmxlIG9yaWdpbmFsIC0xKS82KVwqMTAwCgpgYGB7ciBjYWxjdWxhcn0KbGFwb3AxOCRiMXJlYyA8LSAoKGxhcG9wMTgkYjEtMSkvNikqMTAwCmxhcG9wMTgkYjJyZWMgPC0gKChsYXBvcDE4JGIyLTEpLzYpKjEwMApsYXBvcDE4JGIzcmVjIDwtICgobGFwb3AxOCRiMy0xKS82KSoxMDAKbGFwb3AxOCRiNHJlYyA8LSAoKGxhcG9wMTgkYjQtMSkvNikqMTAwCmxhcG9wMTgkYjZyZWMgPC0gKChsYXBvcDE4JGI2LTEpLzYpKjEwMAp0YWJsZShsYXBvcDE4JGIxcmVjKQpgYGAKCkNvbiBlc3RhIHRyYW5zZm9ybWFjacOzbiBzZSBvYnNlcnZhIHF1ZSBsb3MgNCwwODkgZW50cmV2aXN0YWRvcyBxdWUgbWFyY2Fyb24gMSBlbiBsYSBwcmVndW50YSBCMSwgYWhvcmEgdGllbmVuIHVuIHB1bnRhamUgZGUgMC4KTG9zIDQsMDY3IHF1ZSBtYXJjYXJvbiAyLCBhaG9yYSB0aWVuZW4gdW4gcHVudGFqZSBkZSAxNi42NywgZXMgZGVjaXIgMi0xPTEvNj0wLjE2NjdcKjEwMD0xNi42Ny4KRXN0YSBtaXNtYSBvcGVyYWNpw7NuIHNlIHB1ZG8gaGFjZXIgY29uIGVsIGNvbWFuZG8gYGNhcjo6cmVjb2RlYCwgc2lndWllbmRvIGxhIHNpZ3VpZW50ZSByZWdsYSBkZSByZWNvZGlmaWNhY2nDs246CgotICAgVmFsb3IgZGUgMSBlbiB2YXJpYWJsZSBvcmlnaW5hbCBzZSByZWNvZGlmaWNhIGNvbW8gMCBlbiBudWV2YSB2YXJpYWJsZQotICAgVmFsb3IgZGUgMiBlbiB2YXJpYWJsZSBvcmlnaW5hbCBzZSByZWNvZGlmaWNhIGNvbW8gMTYuNjcgZW4gbnVldmEgdmFyaWFibGUKLSAgIFZhbG9yIGRlIDMgZW4gdmFyaWFibGUgb3JpZ2luYWwgc2UgcmVjb2RpZmljYSBjb21vIDMzLjMzIGVuIG51ZXZhIHZhcmlhYmxlCi0gICBWYWxvciBkZSA0IGVuIHZhcmlhYmxlIG9yaWdpbmFsIHNlIHJlY29kaWZpY2EgY29tbyA1MCBlbiBudWV2YSB2YXJpYWJsZQotICAgVmFsb3IgZGUgNSBlbiB2YXJpYWJsZSBvcmlnaW5hbCBzZSByZWNvZGlmaWNhIGNvbW8gNjYuNjcgZW4gbnVldmEgdmFyaWFibGUKLSAgIFZhbG9yIGRlIDYgZW4gdmFyaWFibGUgb3JpZ2luYWwgc2UgcmVjb2RpZmljYSBjb21vIDgzLjMzIGVuIG51ZXZhIHZhcmlhYmxlCi0gICBWYWxvciBkZSA3IGVuIHZhcmlhYmxlIG9yaWdpbmFsIHNlIHJlY29kaWZpY2EgY29tbyAxMDAgZW4gbnVldmEgdmFyaWFibGUKCkVzdGEgbWFuZXJhIGRlIHJlY29kaWZpY2FyLCBzaW4gZW1iYXJnbywgZXMgcG9jbyBlZmljaWVudGUuCkVzIG3DoXMgc2ltcGxlIHVzYXIgbGEgZsOzcm11bGEgcGFyYSBjYWxjdWxhciBsYSByZWNvZGlmaWNhY2nDs24uCgpQYXJhIGNhbGN1bGFyIGVsIMOtbmRpY2UgZGUgYXBveW8gYWwgc2lzdGVtYSwgZWwgcmVwb3J0ZSBpbmRpY2EgcXVlICJFbCDDrW5kaWNlIGRlIGFwb3lvIGFsIHNpc3RlbWEgZXMgZWwgcHJvbWVkaW8gZGUgY2luY28gcHJlZ3VudGFzOiBCMSwgQjIsIEIzLCBCNCB5IEI2IiAocC40NikuCkVzIGRlY2lyLCBjb24gbGFzIHZhcmlhYmxlcyByZWVzY2FsYWRhcyBzZSB0aWVuZSBxdWUgY2FsY3VsYXIgZWwgcHJvbWVkaW8gZGUgZXN0YXMgY2luY28gdmFyaWFibGVzIHBhcmEgY2FkYSBpbmRpdmlkdW8gKGVzIGRlY2lyLCBlbiBjYWRhIGZpbGEgZGUgbGEgYmFzZSBkZSBkYXRvcykuCkVzdGEgb3BlcmFjacOzbiBzZSBwb2Ryw61hIHJlYWxpemFyIGNhbGN1bGFuZG8gZWwgcHJvbWVkaW8gZGUgZm9ybWEgbWFudWFsLgoKQXBveW8gYWwgc2lzdGVtYSA9IChiMXJlYyArIGIycmVjICsgYjNyZWMgKyBiNHJlYyArIGI2cmVjKS81CgpFbiBSIHRlbmVtb3MgZWwgY29tYW5kbyBgcm93TWVhbnNgIHF1ZSBzaXJ2YSBwYXJhIGNhbGN1bGFyIHByb21lZGlvcyBkZSBjaWVydGFzIGNvbHVtbmFzIHBvciBjYWRhIGZpbGEuCkxhIHNpbnRheGlzIGBbLCA4Njo5MF1gIGluZGljYSBxdWUgc2UgcmVhbGl6YXLDoSBlbCBjw6FsY3VsbyBkZWwgcHJvbWVkaW8gcG9yIGZpbGFzIHBhcmEgdG9kYXMgbGFzIGZpbGFzIHkgdXNhbmRvIGxhcyBjb2x1bW5hcyA4NiBhIDkwIGRlbCBkYXRhZnJhbWUgImxhcG9wMTgiIChzZSBwb2Ryw61hIGhhY2VyIGVsIGPDoWxjdWxvIHBhcmEgYWxndW5hcyBmaWxhcyBlbiBwYXJ0aWN1bGFyIGRlZmluaWVuZG8gYFtmaWxhX246ZmlsYV9tLCA4Njo5MF1gKS4KRXN0ZSBwcm9tZWRpbyBzZSBndWFyZGEgZW4gdW5hIG51ZXZhIHZhcmlhYmxlICJhcG95byIsIHF1ZSBzZSBkZXNjcmliZS4KCmBgYHtyIGFwb3lvIGFsIHNpc3RlbWF9CmxhcG9wMTgkYXBveW8gPC0gcm93TWVhbnMobGFwb3AxOFssODY6OTBdKQp0YWJsZShsYXBvcDE4JGFwb3lvKQpgYGAKCkNvbiBlc3RlIMOtbmRpY2Ugc2UgcHVlZGUgY2FsY3VsYXIgZWwgYXBveW8gYWwgc2lzdGVtYSBwcm9tZWRpbyBwYXJhIGxhIMO6bHRpbWEgcm9uZGEgZGVsIEJhcsOzbWV0cm8gZGUgbGFzIEFtw6lyaWNhcywgYXPDrSBjb21vIGxvcyBwcm9tZWRpb3MgZGUgY2FkYSB1bmEgZGUgbGFzIHZhcmlhYmxlcyBxdWUgY29tcG9uZW4gZWwgw61uZGljZS4KU2UgdXNhIGVsIGNvbWFuZG8gYG1lYW5gIHBhcmEgZWwgcHJvbWVkaW8geSBsYSBlc3BlY2lmaWNhY2nDs24gYG5hLnJtPVRgIHBhcmEgaW5kaWNhcmxlIGFsIGNvbWFuZG8gcXVlIG5vIHRvbWUgZW4gY3VlbnRhIGxvcyB2YWxvcmVzIHBlcmRpZG9zIGRlIGVzdGFzIHZhcmlhYmxlcy4KRXN0b3MgZXN0YWTDrXN0aWNvcyBzZSB2ZXLDoW4gZW4gbcOhcyBkZXRhbGxlIGVuIG90cm9zIGRvY3VtZW50b3MuCgpgYGB7ciBhcG95byBhbCBzaXN0ZW1hIDIwMTgvMTl9Cm1lYW4obGFwb3AxOCRhcG95bywgbmEucm09VCkKbWVhbihsYXBvcDE4JGIxcmVjLCBuYS5ybT1UKSAjQ29ydGVzIGdhcmFudGl6YW4ganVpY2lvIGp1c3RvCm1lYW4obGFwb3AxOCRiMnJlYywgbmEucm09VCkgI1Jlc3BldG8gYSBsYXMgaW5zdGl0dWNpb25lcwptZWFuKGxhcG9wMTgkYjNyZWMsIG5hLnJtPVQpICNEZXJlY2hvcyBiw6FzaWNvcyBlc3TDoW4gcHJvdGVnaWRvcwptZWFuKGxhcG9wMTgkYjRyZWMsIG5hLnJtPVQpICNPcmd1bGxvcyBwb3IgZWwgc2lzdGVtYSBwb2zDrXRpY28KbWVhbihsYXBvcDE4JGI2cmVjLCBuYS5ybT1UKSAjU2UgZGViZXLDrWEgYXBveWFyIGFsIHNpc3RlbWEgcG9sw610aWNvCmBgYAoKRXN0b3MgcmVzdWx0YWRvcyBzb24gbG9zIHF1ZSBzZSBtdWVzdHJhbiBlbiBlbCBHcsOhZmljbyAyLjEgcGFyYSBsYSByb25kYSAyMDE4LzE5LgoKIVtdKEdyYWYyLjEucG5nKXt3aWR0aD0iNjI5In0KCiMgQ2FsY3VsYXIgdW5hIHZhcmlhYmxlIGRlIG1hbmVyYSBjb25kaWNpb25hbAoKRW4gYWxndW5hcyBvY2FzaW9uZXMgZWwgY8OhbGN1bG8gZGUgdW5hIHZhcmlhYmxlIG5vIHJlcXVpZXJlIHNvbGFtZW50ZSBsYSB0cmFuc2Zvcm1hY2nDs24gbnVtw6lyaWNhIGRlIGxhIHZhcmlhYmxlIG9yaWdpbmFsLCBzaW5vIHF1ZSBsb3MgdmFsb3JlcyBkZSBsYSBudWV2YSB2YXJpYWJsZSBkZXBlbmRlbiBkZSB2YWxvcmVzIGRlIG90cmFzIHZhcmlhYmxlcy4KUG9yIGVqZW1wbG8sIGVsIGNhcMOtdHVsbyAiUmVkZXMgc29jaWFsZXMgeSBhY3RpdHVkZXMgcG9sw610aWNhcyIgZGVsIHJlcG9ydGUgIkVsIFB1bHNvIGRlIGxhIERlbW9jcmFjaWEiIHByZXNlbnRhIGxvcyByZXN1bHRhZG9zIHBhcmEgbGFzIHZhcmlhYmxlcyAidXN1YXJpbyBkZSBXaGF0c2FwcCIsICJ1c3VhcmlvIGRlIFR3aXR0ZXIiIHkgInVzdWFyaW8gZGUgRmFjZWJvb2siLgpQYXJhIGNhbGN1bGFyIGVzdGFzIHZhcmlhYmxlcywgZWwgcGllIGRlIHDDoWdpbmEgNyBkZSBlc3RlIGNhcMOtdHVsbyBpbmRpY2E6ICJQYXJhIGNhZGEgcGxhdGFmb3JtYSwgc2UgaWRlbnRpZmljYW4gbG9zIHVzdWFyaW9zIGNvbiB1bmEgY29tYmluYWNpw7NuIGRlIGRvcyBjb25qdW50b3MgZGUgcHJlZ3VudGFzLiBQcmltZXJvLCBzZSBpZGVudGlmaWNhbiBjb21vIHVzdWFyaW9zIGEgcXVpZW5lcyByZXNwb25kZW4gcG9zaXRpdmFtZW50ZSBhIGxhcyBwcmVndW50YXMsIFNNRURJQTEvU01FRElBNC9TTUVESUE3LiDCv1RpZW5lIHVzdGVkIGN1ZW50YSBkZSBGYWNlYm9vay9Ud2l0dGVyL1doYXRzYXBwPyBMdWVnbywgc2UgcmVjb2RpZmljYSBjb21vIG5vIHVzdWFyaW8gYSBxdWllbmVzIHJlc3BvbmRlbiAibnVuY2EiIGEgbGFzIHByZWd1bnRhcyBzaWd1aWVudGVzLCBTTUVESUEyL1NNRURJQTUvU01FRElBOC4gwr9Db24gcXXDqSBmcmVjdWVuY2lhIHZlIGNvbnRlbmlkbyBlbiBGYWNlYm9vay9Ud2l0dGVyL1doYXRzYXBwPyIgKHAuIDY0KS4KCiFbXShzbWVkaWEucG5nKXt3aWR0aD0iNDY2In0KCkVzIGRlY2lyLCBlbCB1c3VhcmlvIG5vIHNvbG8gZXMgZWwgcXVlIHRpZW5lIHVuYSBjdWVudGEgKFNNRURJQTE9MSksIHNpbm8gZWwgcXVlIGxhIHVzYSBjb24gY2llcnRhIGZyZWN1ZW5jaWEgKFNNRURJQTI9MSwgMiwgMywgNCkuCkRlIGVzdGEgbWFuZXJhLCBlbCBubyB1c3VhcmlvIHB1ZWRlIHRlbmVyIHVuYSBjdWVudGEsIHBlcm8gbnVuY2EgdXNhcmxhLgpQb3IgbG8gdGFudG8sIGxhIHZhcmlhYmxlICJ1c3VhcmlvIiBkZXBlbmRlIGRlIGxvcyB2YWxvcmVzIGRlIDIgdmFyaWFibGVzLgpMYSByZWdsYSBkZSBjb2RpZmljYWNpw7NuIHF1ZSBzZSBzaWd1ZSBlczoKCi0gICBVc3VhcmlvIGRlIEZhY2Vib29rID0gMSAoc8OtIGVzIHVzdWFyaW8pIHNpIFNNRURJQTEgPSAxICh0aWVuZSBjdWVudGEpIHkgU01FRElBMiBcPD0gNCAobGEgdXNhIGNvbiBhbGd1bmEgZnJlY3VlbmNpYSkKCi0gICBVc3VhcmlvIGRlIEZhY2Vib29rID0gMCAobm8gZXMgdXN1YXJpbykgc2kgU01FRElBMiA9IDIgKG5vIHRpZW5lIGN1ZW50YSkgbyBTTUVESUEyID0gNSAodGllbmUgY3VlbnRhIHBlcm8gbnVuY2EgbGEgdXNhKQoKRXN0YSByZWdsYSBzZSB0cmFuc2Zvcm1hIGVuIGxhIHNpZ3VpZW50ZSBzaW50YXhpcyBkZSBSLCBxdWUgdXNhIGVsIGNvbWFuZG8gYMOsZmVsc2VgLgpFc3RhIHNpbnRheGlzIGluY2x1eWUgbGEgY29uZGljacOzbiBwYXJhIGFzaWduYXIgdmFsb3JlcyBkZSAxIGEgdW5hIG51ZXZhIHZhcmlhYmxlIHkgYXNpZ25hIGEgdG9kYXMgbGFzIGRlbcOhcyBvYnNlcnZhY2lvbmVzIGVsIHZhbG9yIGRlIDAuClNlIGRlc2NyaWJlbiBlc3RhcyBudWV2YXMgdmFyaWFibGVzIHVzYW5kbyBsb3MgY29tYW5kb3MgYHRhYmxlYCBwYXJhIGdlbmVyYXIgbGFzIGZyZWN1ZW5jaWFzIGFic29sdXRhcywgYHByb3AudGFibGVgIHBhcmEgbGFzIGZyZWN1ZW5jaWFzIHJlbGF0aXZhcyB5IGByb3VuZGAgcGFyYSByZWRvbmRlYXIgbG9zIGRlY2ltYWxlcy4KRXN0b3MgY29tYW5kb3Mgc2UgdmVyw6FuIGVuIG3DoXMgZGV0YWxsZSBlbiBsb3Mgc2lndWllbnRlcyBkb2N1bWVudG9zLgoKYGBge3IgdXN1YXJpb3MsIGVjaG89VFJVRSwgbWVzc2FnZT1GQUxTRSwgd2FybmluZz1GQUxTRX0KbGFwb3AxOCRmYl91c2VyIDwtIGlmZWxzZShsYXBvcDE4JHNtZWRpYTE9PTEgJiBsYXBvcDE4JHNtZWRpYTI8PTQsIDEsIDApCmxhcG9wMTgkdHdfdXNlciA8LSBpZmVsc2UobGFwb3AxOCRzbWVkaWE0PT0xICYgbGFwb3AxOCRzbWVkaWE1PD00LCAxLCAwKQpsYXBvcDE4JHdhX3VzZXIgPC0gaWZlbHNlKGxhcG9wMTgkc21lZGlhNz09MSAmIGxhcG9wMTgkc21lZGlhODw9NCwgMSwgMCkKcm91bmQocHJvcC50YWJsZSh0YWJsZShsYXBvcDE4JGZiX3VzZXIpKSoxMDAsIDEpCnJvdW5kKHByb3AudGFibGUodGFibGUobGFwb3AxOCR0d191c2VyKSkqMTAwLCAxKQpyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkd2FfdXNlcikpKjEwMCwgMSkKYGBgCgpFc3RvcyByZXN1bHRhZG9zIHNvbiBsb3MgcXVlIHNlIHByZXNlbnRhbiBlbiBlbCBHcsOhZmljbyAzLjEgZGVsIHJlcG9ydGUgZW4gZm9ybWEgZGUgZ3LDoWZpY29zIGNpcmN1bGFyZXMuCkVzdGUgdGlwbyBkZSBncsOhZmljb3Mgc2UgdmVyw6FuIGVuIGxhIHNlY2Npw7NuIHNpZ3VpZW50ZS4KCiFbXShHcmFmMy4xLnBuZyl7d2lkdGg9IjMyMyJ9CgojIE9ic2VydmFjacOzbiBkZWwgZWZlY3RvIGRlIGRpc2XDsW8KClRhbnRvIGxvcyByZXN1bHRhZG9zIHBhcmEgYXBveW8gYWwgc2lzdGVtYSwgY29tbyBsb3MgZGUgdXN1YXJpb3MgZGUgcmVkZXMgc29jaWFsZXMgZGlmaWVyZW4gZGUgbG9zIHF1ZSBhcGFyZWNlbiBlbiBlbCByZXBvcnRlIHBvciBkb3MgbW90aXZvcy4KRW4gcHJpbWVyIGx1Z2FyLCBwYXJhIGFwb3lvIGFsIHNpc3RlbWEsIGRlYmlkbyBhIHF1ZSAiTG9zIHZhbG9yZXMgYSBsbyBsYXJnbyBkZWwgdGllbXBvIHNlIGNhbGN1bGFuIGluY2x1eWVuZG8gw7puaWNhbWVudGUgbG9zIHBhw61zZXMgcXVlIGVsIEJhcsOzbWV0cm8gZGUgbGFzIEFtw6lyaWNhcyBoYSBlc3R1ZGlhZG8gcmVndWxhcm1lbnRlIGRlc2RlIDIwMDY6IEFyZ2VudGluYSwgQnJhc2lsLCBCb2xpdmlhLCBDaGlsZSwgQ29sb21iaWEsIENvc3RhIFJpY2EsIFJlcMO6YmxpY2EgRG9taW5pY2FuYSwgRWN1YWRvciwgRWwgU2FsdmFkb3IsIEd1YXRlbWFsYSwgSG9uZHVyYXMsIEphbWFpY2EsIE3DqXhpY28sIE5pY2FyYWd1YSwgUGFuYW3DoSwgUGFyYWd1YXksIFBlcsO6LCBVcnVndWF5IiAocC40NikuCkVsIGPDs2RpZ28gc29sbyBmaWx0cmEgbGEgw7psdGltYSByb25kYSwgcXVlIGluY2x1eWUgcGHDrXNlcyBxdWUgbm8gZXN0w6FuIGVuIGVzYSBsaXN0YSwgY29tbyBFc3RhZG9zIFVuaWRvcyBvIENhbmFkw6EuCkRlIG90cm8gbGFkbywgbG9zIGPDoWxjdWxvcyByZXBvcnRhZG9zIGVuIGxhIHB1YmxpY2FjacOzbiBpbmNsdXllbiBlbCB1c28gZGUgZmFjdG9yZXMgZGUgZXhwYW5zacOzbiwgcXVlIG5vIHNlIGhhbiBpbmNsdWlkbyBlbiBlc3RvcyBjw6FsY3Vsb3MsIHBlcm8gcXVlIGVuIG90cm9zIGRvY3VtZW50b3Mgc2UgaW5jb3Jwb3JhcsOhbiAodmVyIFthcXXDrV0oaHR0cHM6Ly9ycHVicy5jb20vYXJ0dXJvX21hbGRvbmFkby83Mjg2MjYpKS4KCiMgUmVzdW1lbgoKRW4gZXN0ZSBkb2N1bWVudG8gc2UgaGFuIHZpc3RvIGxvcyBlbGVtZW50b3MgYsOhc2ljb3MgZGUgbGEgbWFuaXB1bGFjacOzbiB5IHRyYW5zZm9ybWFjacOzbiBkZSBkYXRvcyB1c2FuZG8gZWwgQmFyw7NtZXRybyBkZSBsYXMgQW3DqXJpY2FzLgpTZSBoYSByZWNvZGlmaWNhZG8gdW5hIHZhcmlhYmxlIHVzYW5kbyBlbCBjb21hbmRvIGByZWNvZGVgLCBzZSBoYSBzZWxlY2Npb25hZG8gY2Fzb3MgdXNhbmRvIGBzdWJzZXRgIHkgc2UgaGEgY2FsY3VsYWRvIHVuYSBudWV2YSB2YXJpYWJsZSBhbGdlYnJhaWNhbWVudGUgeSBjb24gZWwgY29tYW5kbyBgw6xmZWxzZWAuCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTWFuZWpvIGRlIGRhdG9zIHVzYW5kbyBlbCBCYXLDs21ldHJvIGRlIGxhcyBBbcOpcmljYXMiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGNvbGxhcHNlZDogZmFsc2UKICAgIG51bWJlcl9zZWN0aW9uczogZmFsc2UKICAgIHRvY19kZXB0aDogMQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdGhlbWU6IGZsYXRseQogICAgI2NvZGVfZm9sZGluZzogaGlkZQplZGl0b3Jfb3B0aW9uczogCiAgbWFya2Rvd246IAogICAgd3JhcDogc2VudGVuY2UKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KG1lc3NhZ2U9RkFMU0Usd2FybmluZz1GQUxTRSwgY2FjaGU9VFJVRSkKYGBgCgpgYGB7Y3NzIGNvbG9yLCBlY2hvPUZBTFNFfQouY29sdW1ucyB7ZGlzcGxheTogZmxleDt9CmgxIHtjb2xvcjogIzMzNjZDQzt9CmBgYAoKIyBJbnRyb2R1Y2Npw7NuCgpFbiBlc3RlIGRvY3VtZW50byB2ZXJlbW9zIGFzcGVjdG9zIGLDoXNpY29zIGRlbCBtYW5lam8gZGUgZGF0b3MsIGNvbW8gbGEgcmVjb2RpZmljYWNpw7NuIGRlIHVuYSB2YXJpYWJsZSwgbGEgc2VsZWNjacOzbiBkZSBkYXRvcyB5IGVsIGPDoWxjdWxvIGRlIHVuYSBudWV2YSB2YXJpYWJsZS4KQWwgZmluYWwgaW5jbHXDrW1vcyB1bmEgbm90YSBhY2VyY2EgZGUgbG9zIGPDoWxjdWxvcyBlc3RhZMOtc3RpY29zIGNvbnNpZGVyYW5kbyBlbCBlZmVjdG8gZGUgZGlzZcOxby4KCiMgU29icmUgbGEgYmFzZSBkZSBkYXRvcwoKTG9zIGRhdG9zIHF1ZSB2YW1vcyBhIHVzYXIgZGViZW4gY2l0YXJzZSBkZSBsYSBzaWd1aWVudGUgbWFuZXJhOiBGdWVudGU6IEJhcsOzbWV0cm8gZGUgbGFzIEFtw6lyaWNhcyBwb3IgZWwgUHJveWVjdG8gZGUgT3BpbmnDs24gUMO6YmxpY2EgZGUgQW3DqXJpY2EgTGF0aW5hIChMQVBPUCksIHd3d3cuTGFwb3BTdXJ2ZXlzLm9yZy4KCkVuIGVzdGUgZG9jdW1lbnRvIGNhcmdhbW9zIHVuYSBiYXNlIHF1ZSBzZSBlbmN1ZW50cmEgYWxvamFkYSBlbiBlbCByZXBvc2l0b3JpbyAibWF0ZXJpYWxzX2VkdSIgZGUgbGEgY3VlbnRhIGRlIExBUE9QIGVuIEdpdEh1Yi4KTWVkaWFudGUgbGEgbGlicmVyw61hIGByaW9gIHkgZWwgY29tYW5kbyBgaW1wb3J0YCBzZSBwdWVkZSBpbXBvcnRhciBlc3RhIGJhc2UgZGUgZGF0b3MgZGVzZGUgZXN0ZSByZXBvc2l0b3JpbywgdXNhbmRvIGVsIHNpZ3VpZW50ZSBjw7NkaWdvLgpJbXBvcnRhbW9zIGxhIGJhc2UgZGUgZGF0b3MgZW4gdW4gb2JqZXRvICJsYXBvcDIxIi4KRXN0YSBiYXNlIGRlIGRhdG9zIHRpZW5lIGV4dGVuc2nDs24gLlJEYXRhIHkgY3VhbmRvIHNlIGltcG9ydGEsIGNhcmdhIGxhcyB2YXJpYWJsZXMgY29tbyBkZWwgdGlwbyBkb3VibGUgKCJkYmwiKSwgcXVlIGVzIHVuIHRpcG8gZGUgdmFyaWFibGUgbnVtw6lyaWNhIHF1ZSBhY2VwdGEgZGVjaW1hbGVzLCBhIGRpZmVyZW5jaWEgZGVsIHRpcG8gaW50ZWdlciwgImludCIsIHF1ZSBzb2xvIGFjZXB0YSBlbnRlcm9zLgoKYGBge3IgYmFzZTIxLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsaWJyYXJ5KHJpbykKbGFwb3AyMSA9IGltcG9ydCgiaHR0cHM6Ly9yYXcuZ2l0aHViLmNvbS9sYXBvcC1jZW50cmFsL21hdGVyaWFsc19lZHUvbWFpbi9sYXBvcDIxLlJEYXRhIikKYGBgCgpFbiBlc3RlIHJlcG9zaXRvcmlvIHRhbWJpw6luIHNlIGVuY3VlbnRyYSBsYSBiYXNlIGRlIGRhdG9zIGRlIGxhIHJvbmRhIGFudGVyaW9yLCBsYSBxdWUgdGFtYmnDqW4gcG9kZW1vcyBjYXJnYXIgeSBsbGFtYXJsYSAibGFwb3AxOCIuCkVzIG5lY2VzYXJpbyBhY2xhcmFyIHF1ZSBlc3RhIGJhc2UgZGUgZGF0b3MsIGltcG9ydGFkYSBkZXNkZSB1biBhcmNoaXZvIFNQU1MsIGNhcmdhIGxhcyB2YXJpYWJsZXMgY29tbyBkZWwgdGlwbyBudW3DqXJpY2FzICgibnVtIikgcXVlIHBhcmEgZmluZXMgcHLDoWN0aWNvcyBlcyBpZ3VhbCBhbCBmb3JtYXRvIGRvYmxlICgiZGJsIikuCgpgYGB7ciBiYXNlMTh9CmxhcG9wMTggPSBpbXBvcnQoImh0dHBzOi8vcmF3LmdpdGh1Yi5jb20vbGFwb3AtY2VudHJhbC9tYXRlcmlhbHNfZWR1L21haW4vTEFQT1BfQUJfTWVyZ2VfMjAxOF92MS4wLnNhdiIpCmBgYAoKIyBSZWNvZGlmaWNhY2nDs24gZGUgdW5hIHZhcmlhYmxlCgpFbiBlc3RhIHNlY2Npw7NuIHVzYXJlbW9zIGVsIHJlcG9ydGUgIkVsIFB1bHNvIGRlIGxhIERlbW9jcmFjaWEiLCBjb24gbG9zIHJlc3VsdGFkb3MgZGUgbGEgw7psdGltYSByb25kYSAyMDIxIGRlbCBCYXLDs21ldHJvIGRlIGxhcyBBbcOpcmljYXMsIGRpc3BvbmlibGUgW2FxdcOtXShodHRwczovL3d3dy52YW5kZXJiaWx0LmVkdS9sYXBvcC9hYjIwMjEvMjAyMV9MQVBPUF9BbWVyaWNhc0Jhcm9tZXRlcl9QdWxzZV9vZl9EZW1vY3JhY3kucGRmKS4KRXN0ZSByZXBvcnRlIHByZXNlbnRhIGxvcyByZXN1bHRhZG9zIGFjZXJjYSBkZWwgYXBveW8gYSBsYSBkZW1vY3JhY2lhIGVuIGxhcyBBbcOpcmljYXMuCkVzdG9zIHJlc3VsdGFkb3Mgc2UgYmFzYW4gZW4gbGEgdmFyaWFibGUgSU5HNCBkZSBsYSBiYXNlIGRlIGRhdG9zLgpFc3RhIHZhcmlhYmxlIGVzdMOhIGZyYXNlYWRhIGRlIGxhIHNpZ3VpZW50ZSBtYW5lcmE6CgoqKklORzQuKiogKkNhbWJpYW5kbyBkZSBudWV2byBkZSB0ZW1hLCBwdWVkZSBxdWUgbGEgZGVtb2NyYWNpYSB0ZW5nYSBwcm9ibGVtYXMsIHBlcm8gZXMgbWVqb3IgcXVlIGN1YWxxdWllciBvdHJhIGZvcm1hIGRlIGdvYmllcm5vLiDCv0hhc3RhIHF1w6kgcHVudG8gZXN0w6EgZGUgYWN1ZXJkbyBvIGVuIGRlc2FjdWVyZG8gY29uIGVzdGEgZnJhc2U/KgoKRXN0YSB2YXJpYWJsZSBlc3TDoSBtZWRpZGEgZW4gdW5hIGVzY2FsYSBkZWwgMSBhIDcsIGRvbmRlIDEgc2lnbmlmaWNhICJtdXkgZW4gZGVzYWN1ZXJkbyIgeSA3IHNpZ25pZmljYSAibXV5IGRlIGFjdWVyZG8iLgpMdWVnbywgbG9zIHZhbG9yZXMgZW50cmUgNSBhIDcgc29uIHJlY29kaWZpY2Fkb3MgY29tbyBhcG95byBhIGxhIGRlbW9jcmFjaWEuClBhcmEgdmVyIGxhIGRpc3RyaWJ1Y2nDs24gZGUgcmVzcHVlc3RhcyBhIGVzdGEgdmFyaWFibGUsIHBvZGVtb3MgdXNhciBlbCBjb21hbmRvIGB0YWJsZWAuCgpgYGB7ciBkZXNjcmliaXIgaW5nNH0KdGFibGUobGFwb3AyMSRpbmc0KQpgYGAKCkRlIGVzdGEgbWFuZXJhIGNhbGN1bGFtb3MgbGFzIG9ic2VydmFjaW9uZXMgKGZyZWN1ZW5jaWFzIGFic29sdXRhcykgcG9yIGNhZGEgdmFsb3IgZGUgbGEgdmFyaWFibGUuClBhcmEgY2FsY3VsYXIgZWwgcG9yY2VudGFqZSBkZSBwZXJzb25hcyBxdWUgYXBveWEgYSBsYSBkZW1vY3JhY2lhIHRlbmVtb3MgcXVlIHJlY29kaWZpY2FyIGVzdGEgdmFyaWFibGUgeSBjcmVhciB1bmEgbnVldmEuCkVzIGRlY2lyLCBsYSB2YXJpYWJsZSBvcmlnaW5hbCBJTkc0LCBlbiB1bmEgZXNjYWxhIGRlIDEtNywgbGEgcmVjb2RpZmljYW1vcyBlbiB1bmEgbnVldmEgdmFyaWFibGUsIHNpZ3VpZW5kbyBsYSBzaWd1aWVudGUgcmVnbGE6CgoxLiAgVmFsb3JlcyBlbnRyZSAxLTQgZGUgSU5HNCBzZSB0cmFuc2Zvcm1hbiBlbiAwIGVuIHVuYSBudWV2YSB2YXJpYWJsZSBpbmc0cgoyLiAgVmFsb3JlcyBlbnRyZSA1LTcgZGUgSU5HNCBzZSB0cmFuc2Zvcm1lbiBlbiAxIGVuIHVuYSBudWV2YSB2YXJpYWJsZSBpbmc0cgoKVW4gZWplbXBsbyBkZSBjw7NtbyBzZSBwcmVzZW50YW4gZXN0b3MgZGF0b3MgcmVjb2RpZmljYWRvcyBlbiBlbCByZXBvcnRlIHNlIHB1ZWRlIHZlciBlbiBlbCBHcsOhZmljbyAxLjEuCkVzdGUgbXVlc3RyYSBlbCBwb3JjZW50YWplIGRlIGNpdWRhZGFub3MgcXVlIGFwb3lhIGEgbGEgZGVtb2NyYWNpYSBwb3IgcGHDrXMuCkVzIGRlY2lyLCBzZSBtdWVzdHJhIGVsIHBvcmNlbnRhamUgZGUgZW50cmV2aXN0YWRvcyBxdWUgcmVzcG9uZGllcm9uIGVudHJlIDUgeSA3IGEgbGEgcHJlZ3VudGEgSU5HNCBlbiBjYWRhIHBhw61zLgpEZSBhY3VlcmRvIGEgbGEgcmVjb2RpZmljYWNpw7NuIHBsYW50ZWFkYSwgZXN0ZSBncsOhZmljbyByZXByZXNlbnRhcsOtYSBlbCBwb3JjZW50YWplIGRlIGVudHJldmlzdGFkb3MgcXVlIHJlZ2lzdHJhIHVuIDEgZW4gbGEgdmFyaWFibGUgcmVjb2RpZmljYWRhLgoKIVtdKEdyYWZpY28xLjEucG5nKQoKRW4gZWwgaW5mb3JtZSBFbCBQdWxzbyBkZSBsYSBEZW1vY3JhY2lhIGRlIGxhIHJvbmRhIDIwMTgvMTksIGRpc3BvbmlibGUgW2FxdcOtXShodHRwczovL3d3dy52YW5kZXJiaWx0LmVkdS9sYXBvcC9hYjIwMTgvMjAxOC0xOV9BbWVyaWNhc0Jhcm9tZXRlcl9SZWdpb25hbF9SZXBvcnRfU3BhbmlzaF9XXzAzLjI3LjIwLnBkZiksIHRhbWJpw6luIHNlIHByZXNlbnRhIHVuIGdyw6FmaWNvIHNpbWlsYXIsIHVzYW5kbyBsYSBtaXNtYSB2YXJpYWJsZSB5IGxhIG1pc21hIHJlZ2xhIGRlIHJlY29kaWZpY2Fjw61vbi4KCiFbXShHcmFmMS4yLnBuZyl7d2lkdGg9IjM1MCJ9CgpQYXJhIHJlY29kaWZpY2FyIHVuYSB2YXJpYWJsZSBlbiBSIGhheSB2YXJpYXMgZm9ybWFzLgpVbmEgZGUgbGFzIGZvcm1hcyBtw6FzIGVmaWNpZW50ZXMgZGUgaGFjZXJsbyBlcyB1c2FuZG8gZWwgY29tYW5kbyBgcmVjb2RlYCBkZWwgcGFxdWV0ZSBgY2FyYC4KRWwgcGFxdWV0ZSBgZHBseXJgIHRpZW5lIHVuIGNvbWFuZG8gYHJlY29kZWAgcXVlIHB1ZWRlIGNvbmZ1bmRpciBhIFIuClBhcmEgZXZpdGFyIGNvbmZ1c2lvbmVzIHVzYXJlbW9zIGxhIHNpbnRheGlzIGBjYXI6OnJlY29kZWAgcGFyYSBsYSByZWNvZGlmaWNhY2nDs24sIGVzIGRlY2lyIHBhcmEgZXNwZWNpZmljYXIgcXVlIHNlIHVzZSBlbCBjb21hbmRvIGByZWNvZGVgZGVsIHBhcXVldGUgYGNhcmAgeSBubyBkZSBvdHJvLgpHdWFyZGFtb3MgbGEgdmFyaWFibGUgcmVjb2RpZmljYWRhIGNvbW8gImxhcG9wMjFcJGluZzRyZWMgKGVzIGRlY2lyLCBjcmVhbW9zIHVuYSBudWV2YSB2YXJpYWJsZSBvIHZlY3RvciBlbiBlbCBkYXRhZnJhbWUpLiBMdWVnbywgdXNhbW9zIGVsIGNvbWFuZG8gYHRhYmxlYCBwYXJhIGRlc2NyaWJpciBlc3RhIG51ZXZhIHZhcmlhYmxlLgoKYGBge3IgcmVjb2RpZmljYWNpb24sIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmxpYnJhcnkoY2FyKQpsYXBvcDIxJGluZzRyZWMgPSBjYXI6OnJlY29kZShsYXBvcDIxJGluZzQsICIxOjQ9MDsgNTo3PTEiKQp0YWJsZShsYXBvcDIxJGluZzRyZWMpCmBgYAoKU2kgc3VtYW1vcyBsYXMgb2JzZXJ2YWNpb25lcyBlbnRyZSAxIHkgNCBkZSBsYSB2YXJpYWJsZSBvcmlnaW5hbCAoNTcwNCsyNTY3KzQ5ODArODE3NyksIHZlbW9zIHF1ZSBlcyBlbCByZXN1bHRhZG8gcXVlIHRlbmVtb3MgZW4gZWwgdmFsb3IgMCBkZSBsYSBudWV2YSB2YXJpYWJsZSAoMjE0MjgpLCB0YWwgY29tbyBwbGFudGVhbW9zIGVuIGxhIHJlY29kaWZpY2FjacOzbi4KVGFtYmnDqW4gZGViZW1vcyBub3RhciBxdWUgbGEgYmFzZSBkZSBkYXRvcyBlbiBlbCBFbnZpcm9ubWVudCBhaG9yYSB0aWVuZSB1bmEgdmFyaWFibGUgbcOhcywgdG90YWxpemFuZG8gMTgyNiB2YXJpYWJsZXMuCgojIFNlbGVjY2nDs24gZGUgY2Fzb3MKCkVsIGdyw6FmaWNvIDEuMSBtdWVzdHJhIHF1ZSBlbCBhcG95byBhIGxhIGRlbW9jcmFjaWEgdmEgZGUgdW4gbcOheGltbyBkZSA4MCUgZW4gVXJ1Z3VheSBhIHVuIG3DrW5pbW8gZGUgNDYlIGVuIEhhaXTDrS4KUGFyYSByZXBsaWNhciBlbCByZXN1bHRhZG8gY29ycmVzcG9uZGllbnRlIGEgVXJ1Z3VheSBwb2RlbW9zIHNlbGVjY2lvbmFyIGxhcyBvYnNlcnZhY2lvbmVzIGRlIGVzZSBwYcOtcy4KRGUgYWN1ZXJkbyBhIGxhIGNvZGlmaWNhY2nDs24gZGUgbGEgdmFyaWFibGUgInBhaXMiLCBVcnVndWF5IHRpZW5lIGVsIGPDs2RpZ28gMTQuCgohW10ocGFpcy5wbmcpe3dpZHRoPSI1NTIifQoKTGEgc2VsZWNjacOzbiBkZSBjYXNvcyBlbiBSIHNlIHB1ZWRlIGhhY2VyIGRlIG3Dumx0aXBsZXMgbWFuZXJhcy4KVW5hIGZvcm1hIGVzIHVzYXIgbG9zIGNvcmNoZXRlcyBgW+KApl1gLgpPdHJhIGZvcm1hIGVzIHVzYW5kbyBlbCBjb21hbmRvIGBzdWJzZXRgLgpDb24gZXN0ZSBjb21hbmRvIHNlbGVjY2lvbmFtb3MgbGFzIG9ic2VydmFjaW9uZXMgZGUgZXN0ZSBwYcOtcyB5IGd1YXJkYW1vcyBlc3RhIHNlbGVjY2nDs24gZW4gdW4gbnVldm8gZGF0YWZyYW1lICJsYXBvcDIiIHVzYW5kbyBlc3RlIMO6bHRpbW8gY29tYW5kby4KU2UgdGllbmUgMzAwOSBvYnNlcnZhY2lvbmVzIGVuIFVydWd1YXkuCgpgYGB7ciBzZWxlY2Npb25hciBVcnV9CmxhcG9wMSA9IHN1YnNldChsYXBvcDIxLCBwYWlzPT0xNCkKdGFibGUobGFwb3AxJHBhaXMpCmBgYAoKQ29uIGVzdGEgc2VsZWNjacOzbiBkZSBkYXRvcywgcG9kZW1vcyBjYWxjdWxhciBlbCBwb3JjZW50YWplIChmcmVjdWVuY2lhcyByZWxhdGl2YXMpIHVzYW5kbyBlbCBjb21hbmRvIGBwcm9wLnRhYmxlYC4KRXN0ZSBjb21hbmRvIG5vcyBicmluZGEgbGFzIGZyZWN1ZW5jaWFzIHJlbGF0aXZhcyAoZW4gdmFsb3JlcyBlbnRyZSAwIHkgMSkgZGUgdW5hIHRhYmxhIGRlIGZyZWN1ZW5jaWFzIGNhbGN1bGFkYSBjb24gYHRhYmxlYC4KRXN0YXMgZnJlY3VlbmNpYXMgcmVsYXRpdmFzIHNlIG11bHRpcGxpY2FuIHBvciAxMDAgcGFyYSByZXByb2R1Y2lyIGVsIHBvcmNlbnRhamUgZW4gY2FkYSBwYcOtcy4KRW4gZXN0ZSBjYXNvIHNlIHVzYW4gbG9zIGBb4oCmXWAgcGFyYSBoYWNlciBsYSBzZWxlY2Npw7NuIGRlIGNhc29zIGRlIGNhZGEgcGHDrXMuCgpgYGB7ciBwb3JjZW50YWplIFVydX0KcHJvcC50YWJsZSh0YWJsZShsYXBvcDEkaW5nNHJlY1tsYXBvcDEkcGFpcz09MTRdKSkqMTAwCmBgYAoKRXN0b3MgcmVzdWx0YWRvcyBzb24gcG9yY2VudGFqZXMgKGVudHJlIDAgeSAxMDApLCBwZXJvIGluY2x1eWVuIG11Y2hvcyBkZWNpbWFsZXMuClBhcmEgcmVkb25kZWFyIGEgdW4gZGVjaW1hbCwgY29tbyBzZSBtdWVzdHJhIGVuIGVsIEdyw6FmaWNvIDEuMiwgcG9kZW1vcyB1c2FyIGVsIGNvbWFuZG8gYHJvdW5kYCwgZG9uZGUgYW5pZGFtb3MgdG9kYSBsYSBzaW50YXhpcyBhbnRlcmlvci4KRW4gZXN0ZSBjb21hbmRvLCBhZGVtw6FzLCB0ZW5lbW9zIHF1ZSBlc3BlY2lmaWNhciBlbCBuw7ptZXJvIGRlIGRlY2ltYWxlcyBxdWUgc2UgcXVpZXJlLCBxdWUgZW4gZXN0ZSBjYXNvIGVzIDEuCgpgYGB7ciByZWRvbmRlYXIgVXJ1fQpyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMSRpbmc0cmVjW2xhcG9wMSRwYWlzPT0xNF0pKSoxMDAsIDEpCmBgYAoKU2Vnw7puIGVzdGUgcmVzdWx0YWRvIDg0LjUlIGRlIHVydWd1YXlvcyBhcG95YSBhIGxhIGRlbW9jcmFjaWEuCkVzdGUgcmVzdWx0YWRvIGVzIGRpc3RpbnRvIGFsIHF1ZSBzZSByZXBvcnRhIGVuIGVsIGdyw6FmaWNvIDEuMSwgZG9uZGUgZWwgdmFsb3IgcmVwb3J0YWRvIGVzIDgwJS4KRXN0YSBkaWZlcmVuY2lhIGVzIGRlYmlkbyBhIHF1ZSBlc3RvcyBwcmltZXJvcyBwcm9jZWRpbWllbnRvcyBubyBpbmNsdXllbiBlbCBlZmVjdG8gZGUgZGlzZcOxby4KTcOhcyBhYmFqbyB2ZXJlbW9zIGVsIHByb2NlZGltaWVudG8gcGFyYSByZXByb2R1Y2lyIGVsIHJlc3VsdGFkbyBleGFjdG8gcmVwb3J0YWRvLgoKRW4gZWwgcmVwb3J0ZSBkZSBsYSByb25kYSAyMDE4LzE5IGVsIHJlcG9ydGUgaW5kaWNhIHF1ZSAiRWwgR3LDoWZpY28gMS4yIG11ZXN0cmEgZWwgcG9yY2VudGFqZSBkZSBwZXJzb25hcyBlbiBjYWRhIHBhw61zIHF1ZSBleHByZXNhIGFwb3lhciBsYSBkZW1vY3JhY2lhIGVuIDIwMTgvMTkuIEVsIGFwb3lvIGEgbGEgZGVtb2NyYWNpYSB2YSBkZSB1biBtw61uaW1vIGRlIDQ1JSBlbiBIb25kdXJhcyBhIHVuIG3DoXhpbW8gZGUgNzYuMiUgZW4gVXJ1Z3VheSIgKHAuMTEpLgoKUGFyYSByZXBsaWNhciBlc3RvcyByZXN1bHRhZG9zIGFjZXJjYSBkZSBIb25kdXJhcyB5IGRlIFVydWd1YXkgcGFyYSAyMDE4LzE5LCBwb2RlbW9zIHNlbGVjY2lvbmFyIGxvcyBkYXRvcyBkZSBlc3RvcyBkb3MgcGHDrXNlcy4KRGUgYWN1ZXJkbyBhbCBjdWVzdGlvbmFyaW8sIHF1ZSBzZSBwdWVkZSB2ZXIgW2FxdcOtXShodHRwczovL3d3dy52YW5kZXJiaWx0LmVkdS9sYXBvcC9hYjIwMTgvQUIyMDE4LXYxMi4wLVNwYS0xOTAxMzFfVy5wZGYpLCBIb25kdXJhcyBlcyBlbCBwYcOtcyA0IHkgVXJ1Z3VheSBlcyBlbCBwYcOtcyAxNCBkZSBsYSB2YXJpYWJsZSAicGFpcyIsIHF1ZSB0YW1iacOpbiBzZSBoYSBpbXBvcnRhbmRvIGNvbW8gdW5hIHZhcmlhYmxlIG51bcOpcmljYS4KClNlIGluY2x1eWUgZWwgb3BlcmFkb3IgIm8iLCBxdWUgZW4gUiBzZSBkZW5vdGEgY29uICJcfCIuCkRlIGVzdGEgbWFuZXJhIHNlIGluZGljYSBxdWUgc2Ugc2VsZWNjaW9uZXMgbGFzIG9ic2VydmFjaW9uZXMgZGUgSG9uZHVyYXMgbyBkZSBVcnVndWF5IChgcGFpcz09NCB8IHBhaXM9PTE0YCkuCkxhIGRlc2NyaXBjacOzbiBkZSBsYSB2YXJpYWJsZSAicGFpcyIgbXVlc3RyYSBxdWUgc29sbyBpbmNsdXllIGxvcyBjYXNvcyBkZSBIb25kdXJhcyAoMikgeSBVcnVndWF5ICgxNCkuCgpgYGB7ciBzZWxlY2Npb25hciBIb24geSBVcnV9CiMgbGFwb3AyIDwtIGxhcG9wMThbbGFwb3AxOCRwYWlzID09IDQgfCBsYXBvcDE4JHBhaXM9PTE0LCBdCmxhcG9wMiA9IHN1YnNldChsYXBvcDE4LCBwYWlzPT00IHwgcGFpcz09MTQpCnRhYmxlKGxhcG9wMiRwYWlzKQpgYGAKCkVsIG51ZXZvIGRhdGFmcmFtZSAibGFwb3AyIiB0aWVuZSAzMTQxIG9ic2VydmFjaW9uZXMgeSA4NCB2YXJpYWJsZXMgZGViaWRvIGEgcXVlIG5vIGhlbW9zIGNyZWFkbyBsYSB2YXJpYWJsZSByZWNvZGlmaWNhZGEuCgpgYGB7ciBhcG95byBIb24geSBVcnV9CmxhcG9wMiRpbmc0cmVjID0gY2FyOjpyZWNvZGUobGFwb3AyJGluZzQsICIxOjQ9MDsgNTo3PTEiKQpgYGAKCkNvbiBlc3RhIHZhcmlhYmxlIHBvZGVtb3Mgc2VndWlyIGxvcyBtaXNtb3MgcHJvY2VkaW1pZW50b3MgYW50ZXJpb3JtZW50ZSBkZXNjcml0b3MgcGFyYSBwcm9kdWNpciBsYSB0YWJsYSBkZSBmcmVjdWVuY2lhcyByZWxhdGl2YXMuCgpgYGB7ciBwb3JjZW50YWplcyBIb24geSBVcnV9CnByb3AudGFibGUodGFibGUobGFwb3AyJGluZzRyZWNbbGFwb3AyJHBhaXM9PTRdKSkqMTAwCnByb3AudGFibGUodGFibGUobGFwb3AyJGluZzRyZWNbbGFwb3AyJHBhaXM9PTE0XSkpKjEwMApgYGAKClkgbHVlZ28gaW5jbHVpciBlbCByZWRvbmRlby4KCmBgYHtyIHJlZG9uZGVhciBIb24geSBVcnV9CnJvdW5kKHByb3AudGFibGUodGFibGUobGFwb3AyJGluZzRyZWNbbGFwb3AyJHBhaXM9PTRdKSkqMTAwLCAxKQpyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMiRpbmc0cmVjW2xhcG9wMiRwYWlzPT0xNF0pKSoxMDAsIDEpCmBgYAoKQ29uIGVzdGUgY8OzZGlnbyBoZW1vcyByZXByb2R1Y2lkbyBsb3MgcmVzdWx0YWRvcyBkZSBsb3MgcGHDrXNlcyBlbiBsb3MgZXh0cmVtb3MgZGVsIEdyw6FmaWNvIDEuMiBkZWwgcmVwb3J0ZS4KRW4gZXN0ZSBjYXNvLCBsb3MgcmVzdWx0YWRvcyBzw60gc29uIHNpbWlsYXJlcyBhIGxvcyByZXBvcnRhZG9zIGVuIGVsIGdyw6FmaWNvLgoKQW1ib3MgcmVwb3J0ZXMgdGFtYmnDqW4gaW5kaWNhbiBxdWUgc2UgZXhjbHV5ZSBkZSBsb3MgY8OhbGN1bG9zIGEgRXN0YWRvcyBVbmlkb3MgeSBDYW5hZMOhLgpMYSBiYXNlIGRlIGRhdG9zIGNhcmdhZGEgY29tbyAibGFwb3AxOCIgaW5jbHV5ZSBhIHRvZG9zIGxvcyBwYcOtc2VzIGRlIGxhIHJvbmRhLgpQYXJhIGV4Y2x1aXIgYSBlc3RvcyBkb3MgcGHDrXNlcywgdGVuZW1vcyBxdWUgc2VsZWNjaW9uYXIgbG9zIHBhw61zZXMgcXVlIE5PIHNvbiBFRS5VVS4KeSBDYW5hZMOhLgpFc3RhIG51ZXZhIHNlbGVjY2nDs24gbGEgZ3VhcmRhbW9zIGVuIHVuIG51ZXZvIGRhdGFmcmFtZSBvIHNlIHB1ZWRlIHNvYnJlZXNjcmliaXIgZW4gZWwgZGF0YWZyYW1lIG9yaWdpbmFsLCBjb21vIHNlIGhhY2UgZW4gZXN0ZSBjYXNvIGRlYmlkbyBhIHF1ZSBsYSBleGNsdXNpw7NuIGRlIGVzdG9zIHBhw61zZXMgZXMgcGFyYSB0b2RvcyBsb3MgY8OhbGN1bG9zIHF1ZSBzaWd1ZW4uCkRlIGFjdWVyZG8gYWwgY3Vlc3Rpb25hcmlvLCBFRS5VVS4KdGllbmUgZWwgY8OzZGlnbyA0MCB5IENhbmFkw6EsIGVsIGPDs2RpZ28gNDEgZW4gbGEgdmFyaWFibGUgInBhaXMiLgpQYXJhIGV4Y2x1aXJsb3MgdGVuZW1vcyBxdWUgaW5jbHVpciBhIGxvcyBwYcOtc2VzIHF1ZSB0ZW5nYW4gdW4gY8OzZGlnbyBtZW5vciBhIDQwIChvIGRlIDM1IG8gbWVub3MpLgpQYXJhIGVzdG8gbnVldmFtZW50ZSBwb2RlbW9zIHVzYXIgZWwgY29tYW5kbyBgc3Vic2V0YC4KCmBgYHtyIGVsaW1pbmFyIFVTQSB5IENhbmFkYSAxOH0KbGFwb3AxOCA9IHN1YnNldChsYXBvcDE4LCBwYWlzPD0zNSkKYGBgCgpQb2RlbW9zIG9ic2VydmFyIGVuIGVsIEVudmlyb25tZW50IHF1ZSBzZSByZWR1Y2VuIGxhcyBvYnNlcnZhY2lvbmVzIGRlbCBkYXRhZnJhbWUgImxhcG9wMTgiIGx1ZWdvIGRlIGNvcnJlciBlc3RlIGPDs2RpZ28sIHB1ZXMgaGVtb3MgZWxpbWluYWRvIGxhcyBvYnNlcnZhY2lvbmVzIGRlIGVudHJldmlzdGFkb3MgZW4gZXN0b3MgZG9zIHBhw61zZXMuCkVsIG7Dum1lcm8gZGUgb2JzZXJ2YWNpb25lcyBwYXNhIGRlIDMxLDA1MCBhIDI4LDA0MiwgbsO6bWVybyBxdWUgY29pbmNpZGUgY29uIGVsIGRlIGxhIGJhc2UgZGUgZGF0b3MgZW4gZm9ybWF0byAuUkRhdGEgcXVlIG5vIGluY2x1w61hIGEgZXN0b3MgcGHDrXNlcy4KCkRlIGxhIG1pc21hIG1hbmVyYSBwb2RlbW9zIHByb2NlZGVyIGVuIGxhIGJhc2UgZGUgZGF0b3MgZGUgbGEgcm9uZGEgMjAyMSwgY29uIGxvIHF1ZSBkaXNtaW51eWVuIGxhcyBvYnNlcnZhY2lvbmVzIGEgNjA2NjEuCgpgYGB7ciBlbGltaW5hciBVU0EgeSBDYW5hZGEgMjF9CmxhcG9wMjEgPSBzdWJzZXQobGFwb3AyMSwgcGFpczw9MzUpCmBgYAoKIyBDYWxjdWxhciB1bmEgdmFyaWFibGUKClVuYSBwcsOhY3RpY2EgZnJlY3VlbnRlIGRlIExBUE9QIGNvbiBsb3MgZGF0b3MgZGVsIEJhcsOzbWV0cm8gZGUgbGFzIEFtw6lyaWNhcyBlcyBlbCByZS1lc2NhbGFtaWVudG8gZGUgdmFyaWFibGVzLgpFbCBjYXDDrXR1bG8gc29icmUgbGVnaXRpbWlkYWQgZGVtb2Nyw6F0aWNhIGRlbCByZXBvcnRlIGJyaW5kYSBlamVtcGxvcyBkZSBlc3RlIHJlLWVzY2FsYW1pZW50byBjb24gdmFyaWFibGVzIHJlbGFjaW9uYWRhcyBhbCBhcG95byBhbCBzaXN0ZW1hLgpQYXJhIGNhbGN1bGFyIGVzdGUgw61uZGljZSBkZSBhcG95byBhbCBzaXN0ZW1hIHNlIHRyYWJhamEgY29uIHVuIGNvbmp1bnRvIGRlIGNpbmNvIHZhcmlhYmxlczoKCkIxLgoqwr9IYXN0YSBxdcOpIHB1bnRvIGNyZWUgdXN0ZWQgcXVlIGxvcyB0cmlidW5hbGVzIGRlIGp1c3RpY2lhIGRlIChwYcOtcykgZ2FyYW50aXphbiB1biBqdWljaW8ganVzdG8/KgoKQjIuCirCv0hhc3RhIHF1w6kgcHVudG8gdGllbmUgdXN0ZWQgcmVzcGV0byBwb3IgbGFzIGluc3RpdHVjaW9uZXMgcG9sw610aWNhcyBkZSAocGHDrXMpPyoKCkIzLgoqwr9IYXN0YSBxdcOpIHB1bnRvIGNyZWUgdXN0ZWQgcXVlIGxvcyBkZXJlY2hvcyBiw6FzaWNvcyBkZWwgY2l1ZGFkYW5vIGVzdMOhbiBiaWVuIHByb3RlZ2lkb3MgcG9yIGVsIHNpc3RlbWEgcG9sw610aWNvIGRlIChwYcOtcyk/KgoKQjQuCirCv0hhc3RhIHF1w6kgcHVudG8gc2Ugc2llbnRlIG9yZ3VsbG9zbyBkZSB2aXZpciBiYWpvIGVsIHNpc3RlbWEgcG9sw610aWNvIGRlIChwYcOtcyk/KgoKQjYuCirCv0hhc3RhIHF1w6kgcHVudG8gcGllbnNhIHVzdGVkIHF1ZSBzZSBkZWJlIGFwb3lhciBhbCBzaXN0ZW1hIHBvbMOtdGljbyBkZSAocGHDrXMpPyoKCkNvbW8gaW5kaWNhIGVsIHJlcG9ydGUgIlBhcmEgY2FkYSBwcmVndW50YSwgbGEgZXNjYWxhIG9yaWdpbmFsIGRlIDEgKCJOYWRhIikgYSA3ICgiTXVjaG8iKSBzZSByZWNvZGlmaWNhIGVuIHVuYSBlc2NhbGEgZGUgMCBhIDEwMCwgZGUgdGFsIGZvcm1hIHF1ZSAwIGluZGljYSBlbCBtZW5vciBuaXZlbCBkZSBhcG95byBhbCBzaXN0ZW1hIHBvbMOtdGljbyB5IDEwMCBlcyBlbCBuaXZlbCBtw6F4aW1vIGRlIGFwb3lvIGFsIHNpc3RlbWEgcG9sw610aWNvLiBFc3RhIG51ZXZhIGVzY2FsYSBzaWd1ZSBsYSByZWNvZGlmaWNhY2nDs24gdMOtcGljYSBkZSBMQVBPUCB5IHB1ZWRlIHNlciBpbnRlcnByZXRhZGEgY29tbyB1bmEgbWVkaWNpw7NuIGRlbCBhcG95byBlbiB1bmlkYWRlcywgbyBncmFkb3MsIGVuIHVuYSBlc2NhbGEgY29udGludWEgcXVlIHZhIGRlIDAgYSAxMDAiIChwLjM0KS4KUGFyYSBjb21wcm9iYXIgbGEgZXNjYWxhIG9yaWdpbmFsIGRlIGVzdGFzIHZhcmlhYmxlcywgc2UgcHVlZGUgZGVzY3JpYmlyIGVzdGFzIHZhcmlhYmxlcyB1c2FuZG8gZWwgY29tYW5kbyBgdGFibGVgLgoKYGBge3IgZGVzY3JpYmlyfQp0YWJsZShsYXBvcDE4JGIxKQp0YWJsZShsYXBvcDE4JGIyKQp0YWJsZShsYXBvcDE4JGIzKQp0YWJsZShsYXBvcDE4JGI0KQp0YWJsZShsYXBvcDE4JGI2KQpgYGAKCk9ic2VydmFtb3MgcXVlIGVmZWN0aXZhbWVudGUgdG9kYXMgbGFzIHZhcmlhYmxlcyBlc3TDoW4gZW4gdW5hIGVzY2FsYSBkZSAxIGEgNy4KUGFyYSByZWVzY2FsYXIgdW5hIHZhcmlhYmxlIGVuIHVuYSBlc2NhbGEgb3JpZ2luYWwgZGUgMSBhIDcgYSBvdHJhIGRlIDAgYSAxMDAsIGxvIHByaW1lcm8gcXVlIHRlbmVtb3MgcXVlIGhhY2VyIGVzIHJlc3RhciAxIHVuaWRhZCwgY29uIGxvIHF1ZSBsYSB2YXJpYWJsZSB0ZW5kcsOtYSB1bmEgZXNjYWxhIGRlIDAgYSA2LCBsdWVnbyBkaXZpZGlybGEgZW50cmUgNiwgY29uIGxvIHF1ZSB2YXJpYXLDrWEgZW50cmUgMCB5IDEgeSwgZmluYWxtZW50ZSwgbXVsdGlwbGljYXJsYSBwb3IgMTAwLgpFc3RvIGVzOgoKVmFyaWFibGUgcmVlc2NhbGFkYSA9ICgodmFyaWFibGUgb3JpZ2luYWwgLTEpLzYpXCoxMDAKCmBgYHtyIGNhbGN1bGFyfQpsYXBvcDE4JGIxcmVjID0gKChsYXBvcDE4JGIxLTEpLzYpKjEwMApsYXBvcDE4JGIycmVjID0gKChsYXBvcDE4JGIyLTEpLzYpKjEwMApsYXBvcDE4JGIzcmVjID0gKChsYXBvcDE4JGIzLTEpLzYpKjEwMApsYXBvcDE4JGI0cmVjID0gKChsYXBvcDE4JGI0LTEpLzYpKjEwMApsYXBvcDE4JGI2cmVjID0gKChsYXBvcDE4JGI2LTEpLzYpKjEwMAp0YWJsZShsYXBvcDE4JGIxcmVjKQpgYGAKCkNvbiBlc3RhIHRyYW5zZm9ybWFjacOzbiBvYnNlcnZhbW9zIHF1ZSBsb3MgNCwwODkgZW50cmV2aXN0YWRvcyBxdWUgbWFyY2Fyb24gMSBlbiBsYSBwcmVndW50YSBCMSwgYWhvcmEgdGllbmVuIHVuIHB1bnRhamUgZGUgMC4KTG9zIDQsMDY3IHF1ZSBtYXJjYXJvbiAyLCBhaG9yYSB0aWVuZW4gdW4gcHVudGFqZSBkZSAxNi42NywgZXMgZGVjaXIgMi0xPTEvNj0wLjE2NjdcKjEwMD0xNi42Ny4KRXN0YSBtaXNtYSBvcGVyYWNpw7NuIHNlIHB1ZG8gaGFjZXIgY29uIGVsIGNvbWFuZG8gYGNhcjo6cmVjb2RlYCwgc2lndWllbmRvIGxhIHNpZ3VpZW50ZSByZWdsYSBkZSByZWNvZGlmaWNhY2nDs246CgotICAgVmFsb3IgZGUgMSBlbiB2YXJpYWJsZSBvcmlnaW5hbCBzZSByZWNvZGlmaWNhIGNvbW8gMCBlbiBudWV2YSB2YXJpYWJsZQotICAgVmFsb3IgZGUgMiBlbiB2YXJpYWJsZSBvcmlnaW5hbCBzZSByZWNvZGlmaWNhIGNvbW8gMTYuNjcgZW4gbnVldmEgdmFyaWFibGUKLSAgIFZhbG9yIGRlIDMgZW4gdmFyaWFibGUgb3JpZ2luYWwgc2UgcmVjb2RpZmljYSBjb21vIDMzLjMzIGVuIG51ZXZhIHZhcmlhYmxlCi0gICBWYWxvciBkZSA0IGVuIHZhcmlhYmxlIG9yaWdpbmFsIHNlIHJlY29kaWZpY2EgY29tbyA1MCBlbiBudWV2YSB2YXJpYWJsZQotICAgVmFsb3IgZGUgNSBlbiB2YXJpYWJsZSBvcmlnaW5hbCBzZSByZWNvZGlmaWNhIGNvbW8gNjYuNjcgZW4gbnVldmEgdmFyaWFibGUKLSAgIFZhbG9yIGRlIDYgZW4gdmFyaWFibGUgb3JpZ2luYWwgc2UgcmVjb2RpZmljYSBjb21vIDgzLjMzIGVuIG51ZXZhIHZhcmlhYmxlCi0gICBWYWxvciBkZSA3IGVuIHZhcmlhYmxlIG9yaWdpbmFsIHNlIHJlY29kaWZpY2EgY29tbyAxMDAgZW4gbnVldmEgdmFyaWFibGUKCkVzdGEgbWFuZXJhIGRlIHJlY29kaWZpY2FyLCBzaW4gZW1iYXJnbywgZXMgcG9jbyBlZmljaWVudGUuCkVzIG3DoXMgc2ltcGxlIHVzYXIgbGEgZsOzcm11bGEgcGFyYSBjYWxjdWxhciBsYSByZWNvZGlmaWNhY2nDs24uCgpQYXJhIGNhbGN1bGFyIGVsIMOtbmRpY2UgZGUgYXBveW8gYWwgc2lzdGVtYSwgZWwgcmVwb3J0ZSBpbmRpY2EgcXVlICJFbCDDrW5kaWNlIGRlIGFwb3lvIGFsIHNpc3RlbWEgZXMgZWwgcHJvbWVkaW8gZGUgY2luY28gcHJlZ3VudGFzOiBCMSwgQjIsIEIzLCBCNCB5IEI2IiAocC40NikuCkVzIGRlY2lyLCBjb24gbGFzIHZhcmlhYmxlcyByZWVzY2FsYWRhcyB0ZW5lbW9zIHF1ZSBjYWxjdWxhciBlbCBwcm9tZWRpbyBkZSBlc3RhcyBjaW5jbyB2YXJpYWJsZXMgcGFyYSBjYWRhIGluZGl2aWR1byAoZXMgZGVjaXIsIGVuIGNhZGEgZmlsYSBkZSBsYSBiYXNlIGRlIGRhdG9zKS4KUG9kcsOtYW1vcyBjYWxjdWxhciBlc3RhIG9wZXJhY2nDs24gZGVsIHByb21lZGlvIGRlIGZvcm1hIG1hbnVhbC4KCkFwb3lvIGFsIHNpc3RlbWEgPSAoYjFyZWMgKyBiMnJlYyArIGIzcmVjICsgYjRyZWMgKyBiNnJlYykvNQoKRW4gUiB0ZW5lbW9zIGVsIGNvbWFuZG8gYHJvd01lYW5zYCBxdWUgc2lydmEgcGFyYSBjYWxjdWxhciBwcm9tZWRpb3MgZGUgY2llcnRhcyBjb2x1bW5hcyBwb3IgY2FkYSBmaWxhLgpMYSBzaW50YXhpcyBgWywgODY6OTBdYCBpbmRpY2EgcXVlIHJlYWxpemFyZW1vcyBlbCBjw6FsY3VsbyBkZWwgcHJvbWVkaW8gcG9yIGZpbGFzIHBhcmEgdG9kYXMgbGFzIGZpbGFzIHkgdXNhbmRvIGxhcyBjb2x1bW5hcyA4NiBhIDkwIGRlbCBkYXRhZnJhbWUgImxhcG9wMTgiIChwb2Ryw61hbW9zIGhhY2VyIGVsIGPDoWxjdWxvIHBhcmEgYWxndW5hcyBmaWxhcyBlbiBwYXJ0aWN1bGFyIGRlZmluaWVuZG8gYFtmaWxhX246ZmlsYV9tLCA4Njo5MF1gKS4KRXN0ZSBwcm9tZWRpbyBsbyBndWFyZGFtb3MgZW4gdW5hIG51ZXZhIHZhcmlhYmxlICJhcG95byIsIHF1ZSBkZXNjcmliaW1vcy4KCmBgYHtyIGFwb3lvIGFsIHNpc3RlbWF9CmxhcG9wMTgkYXBveW8gPSByb3dNZWFucyhsYXBvcDE4Wyw4NTo4OV0pCnRhYmxlKGxhcG9wMTgkYXBveW8pCmBgYAoKQ29uIGVzdGUgw61uZGljZSBwb2RlbW9zIGNhbGN1bGFyIGVsIGFwb3lvIGFsIHNpc3RlbWEgcHJvbWVkaW8gcGFyYSBsYSDDumx0aW1hIHJvbmRhIGRlbCBCYXLDs21ldHJvIGRlIGxhcyBBbcOpcmljYXMsIGFzw60gY29tbyBsb3MgcHJvbWVkaW9zIGRlIGNhZGEgdW5hIGRlIGxhcyB2YXJpYWJsZXMgcXVlIGNvbXBvbmVuIGVsIMOtbmRpY2UuClVzYW1vcyBlbCBjb21hbmRvIGBtZWFuYCBwYXJhIGVsIHByb21lZGlvIHkgbGEgZXNwZWNpZmljYWNpw7NuIGBuYS5ybT1UYCBwYXJhIGluZGljYXJsZSBhbCBjb21hbmRvIHF1ZSBubyB0b21lIGVuIGN1ZW50YSBsb3MgdmFsb3JlcyBwZXJkaWRvcyBkZSBlc3RhcyB2YXJpYWJsZXMuClZlcmVtb3MgZXN0b3MgZXN0YWTDrXN0aWNvcyBlbiBtw6FzIGRldGFsbGUgZW4gb3RyYXMgc2VjY2lvbmVzLgoKYGBge3IgYXBveW8gYWwgc2lzdGVtYSAyMDE4LzE5fQptZWFuKGxhcG9wMTgkYXBveW8sIG5hLnJtPVQpCm1lYW4obGFwb3AxOCRiMXJlYywgbmEucm09VCkgI0NvcnRlcyBnYXJhbnRpemFuIGp1aWNpbyBqdXN0bwptZWFuKGxhcG9wMTgkYjJyZWMsIG5hLnJtPVQpICNSZXNwZXRvIGEgbGFzIGluc3RpdHVjaW9uZXMKbWVhbihsYXBvcDE4JGIzcmVjLCBuYS5ybT1UKSAjRGVyZWNob3MgYsOhc2ljb3MgZXN0w6FuIHByb3RlZ2lkb3MKbWVhbihsYXBvcDE4JGI0cmVjLCBuYS5ybT1UKSAjT3JndWxsb3MgcG9yIGVsIHNpc3RlbWEgcG9sw610aWNvCm1lYW4obGFwb3AxOCRiNnJlYywgbmEucm09VCkgI1NlIGRlYmVyw61hIGFwb3lhciBhbCBzaXN0ZW1hIHBvbMOtdGljbwpgYGAKCkVzdG9zIHJlc3VsdGFkb3Mgc29uIGxvcyBxdWUgc2UgbXVlc3RyYW4gZW4gZWwgR3LDoWZpY28gMi4xIHBhcmEgbGEgcm9uZGEgMjAxOC8xOS4KCiFbXShHcmFmMi4xLnBuZyl7d2lkdGg9IjYyOSJ9CgojIENhbGN1bGFyIHVuYSB2YXJpYWJsZSBkZSBtYW5lcmEgY29uZGljaW9uYWwKCkVuIGFsZ3VuYXMgb2Nhc2lvbmVzIGVsIGPDoWxjdWxvIGRlIHVuYSB2YXJpYWJsZSBubyByZXF1aWVyZSBzb2xhbWVudGUgbGEgdHJhbnNmb3JtYWNpw7NuIG51bcOpcmljYSBkZSBsYSB2YXJpYWJsZSBvcmlnaW5hbCwgc2lubyBxdWUgbG9zIHZhbG9yZXMgZGUgbGEgbnVldmEgdmFyaWFibGUgZGVwZW5kZW4gZGUgdmFsb3JlcyBkZSBvdHJhcyB2YXJpYWJsZXMuClBvciBlamVtcGxvLCBlbCBjYXDDrXR1bG8gIlJlZGVzIHNvY2lhbGVzIHkgYWN0aXR1ZGVzIHBvbMOtdGljYXMiIGRlbCByZXBvcnRlICJFbCBQdWxzbyBkZSBsYSBEZW1vY3JhY2lhIiBkZSBsYSByb25kYSAyMDE4LzE5IHByZXNlbnRhIGxvcyByZXN1bHRhZG9zIHBhcmEgbGFzIHZhcmlhYmxlcyAidXN1YXJpbyBkZSBXaGF0c2FwcCIsICJ1c3VhcmlvIGRlIFR3aXR0ZXIiIHkgInVzdWFyaW8gZGUgRmFjZWJvb2siLgpQYXJhIGNhbGN1bGFyIGVzdGFzIHZhcmlhYmxlcywgZWwgcGllIGRlIHDDoWdpbmEgNyBkZSBlc3RlIGNhcMOtdHVsbyBpbmRpY2E6ICJQYXJhIGNhZGEgcGxhdGFmb3JtYSwgc2UgaWRlbnRpZmljYW4gbG9zIHVzdWFyaW9zIGNvbiB1bmEgY29tYmluYWNpw7NuIGRlIGRvcyBjb25qdW50b3MgZGUgcHJlZ3VudGFzLiBQcmltZXJvLCBzZSBpZGVudGlmaWNhbiBjb21vIHVzdWFyaW9zIGEgcXVpZW5lcyByZXNwb25kZW4gcG9zaXRpdmFtZW50ZSBhIGxhcyBwcmVndW50YXMsIFNNRURJQTEvU01FRElBNC9TTUVESUE3LiDCv1RpZW5lIHVzdGVkIGN1ZW50YSBkZSBGYWNlYm9vay9Ud2l0dGVyL1doYXRzYXBwPyBMdWVnbywgc2UgcmVjb2RpZmljYSBjb21vIG5vIHVzdWFyaW8gYSBxdWllbmVzIHJlc3BvbmRlbiJudW5jYSIgYSBsYXMgcHJlZ3VudGFzIHNpZ3VpZW50ZXMsIFNNRURJQTIvU01FRElBNS9TTUVESUE4LiDCv0NvbiBxdcOpIGZyZWN1ZW5jaWEgdmUgY29udGVuaWRvIGVuIEZhY2Vib29rL1R3aXR0ZXIvV2hhdHNhcHA/IiAocC4gNjQpLgoKIVtdKHNtZWRpYS5wbmcpe3dpZHRoPSI0NjYifQoKRXMgZGVjaXIsIGVsIHVzdWFyaW8gbm8gc29sbyBlcyBlbCBxdWUgdGllbmUgdW5hIGN1ZW50YSAoU01FRElBMT0xKSwgc2lubyBlbCBxdWUgbGEgdXNhIGNvbiBjaWVydGEgZnJlY3VlbmNpYSAoU01FRElBMj0xLCAyLCAzLCA0KS4KRGUgZXN0YSBtYW5lcmEsIGVsIG5vIHVzdWFyaW8gcHVlZGUgdGVuZXIgdW5hIGN1ZW50YSwgcGVybyBudW5jYSB1c2FybGEuClBvciBsbyB0YW50bywgbGEgdmFyaWFibGUgInVzdWFyaW8iIGRlcGVuZGUgZGUgbG9zIHZhbG9yZXMgZGUgMiB2YXJpYWJsZXMuCkxhIHJlZ2xhIGRlIGNvZGlmaWNhY2nDs24gcXVlIHNlIHNpZ3VlIGVzOgoKLSAgIFVzdWFyaW8gZGUgRmFjZWJvb2sgPSAxIChzw60gZXMgdXN1YXJpbykgc2kgU01FRElBMSA9IDEgKHRpZW5lIGN1ZW50YSkgeSBTTUVESUEyIFw8PSA0IChsYSB1c2EgY29uIGFsZ3VuYSBmcmVjdWVuY2lhKQoKLSAgIFVzdWFyaW8gZGUgRmFjZWJvb2sgPSAwIChubyBlcyB1c3VhcmlvKSBzaSBTTUVESUEyID0gMiAobm8gdGllbmUgY3VlbnRhKSBvIFNNRURJQTIgPSA1ICh0aWVuZSBjdWVudGEgcGVybyBudW5jYSBsYSB1c2EpCgpQcm9kdWNpbW9zIGVzdGEgcmVnbGEgZGUgY29kaWZpY2FjacOzbiBjb24gbGEgc2lndWllbnRlIHNpbnRheGlzIGRlIFIsIHF1ZSB1c2EgZWwgY29tYW5kbyBgw6xmZWxzZWAuCkVzdGEgc2ludGF4aXMgaW5jbHV5ZSBsYSBjb25kaWNpw7NuIHBhcmEgYXNpZ25hciB2YWxvcmVzIGRlIDEgYSB1bmEgbnVldmEgdmFyaWFibGUgeSBhc2lnbmEgYSB0b2RhcyBsYXMgZGVtw6FzIG9ic2VydmFjaW9uZXMgZWwgdmFsb3IgZGUgMC4KRGVzY3JpYmltb3MgZXN0YXMgbnVldmFzIHZhcmlhYmxlcyB1c2FuZG8gbG9zIGNvbWFuZG9zIGB0YWJsZWAgcGFyYSBnZW5lcmFyIGxhcyBmcmVjdWVuY2lhcyBhYnNvbHV0YXMsIGBwcm9wLnRhYmxlYCBwYXJhIGxhcyBmcmVjdWVuY2lhcyByZWxhdGl2YXMgeSBgcm91bmRgIHBhcmEgcmVkb25kZWFyIGxvcyBkZWNpbWFsZXMuCkVzdG9zIGNvbWFuZG9zIGxvcyB2ZXJlbW9zIGVuIG3DoXMgZGV0YWxsZSBlbiBsYXMgc2lndWllbnRlcyBzZWNjaW9uZXMuCgpgYGB7ciB1c3VhcmlvcywgZWNobz1UUlVFLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpsYXBvcDE4JGZiX3VzZXIgPSBpZmVsc2UobGFwb3AxOCRzbWVkaWExPT0xICYgbGFwb3AxOCRzbWVkaWEyPD00LCAxLCAwKQpsYXBvcDE4JHR3X3VzZXIgPSBpZmVsc2UobGFwb3AxOCRzbWVkaWE0PT0xICYgbGFwb3AxOCRzbWVkaWE1PD00LCAxLCAwKQpsYXBvcDE4JHdhX3VzZXIgPSBpZmVsc2UobGFwb3AxOCRzbWVkaWE3PT0xICYgbGFwb3AxOCRzbWVkaWE4PD00LCAxLCAwKQpyb3VuZChwcm9wLnRhYmxlKHRhYmxlKGxhcG9wMTgkZmJfdXNlcikpKjEwMCwgMSkKcm91bmQocHJvcC50YWJsZSh0YWJsZShsYXBvcDE4JHR3X3VzZXIpKSoxMDAsIDEpCnJvdW5kKHByb3AudGFibGUodGFibGUobGFwb3AxOCR3YV91c2VyKSkqMTAwLCAxKQpgYGAKCkVzdG9zIHJlc3VsdGFkb3Mgc29uIGxvcyBxdWUgc2UgcHJlc2VudGFuIGVuIGVsIEdyw6FmaWNvIDMuMSBkZWwgcmVwb3J0ZSBlbiBmb3JtYSBkZSBncsOhZmljb3MgY2lyY3VsYXJlcy4KVmVyZW1vcyBlc3RlIHRpcG8gZGUgZ3LDoWZpY29zIGVuIGxhIHNpZ3VpZW50ZSBzZWNjacOzbi4KCiFbXShHcmFmMy4xLnBuZyl7d2lkdGg9IjMyMyJ9CgojIE9ic2VydmFjacOzbiBkZWwgZWZlY3RvIGRlIGRpc2XDsW8KClRhbnRvIGxvcyByZXN1bHRhZG9zIHBhcmEgYXBveW8gYWwgc2lzdGVtYSwgY29tbyBsb3MgZGUgdXN1YXJpb3MgZGUgcmVkZXMgc29jaWFsZXMgZGlmaWVyZW4gZGUgbG9zIHF1ZSBhcGFyZWNlbiBlbiBlbCByZXBvcnRlIHBvciBkb3MgbW90aXZvcy4KRW4gcHJpbWVyIGx1Z2FyLCBwYXJhIGFwb3lvIGFsIHNpc3RlbWEsIGRlYmlkbyBhIHF1ZSAiTG9zIHZhbG9yZXMgYSBsbyBsYXJnbyBkZWwgdGllbXBvIHNlIGNhbGN1bGFuIGluY2x1eWVuZG8gw7puaWNhbWVudGUgbG9zIHBhw61zZXMgcXVlIGVsIEJhcsOzbWV0cm8gZGUgbGFzIEFtw6lyaWNhcyBoYSBlc3R1ZGlhZG8gcmVndWxhcm1lbnRlIGRlc2RlIDIwMDY6IEFyZ2VudGluYSwgQnJhc2lsLCBCb2xpdmlhLCBDaGlsZSwgQ29sb21iaWEsIENvc3RhIFJpY2EsIFJlcMO6YmxpY2EgRG9taW5pY2FuYSwgRWN1YWRvciwgRWwgU2FsdmFkb3IsIEd1YXRlbWFsYSwgSG9uZHVyYXMsIEphbWFpY2EsIE3DqXhpY28sIE5pY2FyYWd1YSwgUGFuYW3DoSwgUGFyYWd1YXksIFBlcsO6LCBVcnVndWF5IiAocC40NikuCkVsIGPDs2RpZ28gc29sbyBmaWx0cmEgbGEgw7psdGltYSByb25kYSwgcXVlIGluY2x1eWUgcGHDrXNlcyBxdWUgbm8gZXN0w6FuIGVuIGVzYSBsaXN0YSwgY29tbyBFc3RhZG9zIFVuaWRvcyBvIENhbmFkw6EuCkRlIG90cm8gbGFkbywgbG9zIGPDoWxjdWxvcyByZXBvcnRhZG9zIGVuIGxhIHB1YmxpY2FjacOzbiBpbmNsdXllbiBlbCB1c28gZGUgZmFjdG9yZXMgZGUgcG9uZGVyYWNpw7NuLCBxdWUgbm8gaGVtb3MgaW5jbHVpZG8gZW4gZXN0b3MgY8OhbGN1bG9zLCBwZXJvIHF1ZSBlbiBvdHJvcyBkb2N1bWVudG9zIGluY29ycG9yYXJlbW9zICh2ZXIgW2FxdcOtXShodHRwczovL3JwdWJzLmNvbS9hcnR1cm9fbWFsZG9uYWRvLzcyODYyNikpLgoKIyBSZXN1bWVuCgpFbiBlc3RlIGRvY3VtZW50byBoZW1vcyB2aXN0byBsb3MgZWxlbWVudG9zIGLDoXNpY29zIGRlIGxhIG1hbmlwdWxhY2nDs24geSB0cmFuc2Zvcm1hY2nDs24gZGUgZGF0b3MgdXNhbmRvIGVsIEJhcsOzbWV0cm8gZGUgbGFzIEFtw6lyaWNhcy4KSGVtb3MgcmVjb2RpZmljYWRvIHVuYSB2YXJpYWJsZSB1c2FuZG8gZWwgY29tYW5kbyBgcmVjb2RlYCwgaGVtb3Mgc2VsZWNjaW9uYWRvIGNhc29zIHVzYW5kbyBgc3Vic2V0YCB5IGhlbW9zIGNhbGN1bGFkbyB1bmEgbnVldmEgdmFyaWFibGUgYWxnZWJyYWljYW1lbnRlIHkgY29uIGVsIGNvbWFuZG8gYGlmZWxzZWAuCg==</div>
 
 
 </div>
