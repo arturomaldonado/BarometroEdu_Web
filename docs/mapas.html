@@ -13,7 +13,7 @@
 
 <title>Mapas usando los datos del Barómetro de las Américas</title>
 
-<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -755,7 +755,7 @@ indica que al objeto “al” se le añadan los datos de “tabla”. Por defect
 el código identifica una variable de unión que es “OBJECTID”.</p>
 <pre class="r"><code>al_datos &lt;- al %&gt;%
               left_join(tabla)</code></pre>
-<pre><code>## Joining, by = &quot;OBJECTID&quot;</code></pre>
+<pre><code>## Joining with `by = join_by(OBJECTID)`</code></pre>
 <p>En este nuevo objeto tenemos los datos vectoriales para crear el mapa
 y los datos del Barómetro del porcentaje de personas que tolera los
 golpes ejecutivos en cada país.</p>
@@ -803,8 +803,8 @@ Escogemos un tema básico de blancos y negros para el gráfico con
        x=&quot;Longitud&quot;,
        fill = &quot;% que tolera golpes ejecutivos&quot;)+
   theme_bw()</code></pre>
-<pre><code>## Warning in st_is_longlat(x): bounding box has potentially an invalid value range
-## for longlat data</code></pre>
+<pre><code>## Warning in st_is_longlat(x): bounding box has potentially an invalid value
+## range for longlat data</code></pre>
 <pre><code>## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
 ## give correct results for longitude/latitude data</code></pre>
 <p><img
@@ -821,8 +821,8 @@ src="mapas_files/figure-html/mapa%20completo-1.png" /><!-- --></p>
        x=&quot;Longitud&quot;,
        fill = &quot;% que tolera golpes ejecutivos&quot;)+
   theme_bw()</code></pre>
-<pre><code>## Warning in st_is_longlat(x): bounding box has potentially an invalid value range
-## for longlat data</code></pre>
+<pre><code>## Warning in st_is_longlat(x): bounding box has potentially an invalid value
+## range for longlat data</code></pre>
 <pre><code>## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
 ## give correct results for longitude/latitude data</code></pre>
 <p><img

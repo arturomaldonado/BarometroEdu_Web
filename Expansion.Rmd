@@ -26,7 +26,7 @@ h1 {color: #3366CC;}
 
 # Introducción
 
-En este documento se explicará cómo introducir el factor de expansión y las ponderaciones en los cálculos estadísticos usando los datos del Barómetro de las Américas.
+En este documento se explicará cómo introducir el factor de expansión en los cálculos estadísticos usando los datos del Barómetro de las Américas.
 Seguiremos lo que se trabajó en el documento de "Manejo de datos", disponible [aquí](https://arturomaldonado.github.io/BarometroEdu_Web/Manipulacion.html).
 
 # Sobre la base de datos
@@ -37,18 +37,19 @@ Se sugiere que se limpie el Environment de cualquier otro dataframe anterior.
 Esto se puede hacer con la escoba (Clear objects from the workspace).
 
 Mediante la librería `rio` y el comando `import` se puede importar nuevamente desde el inicio esta base de datos desde este repositorio, usando el siguiente código.
+Eliminamos las observaciones de Estados Unidos y Canadá con el comando `subset`.
 
 ```{r base18}
 library(rio)
-lapop18 <- import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
-lapop18 <- subset(lapop18, pais<=35)
+lapop18 = import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
+lapop18 = subset(lapop18, pais<=35)
 ```
 
 También cargamos la base de datos de la ronda 2021.
 
 ```{r base21}
-lapop21 = import("lapop21.RData")
-lapop21 <- subset(lapop21, pais<=35)
+lapop21 = import("https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData")
+lapop21 = subset(lapop21, pais<=35)
 ```
 
 # Sobre el uso de los factores de expansión
@@ -72,7 +73,7 @@ Por ejemplo, en el documento sobre manejo de datos replicamos los resultados sob
 
 ```{r manipulacion, message=FALSE, warning=FALSE}
 library(car)
-lapop18$ing4rec <- car::recode(lapop18$ing4, "1:4=0; 5:7=1")
+lapop18$ing4rec = car::recode(lapop18$ing4, "1:4=0; 5:7=1")
 table(lapop18$ing4rec)
 ```
 
@@ -116,22 +117,22 @@ Por ejemplo, para México (país=1), esta tabla muestra un apoyo a la democracia
 Otra forma de replicar los resultados incorporando el efecto de diseño es usando el paquete `survey`, paquete especialmente desarrollado para trabajar con diseños muestrales complejos.
 La Nota Metodológica incluye un apéndice con el código de STATA para usar los factores de expansión en los datos del Barómetro de las Américas.
 Aquí haremos lo mismo en R, para lo cual usaremos el comando `svydesign` (similar al comando svyset en STATA).
-Con este comando se crea un nuevo objeto llamado "diseño18", que guarda la información de las variables contenidas en el dataframe, incluyendo en los cálculos el factor de expansión.
-Por tanto, si luego se creara una nueva variable, se tendría que correr nuevamente esté comando para que este objeto "lapop.design" incluya esta nueva variable.
+Con este comando se crea un nuevo objeto llamado "diseno18", que guarda la información de las variables contenidas en el dataframe, incluyendo en los cálculos el factor de expansión.
+Por tanto, si luego se creara una nueva variable, se tendría que correr nuevamente esté comando para que este objeto "diseno18" incluya esta nueva variable.
 
 Este diseño no solo depende de la variable de ponderación "weight1500", sino también de la variable que define el estrato "estratopri" y de la variable que define la unidad primaria de muestreo "upm".
 
 ```{r expansion con survey, message=FALSE, warning=FALSE}
 #install.packages("survey") Para instalar el paquete se debe usar este código
 library(survey)
-diseño18<-svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
+diseno18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
 ```
 
-Una vez creado los datos con el factor de expansión en el objeto "lapop.design", se puede usar los comandos nativos del paquete `survey` para realizar cálculos.
+Una vez creado los datos con el factor de expansión en el objeto "diseno18", se puede usar los comandos nativos del paquete `survey` para realizar cálculos.
 Por ejemplo, para calcular la media de la variable "ing4rec" (apoyo a la democracia) en toda la base de datos de la ronda 2018/19, se puede usar el comando `svymean`.
 
 ```{r media con survey}
-svymean(~ing4rec, diseño18, na.rm=T)
+svymean(~ing4rec, diseno18, na.rm=T)
 ```
 
 De esta manera se reproduce el valor de la última fila de resultados del comando `compmeans`, que corresponde al promedio de toda la muestra.
@@ -139,7 +140,7 @@ Es decir, de ambas maneras se está encontrando el mismo resultado.
 Para reproducir los resultados por país, se puede usar el comando `svyby` que permite hallar resultados (como la media, usando `svymean`) de una variable ("ing4rec"), por valores de otra variable ("pais").
 
 ```{r media por pais con survey}
-svyby(~ing4rec, ~pais, design=diseño18, svymean, na.rm=T)
+svyby(~ing4rec, ~pais, design=diseno18, svymean, na.rm=T)
 ```
 
 En este caso, vemos que esta tabla es exactamente igual a la reportada con `compmeans`, pues ambas usan el factor de expansión.
@@ -152,11 +153,11 @@ Para replicar los resultados del gráfico 1.1 se sigue un procedimiento similar 
 Primero recodificamos la variable y usamos el comando `compmeans`.
 
 ```{r media apoyo 21}
-lapop21$ing4rec <- car::recode(lapop21$ing4, "1:4=0; 5:7=1")
+lapop21$ing4rec = car::recode(lapop21$ing4, "1:4=0; 5:7=1")
 compmeans(lapop21$ing4rec, lapop21$pais, lapop21$weight1500, plot=FALSE)
 ```
 
-También se puede crear un nuevo objeto llamado "diseño21", que guarda la información de las variables contenidas en el dataframe, incluyendo en los cálculos el factor de expansión.
+También se puede crear un nuevo objeto llamado "diseno21", que guarda la información de las variables contenidas en el dataframe, incluyendo en los cálculos el factor de expansión.
 El comando `svydesign` no acepta que las variables que definen el diseño tengan valores perdidos "NA".
 La base de datos de la ronda 2021 tiene 10 NAs en la variable "weight1500" y 1426 NAs en la variable "estratopri".
 Para poder crear el objeto de diseño que guarde las variables, se tiene que eliminar estas observaciones con los valores perdidos.
@@ -166,11 +167,11 @@ Es esta base de datos la que se usa con el comando `svydesign`.
 ```{r survey 21}
 lapop21a = subset(lapop21, !is.na(estratopri))
 lapop21a = subset(lapop21a, !is.na(weight1500))
-diseño21<-svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop21a)
+diseno21 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop21a)
 ```
 
 ```{r svyby 21}
-svyby(~ing4rec, ~pais, design=diseño21, svymean, na.rm=T)
+svyby(~ing4rec, ~pais, design=diseno21, svymean, na.rm=T)
 ```
 
 De esta manera, hemos visto dos maneras de incorporar el efecto de diseño muestral en los cálculos básicos con los datos del Barómetro de las Américas.

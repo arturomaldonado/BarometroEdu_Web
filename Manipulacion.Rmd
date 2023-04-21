@@ -122,10 +122,10 @@ table(lapop1$pais)
 Con esta selección de datos, podemos calcular el porcentaje (frecuencias relativas) usando el comando `prop.table`.
 Este comando nos brinda las frecuencias relativas (en valores entre 0 y 1) de una tabla de frecuencias calculada con `table`.
 Estas frecuencias relativas se multiplican por 100 para reproducir el porcentaje en cada país.
-En este caso se usan los `[…]` para hacer la selección de casos de cada país.
+En este caso ya no requerimos usar los `[…]` para hacer la selección porque el dataframe "lapop1" guarda los datos seleccionados de Uruguay.
 
 ```{r porcentaje Uru}
-prop.table(table(lapop1$ing4rec[lapop1$pais==14]))*100
+prop.table(table(lapop1$ing4rec))*100
 ```
 
 Estos resultados son porcentajes (entre 0 y 100), pero incluyen muchos decimales.
@@ -133,7 +133,7 @@ Para redondear a un decimal, como se muestra en el Gráfico 1.2, podemos usar el
 En este comando, además, tenemos que especificar el número de decimales que se quiere, que en este caso es 1.
 
 ```{r redondear Uru}
-round(prop.table(table(lapop1$ing4rec[lapop1$pais==14]))*100, 1)
+round(prop.table(table(lapop1$ing4rec))*100, 1)
 ```
 
 Según este resultado 84.5% de uruguayos apoya a la democracia.
@@ -163,13 +163,14 @@ lapop2$ing4rec = car::recode(lapop2$ing4, "1:4=0; 5:7=1")
 ```
 
 Con esta variable podemos seguir los mismos procedimientos anteriormente descritos para producir la tabla de frecuencias relativas.
+Como este dataframe tiene los datos de dos países, aquí si podemos usar los `[…]` para especificar que queremos una tabla de Uruguay y de Honduras.
 
 ```{r porcentajes Hon y Uru}
 prop.table(table(lapop2$ing4rec[lapop2$pais==4]))*100
 prop.table(table(lapop2$ing4rec[lapop2$pais==14]))*100
 ```
 
-Y luego incluir el redondeo.
+Y luego podemos incluir el redondeo.
 
 ```{r redondear Hon y Uru}
 round(prop.table(table(lapop2$ing4rec[lapop2$pais==4]))*100, 1)
@@ -313,7 +314,7 @@ La regla de codificación que se sigue es:
 
 -   Usuario de Facebook = 0 (no es usuario) si SMEDIA2 = 2 (no tiene cuenta) o SMEDIA2 = 5 (tiene cuenta pero nunca la usa)
 
-Producimos esta regla de codificación con la siguiente sintaxis de R, que usa el comando `ìfelse`.
+Producimos esta regla de codificación con la siguiente sintaxis de R, que usa el comando `ifelse`.
 Esta sintaxis incluye la condición para asignar valores de 1 a una nueva variable y asigna a todas las demás observaciones el valor de 0.
 Describimos estas nuevas variables usando los comandos `table` para generar las frecuencias absolutas, `prop.table` para las frecuencias relativas y `round` para redondear los decimales.
 Estos comandos los veremos en más detalle en las siguientes secciones.

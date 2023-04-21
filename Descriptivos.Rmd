@@ -28,11 +28,13 @@ h1 {color: #3366CC;}
 
 En este documento empezaremos con los aspectos básicos de cómo usar la base de datos del Barómetro de las Américas de LAPOP para fines estadísticos.
 En primer lugar, veremos aspectos básicos de cómo describir una variable mediante una tabla de distribución de frecuencias y cómo graficar esa variable mediante gráficos circulares o de barras.
-Para eso, vamos a usar el último informe regional "El pulso de la democracia", disponible [aquí](https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdf), donde se presentan los principales hallazgos de la ronda 2018/19 del Barómetro de las Américas.
-Una de las secciones de este informe, reporta los datos sobre redes sociales y actitudes políticas.
+Para eso, vamos a usar los informes regionales "El pulso de la democracia", con los resultados de la ronda 2021, disponible [aquí](https://www.vanderbilt.edu/lapop/ab2021/2021_LAPOP_AmericasBarometer_2021_Pulse_of_Democracy.pdf), y con los resultados de la ronda 2018/19, disponible [aquí](https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdfx).
+
+Uno de los resultados más relevantes en la ronda 2021 presenta los resultados sobre apoyo a la democracia en la región.
+Para la ronda 2018/19, una de las secciones de este informe, reporta los datos sobre redes sociales y actitudes políticas.
 En esta sección, se presentan datos sobre el uso de internet y el uso de redes sociales, en general y por país.
 Con los datos del Barómetro de las Américas se puede saber el porcentaje de hogares con acceso a celulares, con acceso a internet, así como el porcentaje de personas que usa Whatsapp, Facebook o Twitter.
-En este documento vamos a reproducir estos resultados.
+En este documento vamos a repasar estos resultados.
 
 # Sobre la base de datos
 
@@ -46,15 +48,15 @@ Además, se seleccionan los datos de países con códigos menores o iguales a 35
 
 ```{r base, message=FALSE, warning=FALSE}
 library(rio)
-lapop18 <- import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
-lapop18 <- subset(lapop18, pais<=35)
+lapop18 = import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
+lapop18 = subset(lapop18, pais<=35)
 ```
 
 También cargamos la base de datos de la ronda 2021.
 
 ```{r base21}
-lapop21 = import("lapop21.RData")
-lapop21 <- subset(lapop21, pais<=35)
+lapop21 = import("https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData")
+lapop21 = subset(lapop21, pais<=35)
 ```
 
 # Apoyo a la democracia
@@ -62,16 +64,16 @@ lapop21 <- subset(lapop21, pais<=35)
 En el reporte de El Pulso de la Democracia 2021 se presenta los resultados del apoyo a la democracia por país.
 El gráfico 1.1 muestra el porcentaje de personas en cada país que apoya a la democracia en abstracto.
 
-![](Figure1.1.png){width="573"}
+![](Grafico1.1.png)
 
 En los módulos anteriores se vio cómo recodificar la variable ING4, medida originalmente en una escala del 1 al 7, donde 1 significa "muy en desacuerdo" y 7 significa "muy de acuerdo".
 Los valores entre 5 a 7 son recodificados como "1", que identifica a aquellos que apoyan a la democracia.
 El resto se recodifica como "0", aquellos que no apoyan a la democracia.
 Esta recodificación se guarda en una nueva variable "ing4rec".
 
-```{r}
+```{r apoyo}
 library(car)
-lapop21$ing4rec <- car::recode(lapop21$ing4, "1:4=0; 5:7=1")
+lapop21$ing4rec = car::recode(lapop21$ing4, "1:4=0; 5:7=1")
 ```
 
 En sentido estricto, esta variable no es numérica, a pesar que está definida en la base de datos como "dbl", que es un tipo de variable numérica.
@@ -79,17 +81,17 @@ Esta variable es de tipo cualitativo, nominal, que en R se define como factor.
 Para tener correctamente definida y etiquetada esta variable, se tiene que transformar.
 En primer lugar se define como factor con el comando `as.factor`.
 
-```{r}
+```{r apoyo rec}
 lapop21$ing4rec = as.factor(lapop21$ing4rec)
 ```
 
 Una variable de tipo factor puede tener etiquetas por cada código numérico.
-La definición de etiquetas tiene el objetivo que en cualquier table o gráfico no aparezca el código numérico, sino la etiqueta correspondiente.
+La definición de etiquetas tiene el objetivo que en cualquier tabla o gráfico no aparezca el código numérico, sino la etiqueta correspondiente.
 Esto se hace usando el comando `levels`.
 Luego, esta variable se puede describir con el comando `table`, que nos brinda las frecuencias absolutas por cada categoría de la variable.
 
-```{r}
-levels(lapop21$ing4rec) <- c("No", "Sí")
+```{r apoyo labels}
+levels(lapop21$ing4rec) = c("No", "Sí")
 table(lapop21$ing4rec)
 ```
 
@@ -97,7 +99,7 @@ table(lapop21$ing4rec)
 
 Como vimos en el módulo sobre Manejo de Datos, se puede usar el comando `prop.table` para tener las frecuencias relativas y el comando `round` para mostrar solo un decimal.
 
-```{r}
+```{r apoyo desc}
 round(prop.table(table(lapop21$ing4rec))*100, 1)
 ```
 
@@ -105,12 +107,13 @@ Este gráfico muestra los resultados de las 2 categorías definidas de la variab
 Sin embargo, esta variable tiene valores perdidos.
 Para poder tener una tabla con los valores perdidos, se puede usar el comando `table` con la especificación `useNA = "always"`.
 
-```{r}
+```{r apoyo round}
 round(prop.table(table(lapop21$ing4rec, useNA = "always"))*100, 1)
 ```
 
 En esta tabla se ve que existe un 6.4% de casos perdidos del total de observaciones.
 La presentación de valores perdidos en tablas o gráficos depende del investigador.
+Aquí vamos a presentar los gráficos sobre los datos válidos.
 
 ## Graficar la variable
 
@@ -119,57 +122,62 @@ Una posibilidad es tener un gráfico circular.
 Se puede usar el comando `pie` que es parte de la sintaxis básica de R.
 Dentro de este comando se puede anidar el comando `table` para graficar estos valores.
 
-```{r}
+```{r pie}
 pie(table(lapop21$ing4rec))
 ```
 
 Este gráfico tiene algunas opciones de personalización.
 Por ejemplo, la especificación `labels=…` sirve para incluir el número de casos de cada sector y la especificación `col=…` sirve para definir los colores de los sectores.
 
-```{r}
+```{r pie color}
 pie(table(lapop21$ing4rec), labels=table(lapop21$ing4rec), col=1:2)
 ```
 
 Otra opción es usar un gráfico de barras.
 Usando los comandos básicos de R, se puede usar el comando `barplot`.
 
-```{r}
+```{r barra}
 barplot(prop.table(table(lapop21$ing4rec))*100, col=1:2)
 ```
 
 Los comando de base de R tienen un nivel de personalización, pero existe una librería especializada para hacer gráficos llamada `ggplot` con más opciones gráficas.
-Por ejemplo, para reproducir un gráfico de barras de la variable de apoyo a la democracia se llama a la librería `ggplot2`.
+En esta serie de módulos vamos a usar esta librería.
 
-En este ejemplo lo primero que tenemos que definir son los datos que se van a usar con la especificación `data=lapop`.
+Por ejemplo, para reproducir un gráfico de barras de la variable de apoyo a la democracia se llama a la librería `ggplot2`.
+Para graficar los datos de una variable de tipo factor, tenemos dos opciones: hacerlo desde la misma base de datos original o crear un nuevo objeto que guarde los resultados en una tabla.
+
+En este ejemplo partiremos de la segunda opción por ser más simple.
+Lo primero que tenemos que hacer es guardar la tabla en un objeto, como un dataframe.
+Para esto usamos el comando `as.data.frame` donde anidamos el código para producir la tabla.
+Este comando crea dos columna, "Var1" que guarda las etiquetas y "Freq" que guarda el valor de los porcentajes.
+
+```{r tabla1}
+tabla1 = as.data.frame(round(prop.table(table(lapop21$ing4rec))*100, 1))
+tabla1
+```
+
+Luego, tenemos que definir son los datos que se van a usar con la especificación `data=tabla1`.
+Ojo, no usaremos la base de datos original "lapop21", sino la "tabla1" donde hemos guardado los resultados.
+
 El comando `ggplot` trabaja sumando capas.
 La especificación `aes` sirve para definir la "estética" del gráfico.
 Generalmente se usa para indicar qué variable se va a graficar en qué eje (x o y).
 También se puede usar la especificación `fill=` para definir los grupos que se van a generar.
+En este caso, en el eje X queremos las categorías "Sí" y "No" y en el eje Y, los datos de "Freq".
 
 Luego de especificar los datos y los ejes, se tiene que especificar el tipo de gráfico que se quiere realizar.
-Esto se hace con las geometrías ("geom").
-Se define un gráfico de barras simple, usando el comando `geom_bar()`, donde internamente se define el ancho de la barra.
+Esto se hace con las geometrías ("geom_xxx").
+Se define un gráfico de barras simple, usando el comando `geom_bar(...)`, donde internamente especificamos `stat="identity"` para que este comando trabaje con los datos tal cual están en la tabla.
+También se define el ancho de la barra con la especificación `width`.
 Con la especificación `labs` se define las etiquetas de ejes y el "caption".
 Finalmente, con la especificación `coord_cartesian` se define los límites del eje Y de 0 a 80.
+Se debe notar que el gráfico no presenta una columna para el porcentaje de valores perdidos.
+Presentar esta columna es opción del investigador.
 
-```{r}
+```{r gg tabla}
 library(ggplot2)
-ggplot(data=lapop21, aes(x=ing4rec))+
-  geom_bar(aes(y=..prop..*100, group=1), width=0.5)+
-  labs(x="Apoyo a la democracia", y="Porcentaje", 
-       caption="Barómetro de las Américas por LAPOP, 2021")+
-  coord_cartesian(ylim=c(0, 80))
-```
-
-Tal como se definió el gráfico, se presenta una barra del porcentaje de casos perdidos.
-Si el investigador quisiera presentar un gráfico de porcentaje sobre el total de casos válidos, los casos perdidos deben ser eliminados.
-Se usa el comando `subset` nuevamente, pero dentro de `ggplot` para que el comando (internamente) trabaje con la variable pero sin considerar los valores perdidos.
-La sintaxis `!is.na()` hace que el comando no incluya los valores perdidos de una variable en los cálculos.
-Si se hubiera usado `!is.na()` fuera de `ggplot` creando una nueva variable, se hubieran eliminado todas las observaciones con valores perdidos, lo que disminuiría el N, afectando futuros cálculos.
-
-```{r}
-ggplot(data=subset(lapop21, !is.na(ing4rec)), aes(x=ing4rec))+
-  geom_bar(aes(y=..prop..*100, group=1), width=0.5)+
+ggplot(data=tabla1, aes(x=Var1, y=Freq))+
+  geom_bar(stat = "identity", width=0.5)+
   labs(x="Apoyo a la democracia", y="Porcentaje", 
        caption="Barómetro de las Américas por LAPOP, 2021")+
   coord_cartesian(ylim=c(0, 80))
@@ -198,7 +206,6 @@ Estas preguntas tienen como opciones de respuesta:
 Al momento de leer la base de datos en R, este programa importa las variables como "num", que la mayoría de funciones en R trata como numéricas.
 Estas variables se tienen que convertir a variables de tipo "factor" con el comando `as.factor`, pues son variables categóricas.
 Esta nuevas variables las guardamos en el dataframe.
-Aquí se ha usado el operador `=` que es similar al operador `<-` que asigna un procedimiento a un nuevo objeto de un dataframe de R.
 
 ```{r factor}
 lapop18$smedia1r = as.factor(lapop18$smedia1)
@@ -210,9 +217,9 @@ Estas nuevas variables de tipo factor se tienen que etiquetar con el comando `le
 Se usa un vector con las etiquetas concatenadas, usando el comando `c()`.
 
 ```{r etiqueta}
-levels(lapop18$smedia1r) <- c("Sí", "No")
-levels(lapop18$smedia4r) <- c("Sí", "No")
-levels(lapop18$smedia7r) <- c("Sí", "No")
+levels(lapop18$smedia1r) = c("Sí", "No")
+levels(lapop18$smedia4r) = c("Sí", "No")
+levels(lapop18$smedia7r) = c("Sí", "No")
 ```
 
 ## Calcular las variables de usuarios de redes sociales
@@ -221,9 +228,9 @@ Como vimos en un módulo anterior, se puede calcular nuevas variables con valore
 De esta manera, se crea las variables de usuarios de redes sociales.
 
 ```{r usuario}
-lapop18$fb_user <- ifelse(lapop18$smedia1==1 & lapop18$smedia2<=4, 1, 0)
-lapop18$tw_user <- ifelse(lapop18$smedia4==1 & lapop18$smedia5<=4, 1, 0)
-lapop18$wa_user <- ifelse(lapop18$smedia7==1 & lapop18$smedia8<=4, 1, 0)
+lapop18$fb_user = ifelse(lapop18$smedia1==1 & lapop18$smedia2<=4, 1, 0)
+lapop18$tw_user = ifelse(lapop18$smedia4==1 & lapop18$smedia5<=4, 1, 0)
+lapop18$wa_user = ifelse(lapop18$smedia7==1 & lapop18$smedia8<=4, 1, 0)
 ```
 
 ## Describir las variables
@@ -262,18 +269,18 @@ Para fines de presentación podría ser mejor construir una sola tabla.
 Se puede guardar las tablas parciales en nuevos objetos con el operador `<-` y luego unirlas como filas con el comando `rbind` en un nuevo dataframe "tabla", de tal manera que las respuestas a cada red social aparezcan en filas.
 
 ```{r tablajunta}
-Facebook <- round(prop.table(table(lapop18$smedia1r)), 3)*100
-Twitter <- round(prop.table(table(lapop18$smedia4r)), 3)*100
-Whatsapp <- round(prop.table(table(lapop18$smedia7r)), 3)*100
-tabla <- as.data.frame(rbind(Facebook, Twitter, Whatsapp))
-tabla
+Facebook = round(prop.table(table(lapop18$smedia1r)), 3)*100
+Twitter = round(prop.table(table(lapop18$smedia4r)), 3)*100
+Whatsapp = round(prop.table(table(lapop18$smedia7r)), 3)*100
+tabla2 = as.data.frame(rbind(Facebook, Twitter, Whatsapp))
+tabla2
 ```
 
 Para tener una mejor presentación de la tabla, se puede usar el comando `kable` del paquete `knitr`, usando la tabla construida anteriormente.
 
 ```{r tablamejorada, results='asis'}
 library(knitr)
-knitr::kable(tabla, format="markdown")
+knitr::kable(tabla2, format="markdown")
 ```
 
 ## Graficar las variables
@@ -285,7 +292,7 @@ En el Gráfico 3.1 del reporte se observa que se reportan estos datos mediante u
 Se puede reproducir ese gráfico usando el comando `pie` que es parte de la sintaxis básica de R.
 Dentro de este comando se puede anidar el comando `table` para graficar estos valores.
 
-```{r pie}
+```{r pie2}
 pie(table(lapop18$smedia1r))
 ```
 
@@ -297,70 +304,26 @@ barplot(prop.table(table(lapop18$smedia1r)))
 ```
 
 Estos comandos gráficos tienen opciones para adecuar el gráfico, por ejemplo, para incluir los porcentajes y adecuar las escalas.
-Pero, para tener más opciones gráficas, podemos usar el paquete `ggplot` para reproducir el gráfico circular.
 
-En este ejemplo lo primero que tenemos que definir son los datos que se van a usar.
-Se ha usado el comando `subset` nuevamente, pero dentro de `ggplot` para que el comando (internamente) trabaje con la variable pero sin los valores perdidos.
-La sintaxis `!is.na()` hace que el comando no incluya los valores perdidos de una variable en los cálculos.
-Si se hubiera usado `data=lapop` el gráfico hubiera incluido un gran sector correspondiente a la proporción de NA.
-Si se hubiera usado `!is.na()` fuera de `ggplot` creando una nueva variable, se hubieran eliminado todas las observaciones con valores perdidos, lo que disminuiría el N, afectando futuros cálculos.
+Pero, como mencionamos más arriba, para tener más opciones gráficas, usaremos el paquete `ggplot` para reproducir el gráfico circular y a lo largo de estos módulos.
 
-El comando `ggplot` trabaja sumando capas.
-La especificación `aes` sirve para definir la "estética" del gráfico.
-Generalmente se usa para indicar qué variable se va a graficar en qué eje (x o y).
-También se puede usar la especificación `fill=` para definir los grupos que se van a generar.
+Lo primero que tenemos que hacer es crear una tabla que guarde los datos que queremos graficar sobre los usuarios de Facebook.
+Recordemos que tenemos una tabla con estos resultados donde la primera fila muestra las etiquetas "Sí" y "No" y la segunda fila los porcentajes.
+Requerimos que las etiquetas estén como columnas y los porcentajes también.
+Para esto tenemos que transponer la tabla, que significa "darle la vuelta".
+Luego, esta nueva tabla la guardamos como un dataframe con el comando `as.data.frame` que crea tres columnas "Var1" (sin interés), "Var2" con las etiquetas y Freq con los porcentajes.
 
-Luego de especificar los datos y los ejes, se tiene que especificar el tipo de gráfico que se quiere realizar.
-Esto se hace con las geometrías ("geom").
-No existe una geometría directa para hacer un gráfico circular, por lo que se tiene que usar inicialmente un gráfico de barras simple, usando el comando `geom_bar()`, donde internamente se define el ancho de la barra.
-Si dejáramos la sintaxis en este punto, se generaría una barra que se dividiría entre los valores de la variable "smedia1r".
-Para genera el gráfico circular, se tiene que agregar otro comando `coord_polar`, que transforma la barra a coordenadas polares, creando un gráfico circular.
-
-```{r ggpie, message=FALSE, warning=FALSE}
-library(ggplot2) #librería especializada en gráficos
-ggplot(data=subset(lapop18, !is.na(smedia1r)), aes(x="", fill=smedia1r))+
-  geom_bar(width=1) +
-  coord_polar("y", start=0)
+```{r tabla Face}
+Face = as.data.frame(t(Facebook))
+Face
 ```
 
-El gráfico anterior ha partido desde el mismo dataframe "lapop18", usando los datos de "smedia1r".
-Sin embargo, para manipular mejor el gráfico es más fácil crear un nuevo dataframe con los datos agregados (frecuencia y %).
-Es decir, guardar en un nuevo dataframe los datos de resultados de la tabla de "smedia1r".
-Luego se usa ese nuevo dataframe para hacer el pie con `ggplot`.
+Con esta tabla podemos crear un gráfico de barras como el visto más arriba.
+Otro tipo de barras que se usa frecuentemente es del tipo de barras apiladas al 100%.
 
-Un aspecto a resaltar es que en este caso se está usando el tidyverse, que incluye el comando pipe `%>%` de la librería `dplyr`, que es una forma (un poco) diferente de escribir códigos en R, de manera concatenada, paso a paso.
-Una explicación simple de cómo se usa el pipe se puede encontrar [aquí](https://psyr.djnavarro.net/prelude-to-data.html#124_the_pipe,_%%).
-
-Lo primero que hay que notar es que se va a crear un nuevo objeto llamado "df".
-En este objeto se va a guardar información que viene del dataframe "lapop18".
-Se usa el comando `subset` para eliminar los valores perdidos de "smedia1r" del cálculo de los porcentajes.
-Luego (`%>%`), estos datos se van a agrupar por categorías de la variable "smedia1r".
-A continuación (`%>%`), en cada grupo se calcula el total de observaciones con el comando `summarise(n = n())`.
-Finalmente (último paso con `%>%`), con este total por grupos se calcula los porcentajes y se guarda estos porcentajes en una nueva columna "per".
-
-```{r tablaresumen, message=FALSE, warning=FALSE}
-library(dplyr)
-df <- subset(lapop18, !is.na(smedia1r)) %>%
-      group_by(smedia1r) %>% 
-      dplyr::summarise(n = n()) %>%
-      mutate(per=round(n/sum(n), 3)*100)
-df
-```
-
-Con esta sintaxis se crea una tabla donde se tiene el total de observaciones y el porcentaje por cada categoría de la variable "smedia1r".
-Una forma más directa de crear los mismos datos es usando la librería `janitor` y el comando `tabyl`.
-En R existen múltiples maneras de llegar a los mismos resultados.
-
-```{r tablaresumen2, message=FALSE, warning=FALSE}
-library(janitor)
-subset(lapop18, !is.na(smedia1r)) %>%
-  tabyl(smedia1r)
-```
-
-Una vez que tenemos la tabla, podemos usarla para trabajar el gráfico circular con `ggplot`.
-Nótese que en este caso los datos que se usan vienen del dataframe df (no de lapop18).
-Este dataframe tiene una columna llamada "per" con los porcentajes respectivos que se grafican en el eje Y.
-Igual que en el caso anterior, para hacer el gráfico circular, se parte del gráfico de barras (por eso `geom_bar`), que luego se pasa a coordenadas polares (por eso `coord_polar`).
+Vamos a crear una barra apilada con estos resultados.
+A diferencia del gráfico de barras convencional, las barras apiladas requieren que en la `aes(x="", y=Freq, fill=Var2)`.
+Es decir, que no haya etiquetas en el eje X, que el eje Y muestre los porcentajes (guardados en "Freq") y que la barra esté separada por las categorías (guardadas en "Var2").
 
 Se agrega una capa de texto, con la especificación `geom_text`.
 Dentro de esta especificación se determina una "estética" con la etiqueta del dato `aes(label=...)`, donde se junta con el comando `paste` el dato del porcentaje "per" y el símbolo "%", con un espacio (`sep=...`) entre ellos.
@@ -371,46 +334,44 @@ El comando `ggplot` puede incluir varios "temas" para el gráfico.
 En este caso se ha usado `theme_void()` que indica un fondo vacío.
 Finalmente, con la especificación `scale_fill_discrete(name=...)` se puede cambiar el título de la leyenda para que no aparezca el nombre de la variable, sino una etiqueta más adecuada.
 
-```{r ggpie2}
-ggplot(data=df, aes(x="", y=per, fill=smedia1r))+
+```{r gg apilada}
+ggplot(data=Face, aes(x="", y=Freq, fill=Var2))+
   geom_bar(width=1, stat="identity")+
-  geom_text(aes(label=paste(per, "%", sep="")), color="white",
+  geom_text(aes(label=paste(Freq, "%", sep="")), color="white",
+            position=position_stack(vjust=0.5), size=3)+
+  theme_void()+
+  scale_fill_discrete(name="¿Usa Facebook?")
+```
+
+Para crear un gráfico circular, no existe una "geometría" en `ggplot`.
+Sin embargo, para genera el gráfico circular, se tiene que agregar otro capa `coord_polar`, que transforma la barra a coordenadas polares, creando un gráfico circular.
+Todo el resto del código es similar al anterior.
+
+```{r gg pie2}
+ggplot(data=Face, aes(x="", y=Freq, fill=Var2))+
+  geom_bar(width=1, stat="identity")+
+  geom_text(aes(label=paste(Freq, "%", sep="")), color="white",
             position=position_stack(vjust=0.5), size=3)+
   coord_polar("y")+
   theme_void()+
   scale_fill_discrete(name="¿Usa Facebook?")
 ```
 
-Si en lugar de un gráfico circular se quiere presentar un gráfico de barras, con los datos del dataframe "lapop18" se puede utilizar el siguiente código.
-A diferencia del primer gráfico circular, ahora la especificación `aes(..)` incluye la variable "smedia1r" como variable a graficar en el eje X.
-Dentro del objeto geométrico `geom_bar()` se indica que la barra debe representar las proporciones en porcentajes `aes(y=..prop..*100, group=1)`.
-En este ejemplo, se ha incluido un etiqueta general para el gráfico y para los ejes con el comando `labs(...)`.
-En este comando también se puede agregar un "caption" para indicar la fuente de los datos.
-Finalmente, con la especificación `coord_cartesian(ylim=c(0,60))` se limita el eje Y a valores entre 0 y 60.
+Si quisiéramos regresar a hacer un gráfico de barras, podemos incluir el texto de los valores con `geom_text`, el título general del gráfico con `title` dentro de `labs`, los nombres de los ejes y el "caption".
 
-```{r barras}
-ggplot(data=subset(lapop18, !is.na(smedia1r)), aes(x=smedia1r))+
-  geom_bar(aes(y=..prop..*100, group=1), width=0.5)+
-  labs(title="¿Qué tan frecuente se usan las redes sociales?", x="Usuario de Facebook", y="Porcentaje", caption="Barómetro de las Américas por LAPOP, 2018/19")+
-  coord_cartesian(ylim=c(0, 60))
-```
-
-En este caso también se puede usar los datos agrupados del dataframe "df".
-A diferencia de la opción anterior, en "df" se cuenta con el dato del porcentaje, por lo que no se debe calcular en el código, por lo que en la especificación de la estética indica que en el eje X se debe mostrar las alternativas de la variable "smedia1r" y en el eje Y el porcentaje, de esta manera `aes(x=media1r, y=per)`.
-Por este motivo también en la especificación `geom_bar`, ahora en lugar de requerir el cálculo del porcentaje, solo se indica que replique los datos (con `stat="identity"`) de `aes`.
-Finalmente, en este caso le agregamos la capa de texto para incluir los porcentajes en cada columna, con la especificación `geom_text`.
-
-```{r tabla final}
-ggplot(df, aes(x=smedia1r, y=per))+
+```{r barra face}
+ggplot(Face, aes(x=Var2, y=Freq))+
   geom_bar(stat="identity",  width=0.5)+
-  geom_text(aes(label=paste(per, "%", sep="")), color="black", vjust=-0.5)+
-  labs(title="¿Qué tan frecuente se usan las redes sociales?", x="Usuario de Facebook", y="Porcentaje", caption="Barómetro de las Américas por LAPOP, 2018/19")+
+  geom_text(aes(label=paste(Freq, "%", sep="")), color="black", vjust=-0.5)+
+  labs(title="¿Qué tan frecuente se usan las redes sociales?", 
+       x="Usuario de Facebook", y="Porcentaje", 
+       caption="Barómetro de las Américas por LAPOP, 2018/19")+
   coord_cartesian(ylim=c(0, 60))
 ```
 
 # Resumen
 
-En este documento se ha trabajado con variables categóricas nominales, como si usa o no usa redes sociales.
+En este documento se ha trabajado con variables categóricas nominales, como apoyo a la democracia o si usa o no usa redes sociales.
 Se ha presentando las formas de cómo describir en tablas de frecuencia y cómo graficar estas variables, mediante gráficos circulares o de barras.
 
 # Cálculos incluyendo el efecto de diseño
@@ -443,7 +404,8 @@ Esta columna "per" es la que tiene los datos que graficaremos.
 Finalmente, se añade una columna "lab" con las etiquetas de cada fila de resultados.
 
 ```{r tabla fb}
-fb <- as.data.frame(descr::freq(lapop18$fb_user, lapop18$weight1500, plot = F))
+fb = as.data.frame(descr::freq(lapop18$fb_user, lapop18$weight1500, 
+                               plot = F))
 fb = fb[-c(3,4), -2]
 colnames(fb) = c("freq", "per")
 fb$lab = c("No", "Sí")
@@ -457,9 +419,11 @@ Nótese que ahora se usa el dataframe "fb" y que en aes se especifica que en el 
 ```{r barras ponderadas}
 ggplot(data=fb, aes(x=lab, y=per))+
   geom_bar(stat="identity",  width=0.5)+
-  geom_text(aes(label=paste(round(per, 1), "%", sep="")), color="black", vjust=-0.5)+
-  labs(title="¿Qué tan frecuente se usan las redes sociales?", x="Usuario de Facebook", 
-       y="Porcentaje", caption="Barómetro de las Américas por LAPOP, 2018/19")+
+  geom_text(aes(label=paste(round(per, 1), "%", sep="")), 
+            color="black", vjust=-0.5)+
+  labs(title="¿Qué tan frecuente se usan las redes sociales?", 
+       x="Usuario de Facebook", y="Porcentaje", 
+       caption="Barómetro de las Américas por LAPOP, 2018/19")+
   coord_cartesian(ylim=c(0, 60))
 ```
 
@@ -484,10 +448,11 @@ Como se indicó en esta [sección](https://arturomaldonado.github.io/BarometroEd
 
 ```{r survey}
 library(survey)
-diseno18<-svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
+diseno18 = svydesign(ids = ~upm, strata = ~estratopri, 
+                     weights = ~weight1500, nest=TRUE, data=lapop18)
 ```
 
-Una vez creado los datos con el factor de expansión en el objeto "lapop.design", se puede usar los comandos nativos del paquete `survey` para realizar cálculos.
+Una vez creado los datos con el factor de expansión en el objeto "diseno18", se puede usar los comandos nativos del paquete `survey` para realizar cálculos.
 Por ejemplo, para calcular la tabla de distribución de frecuencias se puede usar el comando `svytable`.
 
 ```{r svytable}

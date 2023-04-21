@@ -340,7 +340,7 @@ al_datos <- al %>%
 ```
 
 ```
-## Joining, by = "OBJECTID"
+## Joining with `by = join_by(OBJECTID)`
 ```
 
 En este nuevo objeto tenemos los datos vectoriales para crear el mapa y los datos del Barómetro del porcentaje de personas que tolera los golpes ejecutivos en cada país.
@@ -388,8 +388,8 @@ ggplot(al_datos) +
 ```
 
 ```
-## Warning in st_is_longlat(x): bounding box has potentially an invalid value range
-## for longlat data
+## Warning in st_is_longlat(x): bounding box has potentially an invalid value
+## range for longlat data
 ```
 
 ```
@@ -416,8 +416,8 @@ ggplot(al_datos) +
 ```
 
 ```
-## Warning in st_is_longlat(x): bounding box has potentially an invalid value range
-## for longlat data
+## Warning in st_is_longlat(x): bounding box has potentially an invalid value
+## range for longlat data
 ```
 
 ```
