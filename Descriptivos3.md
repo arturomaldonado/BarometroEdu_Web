@@ -45,8 +45,8 @@ Además, se seleccionan los datos de países con códigos menores o iguales a 35
 
 ```r
 library(rio)
-lapop18 <- import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
-lapop18 <- subset(lapop18, pais<=35)
+lapop18 = import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
+lapop18 = subset(lapop18, pais<=35)
 ```
 
 # Descriptivos para una variable numérica
@@ -86,8 +86,8 @@ Se multiplica por 100 para ponerlo en formato de 0 a 100.
 
 
 ```r
-lapop18$hombre <- 2-lapop18$q1
-lapop18$urban <- 2-lapop18$ur
+lapop18$hombre = 2-lapop18$q1
+lapop18$urban = 2-lapop18$ur
 mean(lapop18$hombre, na.rm=T)*100
 ```
 
@@ -107,7 +107,7 @@ Estos son los datos que se presentan en la primera columna de resultados de la p
 
 # Gráficos descriptivos
 
-Luego de describir una variable numérica, también puede incluir algunas gráficas básicas, por ejemplo, usando el comando `hist` se puede producir el histograma de la variable "años de educación" (ed).
+Luego de describir una variable numérica, también puede incluir algunas gráficas básicas, por ejemplo, usando el comando `hist`, que es parte del paquete de base de R, se puede producir el histograma de la variable "años de educación" (ed).
 
 
 ```r
@@ -137,15 +137,15 @@ ggplot(lapop18, aes(x=ed))+
 
 # Media por grupos
 
-En la Tabla3.2 del reporte, se presentan la media de estas variables numéricas por grupos de las variables relacionadas a las redes sociales.
+En la Tabla 3.2 del reporte se presentan la media de estas variables numéricas por grupos de las variables relacionadas a las redes sociales.
 Es decir, por ejemplo, el promedio de años de estudio para los usuarios de Facebook y para los no usuarios de Facebook.
 Si queremos calcular el promedio de años de estudio para los usuarios de Facebook, primero se calcula esta variable, de la misma manera que en secciones anteriores, con el comando `ifelse`.
 
 
 ```r
-lapop18$fb_user <- ifelse(lapop18$smedia1==1 & lapop18$smedia2<=4, 1, 0)
-lapop18$tw_user <- ifelse(lapop18$smedia4==1 & lapop18$smedia5<=4, 1, 0)
-lapop18$wa_user <- ifelse(lapop18$smedia7==1 & lapop18$smedia8<=4, 1, 0)
+lapop18$fb_user = ifelse(lapop18$smedia1==1 & lapop18$smedia2<=4, 1, 0)
+lapop18$tw_user = ifelse(lapop18$smedia4==1 & lapop18$smedia5<=4, 1, 0)
+lapop18$wa_user = ifelse(lapop18$smedia7==1 & lapop18$smedia8<=4, 1, 0)
 ```
 
 El cálculo del promedio de años para los usuarios y no usuarios de Facebook se puede hacer de muchas maneras.
@@ -217,34 +217,12 @@ describeBy(lapop18$ed, lapop18$fb_user)
 ## X1    1 14998 11.45 3.59     12   11.52 2.97   0  18    18 -0.24        0 0.03
 ```
 
-Esta misma información se puede obtener usando el modo de códigos del tidyverse (con el operador pype `%>%`) y se puede guardar en una tabla.
-Esta tabla puede guardar los datos de la edad promedio para los usuarios y no usuarios de Whatsapp y además la desviación estándar de cada grupo.
-En primer lugar definimos con qué dataframe se trabaja.
-Luego, se indica que no se usen internamente los valores perdidos de la variable usuarios de Whatsapp con `filter(!is.na(wa_user))`.
-A continuación se indica que se va a trabajar en grupos de la variable usuarios de Whatsapp con `group_by(wa_user)`.
-Finalmente, se indica que en cada grupo se calculará la media y la desviación estándar, con `summarise`.
-
-
-```r
-library(dplyr)
-whatxedad <- lapop18 %>%
-  filter(!is.na(wa_user)) %>%
-  group_by(wa_user) %>%
-  summarise(promedio = mean(q2, na.rm=T), sd = sd(q2, na.rm=T))
-whatxedad
-```
-
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["wa_user"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["promedio"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"0","2":"48.25723","3":"18.04314"},{"1":"1","2":"35.38153","3":"13.86258"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-
 # Gráficos descriptivos por grupos
 
 El reporte no lo muestra, pero se pueden presentar gráficos para cada grupo para facilitar la comparación de una variable.
-Para hacer estos gráficos comparativos por grupo, vamos a seguir usando el tidyverse.
-Igual que en la tabla anterior, se define el dataframe y se indica que no se tome en cuenta los valores perdidos de la variable "wa_user".
+Para hacer estos gráficos comparativos por grupo, vamos a seguir usando la librería `tidyverse` y el comando `ggplot` para graficar variables.
+Igual que en la tabla anterior, se define el dataframe "lapop18" y se indica que no se tome en cuenta los valores perdidos de la variable "wa_user" con el comando `subset(lapop18, wa_use!="NA"`. Si no se incluyera esta especificación, se crearía un histograma de edad para el grupo de observaciones con NAs en un tercer panel.
+
 Luego, se indica que se haga un gráfico, con `ggplot` que tenga la variable "q2" en el eje X.
 Se define que este gráfico sea un histograma con `geom_histogram()`.
 Una novedad es que, con la especificación `facet_wrap(~wa_user)` se puede indicar que se hagan gráficos por cada grupo de esa variable.
@@ -252,9 +230,8 @@ Finalmente, se etiquetan los ejes.
 
 
 ```r
-lapop18 %>%
-  filter(!is.na(wa_user)) %>%
-  ggplot(aes(x=q2))+
+library(tidyverse)
+ggplot(subset(lapop18, wa_user!="NA"), aes(x=q2))+
   geom_histogram()+
   facet_wrap(~wa_user)+
   xlab("Edad")+
@@ -270,11 +247,11 @@ Para que aparezcan las etiquetas de la variable, se tiene que transformar "wa_us
 
 ```r
 lapop18$wa_user = as.factor(lapop18$wa_user)
-levels(lapop18$wa_user) <- c("No usuario", "Usuario")
+levels(lapop18$wa_user) = c("No usuario", "Usuario")
 ```
 
 Otra forma de comparar la distribución de edad por grupos de usuarios o no usuarios de Whatsapp es mediante un gráfico de cajas o boxplot.
-Con el comando `boxplot` se puede hacer estos gráficos.
+Con el comando `boxplot`, que es parte de los comandos de base de R, se puede hacer estos gráficos.
 El comando pide primero la variable en el eje Y, luego la variable que define los grupos y el dataframe.
 Se puede etiquetar el eje X y Y con los nombres de las variables.
 Como la variable "wa_user" ha sido transformada a factor y etiquetada, ahora aparecen las etiquetas.
@@ -285,6 +262,18 @@ boxplot(q2 ~ wa_user, data=lapop18, xlab ="Usuario de Whatsapp", ylab="Edad")
 ```
 
 ![](Descriptivos3_files/figure-html/boxplot edadxWha-1.png)<!-- -->
+
+Este gráfico también lo podemos reproducir con la librería `ggplot`.
+
+
+```r
+ggplot(subset(lapop18, wa_user!="NA"), aes(x=wa_user, y=q2))+
+  geom_boxplot()+
+  ylab("Edad")+
+  xlab("Usuario de Whatsapp")
+```
+
+![](Descriptivos3_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
 # Resumen
 
@@ -336,7 +325,7 @@ Para esto se tiene que definir el diseño muestral con el comando `svydesign` y 
 
 ```r
 library(survey)
-diseno18 <-svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
+diseno18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
 ```
 
 Para calcular el promedio, se usa el comando `svymean` y se usa la especificación `na.rm=T` debido a que estas variables cuentan con valores perdidos.
