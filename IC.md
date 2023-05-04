@@ -26,7 +26,7 @@ h1 {color: #3366CC;}
 
 # Introducción
 
-En este documento veremos como construir intervalos de confianza de la media usando los datos del Barómetro de las Américas.
+En este documento veremos cómo construir intervalos de confianza de la media usando los datos del Barómetro de las Américas.
 Para eso, vamos a usar los reportes "El pulso de la democracia" de 2018/19, disponible [aquí](https://www.vanderbilt.edu/lapop/ab2018/2018-19_AmericasBarometer_Regional_Report_Spanish_W_03.27.20.pdf), y de 2021, disponible [aquí](https://www.vanderbilt.edu/lapop/ab2021/2021_LAPOP_AmericasBarometer_Pulse_of_Democracy.pdf).
 En la ronda 2018/19, una de las secciones de este informe, reporta los datos sobre redes sociales y actitudes políticas.
 En particular, se reporta, en el gráfico 3.9, el grado de satisfacción con la democracia por tipo de usuario de redes sociales.
@@ -47,22 +47,23 @@ Además, se seleccionan los datos de países con códigos menores o iguales a 35
 
 ```r
 library(rio)
-lapop18 <- import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
-lapop18 <- subset(lapop18, pais<=35)
+lapop18 = import("https://raw.github.com/lapop-central/materials_edu/main/LAPOP_AB_Merge_2018_v1.0.sav")
+lapop18 = subset(lapop18, pais<=35)
 ```
 
 También cargamos la base de datos de la ronda 2021.
 
 
 ```r
-lapop21 = import("lapop21.RData")
-lapop21 <- subset(lapop21, pais<=35)
+lapop21 = import("https://raw.github.com/lapop-central/materials_edu/main/lapop21.RData")
+lapop21 = subset(lapop21, pais<=35)
 ```
 
 # Tolerancia a los golpes ejecutivos
 
 El gráfico 1.7 del reporte El pulso de la Democracia para la ronda del Barómetro de las Américas 2021 presenta los resultados del porcentaje de ciudadanos que tolera un golpe ejecutivo.
-Este gráfico, además, presente el intervalo de confianza al 95% de este porcentaje en cada país.
+En el gráfico estos datos están representados por la altura de la barra.
+Este gráfico, además, presente el intervalo de confianza al 95% de este porcentaje en cada país, graficado como una líneas punteadas alrededor de la punto máximo de la barra, que indica el límite inferior y superior del intervalo de confianza.
 
 ![](Figure1.7.png){width="564"}
 
@@ -79,7 +80,7 @@ En este caso se usa el comando `recode` y se tabula, mediante `table`, para veri
 
 
 ```r
-lapop21$jc15ar <- car::recode(lapop21$jc15a, "1=100; 2=0")
+lapop21$jc15ar = car::recode(lapop21$jc15a, "1=100; 2=0")
 table(lapop21$jc15ar)
 ```
 
@@ -151,8 +152,8 @@ Se guarda este cambio en una nueva variable "paises", la que se etiqueta con las
 
 
 ```r
-lapop21$paises <- as.factor(lapop21$pais)
-levels(lapop21$paises) <- c("MX", "GT", "SV", "HN", "NI", "CR",
+lapop21$paises = as.factor(lapop21$pais)
+levels(lapop21$paises) = c("MX", "GT", "SV", "HN", "NI", "CR",
                             "PN", "CO", "EC", "BO", "PE",
                             "PY", "CL", "UY", "BR", "AR", "DO",
                             "HT", "JA", "GU")
@@ -168,42 +169,7 @@ table(lapop21$paises)
 ```
 
 Para calcular estos porcentajes por país, se puede usar varias alternativas.
-Por ejemplo, el comando `tapply` permite calcular la media de una variable por grupos de otra variable.
-
-
-```r
-tapply(lapop21$jc15ar, lapop21$paises, mean, na.rm=T)
-```
-
-```
-##        MX        GT        SV        HN        NI        CR        PN        CO 
-## 30.312500 36.687307 48.068670 22.660819 31.111111       NaN 28.962444 35.041447 
-##        EC        BO        PE        PY        CL        UY        BR        AR 
-## 31.944444 32.082414 43.805613 34.459459 16.544118  8.552632 23.862069 13.795620 
-##        DO        HT        JA        GU 
-## 25.495959 44.042553 30.583215       NaN
-```
-
-Otra forma es usar las librerías `plyr` y `dplyr` que incluye el comando `ddply`.
-Este comando requiere que se defina el dataframe "lapop21", la variable de agrupamiento "paises" y luego las funciones que se requiere en cada grupo, que en este caso son "mean" y "sd".
-
-
-```r
-library(plyr)
-library(dplyr)
-ddply(lapop21, "paises", summarise, mean=mean(jc15ar, na.rm=T), sd=sd(jc15ar, na.rm=T))
-```
-
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["paises"],"name":[1],"type":["fct"],"align":["left"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"MX","2":"30.312500","3":"45.99683"},{"1":"GT","2":"36.687307","3":"48.23249"},{"1":"SV","2":"48.068670","3":"49.99846"},{"1":"HN","2":"22.660819","3":"41.89433"},{"1":"NI","2":"31.111111","3":"46.32915"},{"1":"CR","2":"NaN","3":"NA"},{"1":"PN","2":"28.962444","3":"45.37325"},{"1":"CO","2":"35.041447","3":"47.72796"},{"1":"EC","2":"31.944444","3":"46.64234"},{"1":"BO","2":"32.082414","3":"46.69652"},{"1":"PE","2":"43.805613","3":"49.63180"},{"1":"PY","2":"34.459459","3":"47.54144"},{"1":"CL","2":"16.544118","3":"37.17149"},{"1":"UY","2":"8.552632","3":"27.97656"},{"1":"BR","2":"23.862069","3":"42.63874"},{"1":"AR","2":"13.795620","3":"34.49799"},{"1":"DO","2":"25.495959","3":"43.59987"},{"1":"HT","2":"44.042553","3":"49.69672"},{"1":"JA","2":"30.583215","3":"46.09229"},{"1":"GU","2":"NaN","3":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-
-Como se observa en la tabla, no hay datos para Costa Rica, ni para Guyana.
-Con el cálculo de la desviación estándar, se podría calcular el límite inferior y superior del intervalo de confianza.
-
-Esto se puede hacer de manera directa con la librería `Rmisc`.
+Una de las maneras más directas es con la librería `Rmisc`.
 Esta librería tiene el comando `group.CI`, que calcula la media, el límite inferior y superior de una variable por grupos de otra variable.
 Esta tabla se guarda en un objeto llamado "golpe".
 Este comando no incluye las filas de los países donde no hay datos, por lo que no hay filas de Costa Rica ni de Guyana.
@@ -211,7 +177,7 @@ Este comando no incluye las filas de los países donde no hay datos, por lo que 
 
 ```r
 library(Rmisc)
-golpe <- group.CI(jc15ar~paises, lapop21)
+golpe = group.CI(jc15ar~paises, lapop21)
 golpe
 ```
 
@@ -232,7 +198,7 @@ Para poder ordenar las barras de acuerdo al valor de la variable, se puede usar 
 
 ```r
 library(ggplot2)
-graf1 <- ggplot(golpe, aes(x=reorder(paises, -jc15ar.mean), y=jc15ar.mean))+
+graf1 = ggplot(golpe, aes(x=reorder(paises, -jc15ar.mean), y=jc15ar.mean))+
   geom_bar(width=0.5, fill="darkslategray3", colour="#69b3a2", stat="identity")+
   geom_errorbar(aes(ymin=jc15ar.lower, ymax=jc15ar.upper), width=0.4, 
                 color="darkcyan", cex=0.4, linetype=3)+
@@ -250,6 +216,7 @@ Más adelante, se verá cómo incluir el efecto de diseño para replicar el grá
 # Satisfacción con la democracia
 
 El gráfico 3.9 del reporte El Pulso de la Democracia de la ronda 2018/19 presenta el porcentaje de entrevistados que está satisfecho con la democracia por tipo de usuarios de redes sociales.
+El porcentaje está marcado como un punto y el intervalo de confianza como un área gris alrededor de estos puntos.
 
 ![](Graf3.9.png){width="413"}
 
@@ -277,7 +244,7 @@ table(lapop18$pn4)
 ```
 
 ```r
-lapop18$pn4rr <- car::recode(lapop18$pn4, "1:2=100; 3:4=0")
+lapop18$pn4rr = car::recode(lapop18$pn4, "1:2=100; 3:4=0")
 table(lapop18$pn4rr)
 ```
 
@@ -391,15 +358,15 @@ table(lapop18$smedia8)
 ```
 
 ```r
-lapop18$smedia2r <- car::recode(lapop18$smedia2, "1:2=1; 3:4=2; 5=3")
-lapop18$smedia5r <- car::recode(lapop18$smedia5, "1:2=1; 3:4=2; 5=3")
-lapop18$smedia8r <- car::recode(lapop18$smedia8, "1:2=1; 3:4=2; 5=3")
-lapop18$smedia2r <- as.factor(lapop18$smedia2r)
-lapop18$smedia5r <- as.factor(lapop18$smedia5r)
-lapop18$smedia8r <- as.factor(lapop18$smedia8r)
-levels(lapop18$smedia2r) <- c("Alto uso", "Bajo uso", "No usuario")
-levels(lapop18$smedia5r) <- c("Alto uso", "Bajo uso", "No usuario")
-levels(lapop18$smedia8r) <- c("Alto uso", "Bajo uso", "No usuario")
+lapop18$smedia2r = car::recode(lapop18$smedia2, "1:2=1; 3:4=2; 5=3")
+lapop18$smedia5r = car::recode(lapop18$smedia5, "1:2=1; 3:4=2; 5=3")
+lapop18$smedia8r = car::recode(lapop18$smedia8, "1:2=1; 3:4=2; 5=3")
+lapop18$smedia2r = as.factor(lapop18$smedia2r)
+lapop18$smedia5r = as.factor(lapop18$smedia5r)
+lapop18$smedia8r = as.factor(lapop18$smedia8r)
+levels(lapop18$smedia2r) = c("Alto uso", "Bajo uso", "No usuario")
+levels(lapop18$smedia5r) = c("Alto uso", "Bajo uso", "No usuario")
+levels(lapop18$smedia8r) = c("Alto uso", "Bajo uso", "No usuario")
 table(lapop18$smedia2r)
 ```
 
@@ -430,54 +397,8 @@ table(lapop18$smedia8r)
 ```
 
 Con estas variables recodificadas, se puede calcular las medias (que son los porcentajes) de satisfacción con la democracia por cada grupo de consumo de información en redes sociales.
-Esto se puede hacer de múltiples maneras.
-Si se requiere comparar las medias, se puede usar el comando `tapply`.
 
-
-```r
-tapply(lapop18$pn4rr, lapop18$smedia2r, mean, na.rm=T) #Facebook
-```
-
-```
-##   Alto uso   Bajo uso No usuario 
-##   37.55182   37.94466   40.74074
-```
-
-```r
-tapply(lapop18$pn4rr, lapop18$smedia5r, mean, na.rm=T) #Twitter
-```
-
-```
-##   Alto uso   Bajo uso No usuario 
-##   39.66777   37.37542   41.78404
-```
-
-```r
-tapply(lapop18$pn4rr, lapop18$smedia8r, mean, na.rm=T) #Whatsapp
-```
-
-```
-##   Alto uso   Bajo uso No usuario 
-##   37.39093   38.92100   43.37349
-```
-
-Otra opción que puede presentar tanto la media como la desviación estándar es mediante la librería `plyr` y el comando `ddply`.
-El código solo para Facebook sería:
-
-
-```r
-library(plyr)
-ddply(lapop18, "smedia2r", summarise, mean=mean(pn4rr, na.rm=T), sd=sd(pn4rr, na.rm=T))
-```
-
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["smedia2r"],"name":[1],"type":["fct"],"align":["left"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Alto uso","2":"37.55182","3":"48.42747"},{"1":"Bajo uso","2":"37.94466","3":"48.54092"},{"1":"No usuario","2":"40.74074","3":"49.24932"},{"1":"NA","2":"41.80890","3":"49.32656"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-
-Es importante notar que en este caso no hemos indicado que internamente no se trabaje con los valores perdidos (usando la especificación `filter(!is.na(wa_user))`), por lo que la tabla anterior presenta una fila de las observaciones NA de usuario de la red social, donde se calcula el promedio y la desviación estándar de la variable satisfacción con la democracia.
-Finalmente, una opción que permite mostrar muchos estadísticos por cada grupo es `describeBy` de la librería `psych`.
+Una opción que permite mostrar muchos estadísticos por cada grupo es `describeBy` de la librería `psych`.
 El código para Twitter es:
 
 
@@ -550,9 +471,9 @@ Finalmente, se etiqueta el eje X y Y con `xlab` y `ylab` y se define los límite
 
 
 ```r
-tw.uso <- group.CI(pn4rr~smedia5r, lapop18)
+tw.uso = group.CI(pn4rr~smedia5r, lapop18)
 library(ggplot2)
-graf2 <- ggplot(tw.uso, aes(x=smedia5r, y=pn4rr.mean))+
+graf2 = ggplot(tw.uso, aes(x=smedia5r, y=pn4rr.mean))+
   geom_bar(width=0.5, fill="darkcyan", colour="black", stat="identity")+
   geom_errorbar(aes(ymin=pn4rr.lower, ymax=pn4rr.upper), width=0.2)+
   geom_text(aes(label=paste(round(pn4rr.mean, 1), "%")), vjust=-4.2, size=4)+
@@ -579,9 +500,9 @@ En este comando, usamos la especificación `na.rm=T` para que la suma no tome en
 
 
 ```r
-lapop18$sm2 <- ifelse(lapop18$smedia2==1 | lapop18$smedia2==2, 1, 0)
-lapop18$sm5 <- ifelse(lapop18$smedia5==1 | lapop18$smedia5==2, 1, 0)
-lapop18$sm8 <- ifelse(lapop18$smedia8==1 | lapop18$smedia8==2, 1, 0)
+lapop18$sm2 = ifelse(lapop18$smedia2==1 | lapop18$smedia2==2, 1, 0)
+lapop18$sm5 = ifelse(lapop18$smedia5==1 | lapop18$smedia5==2, 1, 0)
+lapop18$sm8 = ifelse(lapop18$smedia8==1 | lapop18$smedia8==2, 1, 0)
 lapop18$anyhi = rowSums(lapop18[,89:91], na.rm=T)
 table(lapop18$anyhi)
 ```
@@ -594,7 +515,7 @@ table(lapop18$anyhi)
 
 Partiendo de esta variable, se crea una variable que agrega las tres redes sociales, llamada "hi_lo_non".
 Primero, se crea esta variable como un vector de NAs.
-Luego se le imputa valores de 1, 2, 3 o NA, dependiendo de los valores de "anyhi o de los valores de las variables de redes sociales. Luego se crea una nueva variable de tipo factor, con idénticos valores que "hi_lo_non" y se etiqueta. La definición de la condicionalidad se trabaja mediante los corchetes `[...]`. De esta manera, se define las condiciones de la siguiente manera:
+Luego se le imputa valores de 1, 2, 3 o NA, dependiendo de los valores de "anyhi o de los valores de las variables de redes sociales. Luego se crea una nueva variable de tipo factor, con idénticos valores que"hi_lo_non" y se etiqueta. La definición de la condicionalidad se trabaja mediante los corchetes `[...]`. De esta manera, se define las condiciones de la siguiente manera:
 
 -   La variable "hi_lo_non es igual a 1 si la variable anyhi es mayor o igual a 1 (uso diario o algunas veces a la semana) = `lapop18$hi_lo_non[lapop18$anyhi>=1] <- 1`
 
@@ -606,19 +527,15 @@ Las siguiente reglas de codificación siguen la misma lógica de combinación de
 
 
 ```r
-lapop18$hi_lo_non <- NA #se crea un vector con NAs#
-lapop18$hi_lo_non[lapop18$anyhi>=1] <- 1 #Se codifica 1 a los que usan diariamente o algunas veces a la semana alguna red social#
-lapop18$hi_lo_non[lapop18$anyhi==0] <- 2 #Se codifica como 2 a los que usan algunas veces al mes y al año alguna red social#
-lapop18$hi_lo_non[lapop18$smedia1==2 & lapop18$smedia4==2 & lapop18$smedia7==2] <- 3 #Se codifica como 3 a los que no tiene redes sociales#
-lapop18$hi_lo_non[lapop18$smedia2==5 & lapop18$smedia5==5 & lapop18$smedia8==5] <- 3 #Se codifica como 3 a los que nunca usan ninguna red social#
-lapop18$hi_lo_non[lapop18$pais==3 & (lapop18$smedia2==5 | lapop18$smedia5==5 | lapop18$smedia8==5)] <- 3 #Se aplica un código particular a pais 3#
-lapop18$hi_lo_non[lapop18$pais==3 & (lapop18$smedia1==2 | lapop18$smedia4==2 | lapop18$smedia7==2)] <- 3 #Se aplica un código particular a pais 3#
-lapop18$hi_lo_non[lapop18$hi_lo_non != 1 & (lapop18$smedia2==NA | lapop18$smedia5==NA | lapop18$smedia8==NA)] <- NA #Se codifican los valores perdidos como perdidos#
-lapop18$hi_lo_non[lapop18$hi_lo_non != 1 & (lapop18$smedia1==NA | lapop18$smedia4==NA | lapop18$smedia7==NA)] <- NA
-lapop18$hi_lo_non[lapop18$smedia1==NA & lapop18$smedia4==NA & lapop18$smedia7==NA] <- NA
-lapop18$hi_lo_non[lapop18$hi_lo_non !=3 & lapop18$smedia2==NA & lapop18$smedia5==NA & lapop18$smedia8==NA] <- NA
-lapop18$hilon <- as.factor(lapop18$hi_lo_non)
-levels(lapop18$hilon) <- c("Alto uso", "Bajo uso", "No usuario")
+lapop18$hi_lo_non = NA #se crea un vector con NAs#
+lapop18$hi_lo_non[lapop18$anyhi>=1] = 1 #Se codifica 1 a los que usan diariamente o algunas veces a la semana alguna red social#
+lapop18$hi_lo_non[lapop18$anyhi==0] = 2 #Se codifica como 2 a los que usan algunas veces al mes y al año alguna red social#
+lapop18$hi_lo_non[lapop18$smedia1==2 & lapop18$smedia4==2 & lapop18$smedia7==2] = 3 #Se codifica como 3 a los que no tiene redes sociales#
+lapop18$hi_lo_non[lapop18$smedia2==5 & lapop18$smedia5==5 & lapop18$smedia8==5] = 3 #Se codifica como 3 a los que nunca usan ninguna red social#
+lapop18$hi_lo_non[lapop18$pais==3 & (lapop18$smedia2==5 | lapop18$smedia5==5 | lapop18$smedia8==5)] = 3 #Se aplica un código particular a pais 3#
+lapop18$hi_lo_non[lapop18$pais==3 & (lapop18$smedia1==2 | lapop18$smedia4==2 | lapop18$smedia7==2)] = 3 #Se aplica un código particular a pais 3#
+lapop18$hilon = as.factor(lapop18$hi_lo_non)
+levels(lapop18$hilon) = c("Alto uso", "Bajo uso", "No usuario")
 prop.table(table(lapop18$hilon))*100
 ```
 
@@ -637,9 +554,9 @@ De la misma forma que se produjo el gráfico de media de satisfacción con la de
 
 ```r
 library(Rmisc)
-satis.uso <- group.CI(pn4rr~hilon, lapop18)
+satis.uso = group.CI(pn4rr~hilon, lapop18)
 library(ggplot2)
-graf3.9 <- ggplot(satis.uso, aes(x=hilon, y=pn4rr.mean))+
+graf3.9 = ggplot(satis.uso, aes(x=hilon, y=pn4rr.mean))+
   geom_bar(width=0.5, fill="darkcyan", colour="black", stat="identity")+
   geom_errorbar(aes(ymin=pn4rr.lower, ymax=pn4rr.upper), width=0.2)+
   geom_text(aes(label=paste(round(pn4rr.mean, 1), "%")), vjust=-2.5, size=4)+
@@ -675,10 +592,6 @@ Esto es útil en otras ocasiones, pero genera problemas con la librería `survey
 Para esto transformamos las variables a otro tipo con el comando `sapply`.
 
 
-```r
-lapop21 = subset(lapop21, !is.na(weight1500))
-sapply(lapop21, haven::zap_labels)
-```
 
 Con la base de datos adecuada, se puede definir el diseño muestra y se guarda en un objeto "diseno21".
 
@@ -729,7 +642,7 @@ Se debe tomar en cuenta que el comando `svybar` genera columnas con nombre difer
 
 
 ```r
-graf3 <- ggplot(golpepond, aes(x=reorder(paises, -jc15ar), y=jc15ar))+
+graf3 = ggplot(golpepond, aes(x=reorder(paises, -jc15ar), y=jc15ar))+
   geom_bar(width=0.5, fill="darkslategray3", colour="#69b3a2", stat="identity")+
   geom_errorbar(aes(ymin=ci_l, ymax=ci_u), width=0.2, color="darkcyan",
                 cex=0.4, linetype=3)+
@@ -750,7 +663,7 @@ De la misma manera que con la tolerancia a los golpes ejecutivos, se usa la libr
 
 ```r
 library(survey)
-diseno18<-svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
+diseno18 = svydesign(ids = ~upm, strata = ~estratopri, weights = ~weight1500, nest=TRUE, data=lapop18)
 ```
 
 Se puede describir la variable de satisfacción con la democracia incorporando el factor de diseño usando el comando `svymean`.
@@ -784,7 +697,7 @@ Dentro de este comando se especifica la variable numérica a ser descrita (`~pn4
 
 
 ```r
-tw.uso.weighted <- svyby(~pn4rr, ~smedia5r, diseno18, svymean, na.rm=T, vartype = "ci")
+tw.uso.weighted = svyby(~pn4rr, ~smedia5r, diseno18, svymean, na.rm=T, vartype = "ci")
 tw.uso.weighted
 ```
 
@@ -800,7 +713,7 @@ Se usan especificaciones muy similares a los ejemplos anteriores.
 
 
 ```r
-graf4 <- ggplot(tw.uso.weighted, aes(x=smedia5r, y=pn4rr))+
+graf4 = ggplot(tw.uso.weighted, aes(x=smedia5r, y=pn4rr))+
   geom_bar(width=0.5, fill="darkcyan", colour="black", stat="identity")+
   geom_errorbar(aes(ymin=ci_l, ymax=ci_u), width=0.2)+
   geom_text(aes(label=paste(round(pn4rr, 1), "%")), vjust=-4.2, size=4)+
